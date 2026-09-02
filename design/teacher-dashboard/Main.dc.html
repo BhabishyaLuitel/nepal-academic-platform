@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:oklch(98.5% 0.003 260);
+    --surface:oklch(100% 0 0);
+    --border:oklch(92% 0.006 260);
+    --ink:oklch(24% 0.02 260);
+    --ink-soft:oklch(46% 0.02 260);
+    --ink-faint:oklch(62% 0.015 260);
+    --accent:oklch(56% 0.16 265);
+    --accent-soft:oklch(94% 0.03 265);
+    --accent-ink:oklch(38% 0.14 265);
+    --success:oklch(62% 0.13 155);
+    --success-soft:oklch(94% 0.05 155);
+    --warn:oklch(72% 0.15 70);
+    --warn-soft:oklch(95% 0.06 75);
+    --sidebar:oklch(20% 0.03 262);
+    --sidebar-ink:oklch(78% 0.02 260);
+    --sidebar-ink-dim:oklch(55% 0.02 260);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Public Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
+  h1,h2,h3{font-family:'Plus Jakarta Sans',system-ui,sans-serif;margin:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{color:var(--accent-ink);}
+</style>
+</helmet>
+
+<div style="width:1440px;height:900px;display:flex;background:var(--bg);overflow:hidden;">
+
+  <!-- Sidebar -->
+  <div style="width:232px;flex-shrink:0;height:900px;background:var(--sidebar);display:flex;flex-direction:column;padding:22px 16px;gap:4px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 8px 22px 8px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-6 9 6-9 6-9-6z"/><path d="M7 14v4c0 1.5 2.5 3 5 3s5-1.5 5-3v-4"/></svg>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans';font-weight:700;font-size:15px;color:white;line-height:1.2;">Springdale<div style="font-weight:500;font-size:11px;color:var(--sidebar-ink-dim);">Academic Workflow</div></div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:oklch(100% 0 0 / 0.08);color:white;font-size:13.5px;font-weight:600;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1V9.5z"/></svg>
+      Dashboard
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Attendance
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      CAS Marks
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.2"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17.5" cy="7.5" r="2.6"/><path d="M15.5 14.2c2.9.4 5 2.6 5 5.8"/></svg>
+      Students
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 016.5 2H19v20H6.5A2.5 2.5 0 014 19.5v-15z"/><path d="M8 7h7M8 11h7"/></svg>
+      Lesson Plans
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.9L19 9l-4.4 3.3L16 18l-4-3.2L8 18l1.4-5.7L5 9l5.2-1.1z"/></svg>
+      AI Report Writer
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sidebar-ink);font-size:13.5px;font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+      Notices
+    </div>
+
+    <div style="flex:1"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;background:oklch(100% 0 0 / 0.06);">
+      <div style="width:30px;height:30px;border-radius:8px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;font-family:'Plus Jakarta Sans';flex-shrink:0;">SS</div>
+      <div style="line-height:1.25;">
+        <div style="color:white;font-size:12.5px;font-weight:600;">Sunita Sharma</div>
+        <div style="color:var(--sidebar-ink-dim);font-size:11px;">Grade 3 · Class Teacher</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div style="flex:1;height:900px;overflow:hidden;display:flex;flex-direction:column;">
+
+    <!-- Top bar -->
+    <div style="height:64px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;background:var(--surface);">
+      <div style="flex:1;max-width:380px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 12px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span style="font-size:12.5px;color:var(--ink-faint);">Search students, subjects, notices…</span>
+      </div>
+      <div style="flex:1"></div>
+      <div style="width:34px;height:34px;border-radius:9px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <div style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--warn);border:1.5px solid var(--surface);"></div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div style="flex:1;overflow:hidden;padding:28px 32px;display:flex;flex-direction:column;gap:22px;">
+
+      <!-- Greeting row -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h1 style="font-size:23px;font-weight:800;color:var(--ink);">Namaste, Sunita 👋</h1>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:4px;">Saturday, August 30, 2026</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:9px 14px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--success);"></div>
+          <span style="font-size:13px;font-weight:600;">Grade 3 — Gulmohar</span>
+          <span style="font-size:12px;color:var(--ink-faint);">· 32 students</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;">Mark Attendance</div>
+          <div style="font-size:11.5px;color:var(--ink-faint);">Not yet taken today</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--success-soft);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.12 155)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;">Enter CAS Marks</div>
+          <div style="font-size:11.5px;color:var(--ink-faint);">Science · Unit 4 due</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--warn-soft);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(48% 0.13 70)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.9L19 9l-4.4 3.3L16 18l-4-3.2L8 18l1.4-5.7L5 9l5.2-1.1z"/></svg>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;">AI Report Writer</div>
+          <div style="font-size:11.5px;color:var(--ink-faint);">3 drafts ready</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 016.5 2H19v20H6.5A2.5 2.5 0 014 19.5v-15z"/><path d="M8 7h7M8 11h7"/></svg>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;">Lesson Plan</div>
+          <div style="font-size:11.5px;color:var(--ink-faint);">Today: Photosynthesis</div>
+        </div>
+      </div>
+
+      <!-- Two column -->
+      <div style="flex:1;display:flex;gap:20px;overflow:hidden;">
+
+        <!-- Left -->
+        <div style="flex:1.7;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+            <div style="font-size:13.5px;font-weight:700;margin-bottom:14px;">Today's Schedule</div>
+            <div style="display:flex;gap:10px;">
+              <div style="flex:1;border-radius:10px;padding:10px 12px;background:var(--accent-soft);">
+                <div style="font-size:10.5px;color:var(--accent-ink);font-weight:700;">9:00 – 9:45</div>
+                <div style="font-size:12.5px;font-weight:600;margin-top:3px;">Nepali</div>
+              </div>
+              <div style="flex:1;border-radius:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);">
+                <div style="font-size:10.5px;color:var(--ink-faint);font-weight:700;">9:45 – 10:30</div>
+                <div style="font-size:12.5px;font-weight:600;margin-top:3px;">Mathematics</div>
+              </div>
+              <div style="flex:1;border-radius:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);">
+                <div style="font-size:10.5px;color:var(--ink-faint);font-weight:700;">10:30 – 11:15</div>
+                <div style="font-size:12.5px;font-weight:600;margin-top:3px;">Science</div>
+              </div>
+              <div style="flex:0.7;border-radius:10px;padding:10px 12px;background:var(--bg);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;">
+                <div style="font-size:11px;color:var(--ink-faint);font-weight:600;">Break</div>
+              </div>
+              <div style="flex:1;border-radius:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);">
+                <div style="font-size:10.5px;color:var(--ink-faint);font-weight:700;">11:30 – 12:15</div>
+                <div style="font-size:12.5px;font-weight:600;margin-top:3px;">English</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;flex:1;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.9L19 9l-4.4 3.3L16 18l-4-3.2L8 18l1.4-5.7L5 9l5.2-1.1z"/></svg>
+              <div style="font-size:13.5px;font-weight:700;">AI Insights</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:11px;background:var(--bg);">
+                <div style="width:30px;height:30px;border-radius:8px;background:var(--warn-soft);flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="oklch(48% 0.13 70)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:12.5px;font-weight:600;">2 students below CAS threshold in Mathematics</div>
+                  <div style="font-size:11.5px;color:var(--ink-faint);margin-top:2px;">Anisha Gurung, Rohan Thapa — suggests a short revision plan</div>
+                </div>
+                <div style="font-size:11.5px;font-weight:700;color:var(--accent);white-space:nowrap;">Review →</div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:11px;background:var(--bg);">
+                <div style="width:30px;height:30px;border-radius:8px;background:var(--success-soft);flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.12 155)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:12.5px;font-weight:600;">3 report card comments drafted and ready</div>
+                  <div style="font-size:11.5px;color:var(--ink-faint);margin-top:2px;">Generated from this term's CAS marks — awaiting your approval</div>
+                </div>
+                <div style="font-size:11.5px;font-weight:700;color:var(--accent);white-space:nowrap;">Review →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+            <div style="font-size:13.5px;font-weight:700;margin-bottom:14px;">Attendance Today</div>
+            <div style="display:flex;align-items:baseline;gap:6px;">
+              <span style="font-family:'Plus Jakarta Sans';font-size:30px;font-weight:800;color:var(--ink);">29</span>
+              <span style="font-size:14px;color:var(--ink-faint);">/ 32 present</span>
+            </div>
+            <div style="height:8px;border-radius:5px;background:var(--bg);margin-top:12px;overflow:hidden;">
+              <div style="height:100%;width:90.6%;border-radius:5px;background:var(--success);"></div>
+            </div>
+            <div style="display:flex;gap:14px;margin-top:12px;font-size:11.5px;color:var(--ink-faint);">
+              <span><span style="color:var(--success);font-weight:700;">●</span> 29 Present</span>
+              <span><span style="color:var(--warn);font-weight:700;">●</span> 2 Late</span>
+              <span><span style="color:oklch(60% 0.18 25);font-weight:700;">●</span> 1 Absent</span>
+            </div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;flex:1;overflow:hidden;">
+            <div style="font-size:13.5px;font-weight:700;margin-bottom:14px;">Notices</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;gap:10px;">
+                <div style="width:38px;flex-shrink:0;text-align:center;background:var(--bg);border-radius:8px;padding:5px 0;">
+                  <div style="font-size:9.5px;color:var(--ink-faint);font-weight:700;">SEP</div>
+                  <div style="font-size:14px;font-weight:800;font-family:'Plus Jakarta Sans';">05</div>
+                </div>
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;">Parent-Teacher Meeting</div>
+                  <div style="font-size:11px;color:var(--ink-faint);margin-top:2px;">All sections · Main Hall, 2 PM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <div style="width:38px;flex-shrink:0;text-align:center;background:var(--bg);border-radius:8px;padding:5px 0;">
+                  <div style="font-size:9.5px;color:var(--ink-faint);font-weight:700;">SEP</div>
+                  <div style="font-size:14px;font-weight:800;font-family:'Plus Jakarta Sans';">20</div>
+                </div>
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;">Dashain Holidays Begin</div>
+                  <div style="font-size:11px;color:var(--ink-faint);margin-top:2px;">School resumes Oct 12</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <div style="width:38px;flex-shrink:0;text-align:center;background:var(--bg);border-radius:8px;padding:5px 0;">
+                  <div style="font-size:9.5px;color:var(--ink-faint);font-weight:700;">SEP</div>
+                  <div style="font-size:14px;font-weight:800;font-family:'Plus Jakarta Sans';">02</div>
+                </div>
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;">Unit 4 CAS Marks Due</div>
+                  <div style="font-size:11px;color:var(--ink-faint);margin-top:2px;">Science &amp; Mathematics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 80, "w": 1440, "h": 900 },
+    { "file": "DirectionB.dc.html", "x": 1560, "y": 80, "w": 1440, "h": 900 },
+    { "file": "DirectionC.dc.html", "x": 3120, "y": 80, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    { "id": "note-main", "x": 0, "y": 0, "w": 480, "text": "Clean Clarity — spacious sidebar SaaS, indigo accent, professional and trustworthy. Recommended default." },
+    { "id": "note-b", "x": 1560, "y": 0, "w": 480, "text": "Namaste Warm — top-nav only, Nepali flag-inspired crimson/blue, rounded, big touch targets, Devanagari-ready type. Friendlier for less tech-savvy teachers." },
+    { "id": "note-c", "x": 3120, "y": 0, "w": 480, "text": "Command Center — dense roster table, compact icon rail, everything visible at once. Best for power users managing many students fast." }
+  ],
+  "launch": { "view": "canvas" }
+}
