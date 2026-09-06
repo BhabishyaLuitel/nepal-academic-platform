@@ -7,6 +7,7 @@ const navItems = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/academic-years", label: "Academic Years" },
   { href: "/admin/grades", label: "Grades & Sections" },
+  { href: "/admin/students", label: "Students" },
   { href: "/admin/subjects", label: "Subjects" },
   { href: "/admin/teachers", label: "Teachers" },
   { href: "/admin/assignments", label: "Assignments" },

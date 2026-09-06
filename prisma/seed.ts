@@ -78,6 +78,53 @@ async function seedCurriculum() {
   return { grade5, mathematics, fractions };
 }
 
+const ROSTERS: Record<number, string[]> = {
+  1: [
+    "Akash Tamang", "Alisha Lama", "Arik Khadka", "Arika Khadka", "Reman Kasichhwa",
+    "Rupesh Magar", "Saanvi KC", "Saling Lama", "Satvik Rajbhandari", "Sohil Limbu",
+    "Sonam Lama", "Unika Gwachha", "Shrigersh Thapaliya",
+  ],
+  2: [
+    "Chhulang Lama", "Choying Tamang", "Dhawa Tamang", "Dipti Thapa Magar", "Ezikel BK",
+    "Grisha Manandhar", "Isha Tamang", "Kiara Nagarkoti", "Kiran Basnet", "Kiran Rai",
+    "Kushal Sapkota", "Liwan Ale Magar", "Niran Ale Magar", "Pakriti KC", "Revan Khatri",
+    "Sajita Magar", "Sangyog Tamang", "Shreejal Tamang", "Shreeyasa Khatri", "Shreya Bhatta",
+  ],
+  3: [
+    "Aashreeya Ranamagar", "Bihan Thapa", "Chhayang Tamang", "Dibyan Shah", "Keman Shrestha",
+    "Krimon Tamang", "Mikha Tamang", "Raunak Timalsina", "Rejsy Thapa", "Sachina Manandhar",
+    "Sami Tamang", "Sandhya Gupta", "Soin Tamang", "Sonam Tamang",
+  ],
+  4: [
+    "Aisha Tamang", "Bishwajeet Tamang", "Dipson Karmacharya", "Elijah B.K", "Kritika Magar",
+    "Manish Yonjan", "Nirjala Tamang", "Pranish Rai", "Pratap Khadka", "Reejan Tamang",
+    "Sabikchhya Thapa Magar", "Samrikshya Karki", "Sophiya Lama",
+  ],
+  5: [
+    "Aarush Tamang", "Aashish Magar", "Anik Khadka", "Basanta Moktan", "Bhishan Pakhrin",
+    "Daniyal Tamang", "Drowel Shilpakar", "Fursang Tamang", "Isha Tamang", "Karan Basnet",
+    "Mercy Chaulagain", "Rija Bhele", "Riya Kasichhwa", "Riyan Prajapati", "Roshani Lama",
+    "Shishir Ale Magar", "Shreeshan Shrestha", "Yunik K.C",
+  ],
+};
+
+async function seedStudents(schoolId: string, sectionByGradeOrder: Record<number, string>) {
+  for (const [gradeOrder, names] of Object.entries(ROSTERS)) {
+    const sectionId = sectionByGradeOrder[Number(gradeOrder)];
+    const existing = await prisma.student.count({ where: { sectionId } });
+    if (existing > 0) continue;
+
+    await prisma.student.createMany({
+      data: names.map((name, index) => ({
+        schoolId,
+        sectionId,
+        name,
+        rollNumber: String(index + 1),
+      })),
+    });
+  }
+}
+
 async function seedSchool() {
   const school = await prisma.school.upsert({
     where: { id: "springdale-demo" },
@@ -112,6 +159,31 @@ async function seedSchool() {
     update: {},
     create: { gradeId: grade5School.id, name: "A" },
   });
+
+  const otherGrades = await Promise.all(
+    [1, 2, 3, 4].map((order) =>
+      prisma.grade.upsert({
+        where: { schoolId_name: { schoolId: school.id, name: `Grade ${order}` } },
+        update: {},
+        create: { schoolId: school.id, name: `Grade ${order}`, order },
+      }),
+    ),
+  );
+  const otherSections = await Promise.all(
+    otherGrades.map((grade) =>
+      prisma.section.upsert({
+        where: { gradeId_name: { gradeId: grade.id, name: "A" } },
+        update: {},
+        create: { gradeId: grade.id, name: "A" },
+      }),
+    ),
+  );
+  const sectionByGradeOrder: Record<number, string> = { 5: sectionA.id };
+  otherGrades.forEach((grade, i) => {
+    sectionByGradeOrder[grade.order] = otherSections[i].id;
+  });
+
+  await seedStudents(school.id, sectionByGradeOrder);
 
   const mathematicsSchool = await prisma.subject.upsert({
     where: { schoolId_name: { schoolId: school.id, name: "Mathematics" } },

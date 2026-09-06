@@ -29,6 +29,7 @@ model School {
   grades        Grade[]
   subjects      Subject[]
   users         User[]
+  students      Student[]
 }
 
 model AcademicYear {
@@ -75,9 +76,32 @@ model Section {
 
   teacherAssignments TeacherAssignment[]
   academicPlans      AcademicPlan[]
+  students           Student[]
 
   @@unique([gradeId, name])
   @@index([gradeId])
+}
+
+model Student {
+  id               String    @id @default(cuid())
+  schoolId         String
+  sectionId        String
+  name             String
+  rollNumber       String
+  dateOfBirth      DateTime?
+  address          String?
+  guardianName     String?
+  guardianRelation String? // e.g. "Father", "Mother", "Guardian"
+  guardianPhone    String?
+  admissionDate    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  school  School  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@unique([sectionId, rollNumber])
+  @@index([schoolId])
 }
 
 model Subject {
