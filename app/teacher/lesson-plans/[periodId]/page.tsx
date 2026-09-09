@@ -159,7 +159,12 @@ export default async function LessonPlanPage(
             />
 
             <div className="flex items-center gap-3 pt-2">
-              <PendingButton pendingLabel="Saving..." icon={Save}>Save changes</PendingButton>
+              <PendingButton
+                pendingLabel="Saving..."
+                icon={<Save size={18} aria-hidden="true" />}
+              >
+                Save changes
+              </PendingButton>
             </div>
           </form>
 
