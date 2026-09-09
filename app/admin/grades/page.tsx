@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, TextInput, SubmitButton } from "@/components/ui/form";
@@ -47,7 +48,7 @@ export default async function GradesPage() {
                   <TextInput name="name" placeholder="A" required />
                 </Field>
               </div>
-              <SubmitButton>Add</SubmitButton>
+              <SubmitButton icon={Plus}>Add</SubmitButton>
             </form>
           </div>
         ))}
@@ -65,7 +66,7 @@ export default async function GradesPage() {
           <Field label="Order">
             <TextInput type="number" name="order" defaultValue={grades.length + 1} required />
           </Field>
-          <SubmitButton>Add grade</SubmitButton>
+          <SubmitButton icon={Plus}>Add grade</SubmitButton>
         </form>
       </div>
     </div>

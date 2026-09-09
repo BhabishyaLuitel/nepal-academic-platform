@@ -1,16 +1,25 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import {
+  LayoutDashboard,
+  CalendarRange,
+  School,
+  Users,
+  BookMarked,
+  UserRound,
+  ClipboardList,
+} from "lucide-react";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/components/sign-out-button";
 
 const navItems = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/academic-years", label: "Academic Years" },
-  { href: "/admin/grades", label: "Grades & Sections" },
-  { href: "/admin/students", label: "Students" },
-  { href: "/admin/subjects", label: "Subjects" },
-  { href: "/admin/teachers", label: "Teachers" },
-  { href: "/admin/assignments", label: "Assignments" },
+  { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/academic-years", label: "Academic Years", icon: CalendarRange },
+  { href: "/admin/grades", label: "Grades & Sections", icon: School },
+  { href: "/admin/students", label: "Students", icon: Users },
+  { href: "/admin/subjects", label: "Subjects", icon: BookMarked },
+  { href: "/admin/teachers", label: "Teachers", icon: UserRound },
+  { href: "/admin/assignments", label: "Assignments", icon: ClipboardList },
 ];
 
 export default async function AdminLayout({
@@ -30,17 +39,18 @@ export default async function AdminLayout({
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
             <p className="text-sm text-slate-500">School Admin</p>
-            <p className="font-semibold text-slate-900">{session.user.name}</p>
+            <p className="text-lg font-semibold text-slate-900">{session.user.name}</p>
           </div>
           <SignOutButton />
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-1 px-6">
+        <nav className="mx-auto flex max-w-6xl flex-wrap gap-1 px-6">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-t-md px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-brand-green"
+              className="flex min-h-11 items-center gap-2 rounded-t-md px-3 py-2 text-base text-slate-600 hover:bg-slate-100 hover:text-brand-green"
             >
+              <item.icon size={18} aria-hidden="true" />
               {item.label}
             </Link>
           ))}

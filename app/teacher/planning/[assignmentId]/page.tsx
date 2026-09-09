@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 export default async function AssignmentPlanningPage(
   props: PageProps<"/teacher/planning/[assignmentId]">,
@@ -41,10 +42,16 @@ export default async function AssignmentPlanningPage(
 
   return (
     <div>
+      <Breadcrumbs
+        items={[
+          { label: "My Classes", href: "/teacher" },
+          { label: `${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}` },
+        ]}
+      />
       <h1 className="text-2xl font-semibold text-slate-900">
         {assignment.subject.name} — {assignment.grade.name} {assignment.section.name}
       </h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <p className="mt-1 text-base text-slate-500">
         Pick a curriculum unit to plan lessons for.
       </p>
 

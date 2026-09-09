@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, TextInput, SubmitButton } from "@/components/ui/form";
@@ -51,7 +52,7 @@ export default async function SubjectsPage() {
           <Field label="Code (optional)">
             <TextInput name="code" placeholder="MATH" />
           </Field>
-          <SubmitButton>Add subject</SubmitButton>
+          <SubmitButton icon={Plus}>Add subject</SubmitButton>
         </form>
       </div>
     </div>

@@ -1,13 +1,16 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
+import type { LucideIcon } from "lucide-react";
 
 export function PendingButton({
   children,
   pendingLabel,
+  icon: Icon,
 }: {
   children: React.ReactNode;
   pendingLabel: string;
+  icon?: LucideIcon;
 }) {
   const { pending } = useFormStatus();
 
@@ -15,8 +18,9 @@ export function PendingButton({
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md bg-brand-green px-4 py-2 text-sm font-medium text-white hover:bg-brand-green-dark disabled:opacity-60"
+      className="inline-flex min-h-11 items-center gap-2 rounded-md bg-brand-green px-5 py-2.5 text-base font-medium text-white hover:bg-brand-green-dark disabled:opacity-60"
     >
+      {Icon && !pending && <Icon size={18} aria-hidden="true" />}
       {pending ? pendingLabel : children}
     </button>
   );

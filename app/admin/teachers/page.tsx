@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, TextInput, SubmitButton } from "@/components/ui/form";
@@ -57,7 +58,7 @@ export default async function TeachersPage() {
           <Field label="Temporary password">
             <TextInput type="password" name="password" minLength={8} required />
           </Field>
-          <SubmitButton>Add teacher</SubmitButton>
+          <SubmitButton icon={Plus}>Add teacher</SubmitButton>
         </form>
       </div>
     </div>

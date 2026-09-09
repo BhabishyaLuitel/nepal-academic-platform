@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, TextInput, Select, SubmitButton } from "@/components/ui/form";
@@ -124,7 +125,7 @@ export default async function StudentsPage({
               <Field label="Guardian phone (optional)">
                 <TextInput name="guardianPhone" />
               </Field>
-              <SubmitButton>Add student</SubmitButton>
+              <SubmitButton icon={Plus}>Add student</SubmitButton>
             </form>
           </div>
         </>

@@ -121,4 +121,5 @@ export async function saveLessonPlan(formData: FormData) {
   });
 
   revalidatePath(`/teacher/lesson-plans/${periodId}`);
+  redirect(`/teacher/lesson-plans/${periodId}?saved=1`);
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { SubmitButton } from "@/components/ui/form";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { createAcademicPlan } from "./actions";
 
 export default async function UnitPlanningPage(
@@ -38,9 +39,16 @@ export default async function UnitPlanningPage(
 
   return (
     <div>
-      <p className="text-sm text-slate-500">
-        {assignment.subject.name} — {assignment.grade.name} {assignment.section.name}
-      </p>
+      <Breadcrumbs
+        items={[
+          { label: "My Classes", href: "/teacher" },
+          {
+            label: `${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}`,
+            href: `/teacher/planning/${assignmentId}`,
+          },
+          { label: unit.title },
+        ]}
+      />
       <h1 className="text-2xl font-semibold text-slate-900">{unit.title}</h1>
 
       {!plan ? (

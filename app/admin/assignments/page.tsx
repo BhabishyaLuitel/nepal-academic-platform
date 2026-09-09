@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, Select, SubmitButton } from "@/components/ui/form";
@@ -121,7 +122,7 @@ export default async function AssignmentsPage() {
                 ))}
               </Select>
             </Field>
-            <SubmitButton>Assign</SubmitButton>
+            <SubmitButton icon={Check}>Assign</SubmitButton>
           </form>
         ) : (
           <p className="mt-4 text-sm text-slate-500">

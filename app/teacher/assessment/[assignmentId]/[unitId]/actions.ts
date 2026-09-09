@@ -19,6 +19,25 @@ function parseScore(value: FormDataEntryValue | null): number | null {
   return n;
 }
 
+/**
+ * The scoring grid submits each cell under two field names (the desktop table's
+ * and the mobile card's — see the page component for why). Only one of the two
+ * layouts is ever visible to the user, so whichever value differs from what was
+ * already stored is the one they actually changed; if neither differs, the
+ * value is unchanged either way.
+ */
+function resolveScore(
+  desktopRaw: FormDataEntryValue | null,
+  mobileRaw: FormDataEntryValue | null,
+  previousScore: number | null,
+): number | null {
+  const desktop = parseScore(desktopRaw);
+  const mobile = parseScore(mobileRaw);
+  if (desktop === mobile) return desktop;
+  if (desktop !== previousScore) return desktop;
+  return mobile;
+}
+
 export async function saveRegularScores(formData: FormData) {
   const session = await auth();
   if (!session?.user || session.user.role !== "TEACHER") {
@@ -37,13 +56,25 @@ export async function saveRegularScores(formData: FormData) {
     prisma.learningAchievement.findMany({ where: { curriculumUnitId: unitId } }),
   ]);
 
+  const existingScores = await prisma.assessmentScore.findMany({
+    where: {
+      studentId: { in: students.map((s) => s.id) },
+      learningAchievementId: { in: achievements.map((a) => a.id) },
+    },
+  });
+  const previousByKey = new Map(
+    existingScores.map((s) => [`${s.studentId}__${s.learningAchievementId}`, s.regularScore]),
+  );
+
   const today = new Date();
 
   for (const student of students) {
     for (const achievement of achievements) {
-      const raw = formData.get(`score_${student.id}__${achievement.id}`);
-      if (raw === null) continue;
-      const score = parseScore(raw);
+      const key = `${student.id}__${achievement.id}`;
+      const desktopRaw = formData.get(`score_${key}`);
+      const mobileRaw = formData.get(`score_${key}__m`);
+      if (desktopRaw === null && mobileRaw === null) continue;
+      const score = resolveScore(desktopRaw, mobileRaw, previousByKey.get(key) ?? null);
       if (score === null) continue;
 
       await prisma.assessmentScore.upsert({
@@ -66,6 +97,7 @@ export async function saveRegularScores(formData: FormData) {
   }
 
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}?saved=1`);
 }
 
 export async function saveStudentAssessment(formData: FormData) {
@@ -127,4 +159,5 @@ export async function saveStudentAssessment(formData: FormData) {
 
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?saved=1`);
 }

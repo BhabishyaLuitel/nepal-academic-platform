@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Field, TextInput, SubmitButton } from "@/components/ui/form";
@@ -80,7 +81,7 @@ export default async function AcademicYearsPage() {
           <Field label="End date">
             <TextInput type="date" name="endDate" required />
           </Field>
-          <SubmitButton>Add academic year</SubmitButton>
+          <SubmitButton icon={Plus}>Add academic year</SubmitButton>
         </form>
       </div>
     </div>
