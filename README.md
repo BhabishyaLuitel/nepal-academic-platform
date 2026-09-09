@@ -42,6 +42,10 @@ workflow (assessment, grading, report cards) will build on.
    - A Grade 5 / Section A / Mathematics teacher assignment
    - A full Grade 5 → Mathematics → Fractions curriculum unit (8 topics, learning
      outcomes, competencies) matching the product spec's sample plan
+   - Grades 1–5, Section A, with real student rosters (78 students total)
+   - A Computer subject continuous assessment (CAS) setup for Grades 3–5: 5 units each,
+     5 skill areas per unit, matching the school's physical CAS record booklet format —
+     assigned to the same teacher across all three grades
 
 5. Run the dev server:
 
@@ -60,15 +64,19 @@ Other useful commands: `npm run db:studio` (Prisma Studio, browse the DB), `npm 
 - **Admin**: academic years, grades/sections, subjects, teachers, teacher assignments —
   all server-action CRUD, scoped to the signed-in admin's school.
 - **Teacher**: curriculum browser (Grade → Subject → Unit → Topic, read-only), academic
-  planning (pick a curriculum unit → auto-generated period breakdown), and AI lesson
-  plans (generate via Gemini, then edit and save per period).
+  planning (pick a curriculum unit → auto-generated period breakdown), AI lesson
+  plans (generate via Gemini, then edit and save per period), and continuous assessment
+  (CAS) scoring — a class-wide grid for regular-pass scores per unit, plus a per-student
+  page for remedial scores and remarks, with automatic percentage/grade calculation
+  matching the school's official grading scale.
 
 ## Known gaps / next phases
 
-- Only one curriculum unit (Grade 5 Mathematics — Fractions) is seeded. Loading the full
-  official curriculum is a separate data-entry effort.
-- No assessment, continuous assessment record, grading, report card, or parent
-  documentation yet — those are later phases per the product spec.
+- Only one Mathematics curriculum unit (Grade 5 — Fractions) and one full subject's CAS
+  content (Computer, Grades 3–5) are seeded. Loading the full official curriculum, and CAS
+  skill areas for other subjects, is a separate data-entry effort.
+- No report card generation, parent documentation, attendance tracking, or grade rollup
+  across subjects/terms yet — those are later phases per the product spec.
 - No offline sync (service worker / conflict resolution); the app is server-rendered with
   small client bundles to tolerate slow connections, but doesn't work fully offline.
 - `npm audit` flags a high-severity issue in `deepmerge-ts` (a transitive dependency of
