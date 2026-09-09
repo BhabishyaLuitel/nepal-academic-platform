@@ -7,6 +7,7 @@ import { PendingButton } from "@/components/ui/pending-button";
 import { ScoreButtons } from "@/components/ui/score-buttons";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
+import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { saveRegularScores } from "./actions";
 
 export default async function UnitAssessmentPage(
@@ -51,7 +52,7 @@ export default async function UnitAssessmentPage(
   const className = `${assignment.grade.name} ${assignment.section.name}`;
 
   return (
-    <div>
+    <div className="cas-theme">
       <Breadcrumbs
         items={[
           { label: "Assessment", href: "/teacher/assessment" },
@@ -62,31 +63,34 @@ export default async function UnitAssessmentPage(
           { label: unit.title },
         ]}
       />
-      {saved && <SavedBanner message="Scores saved" />}
-
-      <h1 className="text-2xl font-semibold text-slate-900">{unit.title}</h1>
-      <p className="mt-1 text-base text-slate-500">
-        {assignment.subject.name} — {className}. Tap a number to score each student. Open a
-        student for remedial scores and remarks.
-      </p>
+      <CasMasthead
+        eyebrow="Continuous Assessment"
+        title={unit.title}
+        subtitle={`${assignment.subject.name} — ${className}. Tap a number to score each student. Open a student for remedial scores and remarks.`}
+      />
+      {saved && (
+        <div className="mt-6">
+          <SavedBanner message="Scores saved" />
+        </div>
+      )}
 
       <form action={saveRegularScores}>
         <input type="hidden" name="assignmentId" value={assignmentId} />
         <input type="hidden" name="unitId" value={unitId} />
 
         {/* Table layout: comfortable on tablet/desktop where there's room for columns. */}
-        <div className="mt-6 hidden overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm md:block">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-500">
+        <div className="cas-card mt-6 hidden overflow-x-auto md:block">
+          <table className="cas-table w-full text-left text-sm">
+            <thead>
               <tr>
-                <th className="px-3 py-2 font-medium">Roll</th>
-                <th className="px-3 py-2 font-medium">Name</th>
+                <th className="px-3 py-2">Roll</th>
+                <th className="px-3 py-2">Name</th>
                 {achievements.map((a) => (
-                  <th key={a.id} className="px-3 py-2 font-medium" title={a.description}>
+                  <th key={a.id} className="px-3 py-2" title={a.description}>
                     {a.skillArea.name}
                   </th>
                 ))}
-                <th className="px-3 py-2 font-medium">Result</th>
+                <th className="px-3 py-2">Result</th>
                 <th className="px-3 py-2" />
               </tr>
             </thead>
@@ -104,9 +108,9 @@ export default async function UnitAssessmentPage(
                 const hasAnyScore = studentScores.some((s) => s?.regularScore != null);
 
                 return (
-                  <tr key={student.id} className="border-t border-slate-100">
-                    <td className="px-3 py-2 text-slate-500">{student.rollNumber}</td>
-                    <td className="px-3 py-2 text-slate-900">{student.name}</td>
+                  <tr key={student.id}>
+                    <td className="px-3 py-2 text-[color:var(--cas-ink-faint)]">{student.rollNumber}</td>
+                    <td className="px-3 py-2 text-[color:var(--cas-ink)]">{student.name}</td>
                     {achievements.map((a, i) => {
                       const existing = studentScores[i];
                       return (
@@ -119,7 +123,7 @@ export default async function UnitAssessmentPage(
                         </td>
                       );
                     })}
-                    <td className="px-3 py-2 text-slate-700">
+                    <td className="px-3 py-2 text-[color:var(--cas-ink-dim)]">
                       {hasAnyScore ? `${result.percentage.toFixed(0)}% (${result.grade})` : "—"}
                     </td>
                     <td className="px-3 py-2 text-right">
@@ -135,7 +139,10 @@ export default async function UnitAssessmentPage(
               })}
               {students.length === 0 && (
                 <tr>
-                  <td colSpan={achievements.length + 4} className="px-3 py-6 text-center text-slate-400">
+                  <td
+                    colSpan={achievements.length + 4}
+                    className="px-3 py-6 text-center text-[color:var(--cas-ink-faint)]"
+                  >
                     No students in this class yet.
                   </td>
                 </tr>
@@ -161,9 +168,9 @@ export default async function UnitAssessmentPage(
             const hasAnyScore = studentScores.some((s) => s?.regularScore != null);
 
             return (
-              <div key={student.id} className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div key={student.id} className="cas-card p-4">
                 <div className="flex items-center justify-between">
-                  <p className="font-medium text-slate-900">
+                  <p className="font-medium text-[color:var(--cas-ink)]">
                     {student.rollNumber}. {student.name}
                   </p>
                   <Link
@@ -173,7 +180,7 @@ export default async function UnitAssessmentPage(
                     Details
                   </Link>
                 </div>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-[color:var(--cas-ink-dim)]">
                   Result: {hasAnyScore ? `${result.percentage.toFixed(0)}% (${result.grade})` : "Not scored yet"}
                 </p>
                 <div className="mt-3 space-y-3">
@@ -181,7 +188,7 @@ export default async function UnitAssessmentPage(
                     const existing = studentScores[i];
                     return (
                       <div key={a.id}>
-                        <p className="text-sm font-medium text-slate-700">{a.skillArea.name}</p>
+                        <p className="cas-label">{a.skillArea.name}</p>
                         <div className="mt-1">
                           {/* Distinct name from the desktop table's version of this same
                               cell below md: — both render in the DOM at once (CSS only
@@ -203,7 +210,7 @@ export default async function UnitAssessmentPage(
             );
           })}
           {students.length === 0 && (
-            <p className="rounded-lg border border-slate-200 bg-white p-6 text-center text-slate-400">
+            <p className="cas-card p-6 text-center text-[color:var(--cas-ink-faint)]">
               No students in this class yet.
             </p>
           )}

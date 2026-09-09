@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { CasMasthead } from "@/components/assessment/cas-masthead";
 
 export default async function AssignmentAssessmentPage(
   props: PageProps<"/teacher/assessment/[assignmentId]">,
@@ -35,19 +36,18 @@ export default async function AssignmentAssessmentPage(
     : [];
 
   return (
-    <div>
+    <div className="cas-theme">
       <Breadcrumbs
         items={[
           { label: "Assessment", href: "/teacher/assessment" },
           { label: `${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}` },
         ]}
       />
-      <h1 className="text-2xl font-semibold text-slate-900">
-        {assignment.subject.name} — {assignment.grade.name} {assignment.section.name}
-      </h1>
-      <p className="mt-1 text-base text-slate-500">
-        Pick a curriculum unit to score students on.
-      </p>
+      <CasMasthead
+        eyebrow="Continuous Assessment"
+        title={`${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}`}
+        subtitle="Pick a curriculum unit to score students on."
+      />
 
       {!curriculumSubject && (
         <p className="mt-6 text-sm text-amber-600">
@@ -68,10 +68,10 @@ export default async function AssignmentAssessmentPage(
             <Link
               key={unit.id}
               href={`/teacher/assessment/${assignment.id}/${unit.id}`}
-              className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-green hover:shadow"
+              className="cas-card p-4 hover:border-brand-green"
             >
-              <p className="font-medium text-slate-900">{unit.title}</p>
-              <p className="text-sm text-slate-500">
+              <p className="font-medium text-[color:var(--cas-ink)]">{unit.title}</p>
+              <p className="cas-label mt-2">
                 {unit._count.learningAchievements} skill areas
               </p>
             </Link>

@@ -42,8 +42,8 @@ export function ScoreButtons({
               htmlFor={id}
               className={
                 size === "full"
-                  ? "flex min-h-11 min-w-11 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-slate-300 px-3 py-2 text-center text-sm font-medium text-slate-700 peer-checked:border-brand-green peer-checked:bg-brand-green peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-blue peer-focus-visible:ring-offset-2"
-                  : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border-2 border-slate-300 text-sm font-semibold text-slate-700 peer-checked:border-brand-green peer-checked:bg-brand-green peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-blue peer-focus-visible:ring-offset-1"
+                  ? "flex min-h-11 min-w-11 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-[color:var(--cas-border-strong)] px-3 py-2 text-center text-sm font-medium text-[color:var(--cas-ink-dim)] peer-checked:border-brand-green peer-checked:bg-brand-green peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-blue peer-focus-visible:ring-offset-2"
+                  : "flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border-2 border-[color:var(--cas-border-strong)] text-sm font-semibold text-[color:var(--cas-ink-dim)] peer-checked:border-brand-green peer-checked:bg-brand-green peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-blue peer-focus-visible:ring-offset-1"
               }
             >
               <span className={size === "full" ? "text-base font-semibold" : ""}>{score}</span>

@@ -6,10 +6,11 @@ import { PendingButton } from "@/components/ui/pending-button";
 import { ScoreButtons } from "@/components/ui/score-buttons";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
+import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { saveStudentAssessment } from "../actions";
 
 const dateFieldClasses =
-  "mt-1 block min-h-11 w-full rounded-md border border-slate-300 px-3 py-2.5 text-base";
+  "mt-1 block min-h-11 w-full rounded-md border border-[color:var(--cas-border-strong)] px-3 py-2.5 text-base focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue";
 
 function toDateInputValue(date: Date | null): string {
   if (!date) return "";
@@ -59,7 +60,7 @@ export default async function StudentAssessmentPage(
   const className = `${assignment.grade.name} ${assignment.section.name}`;
 
   return (
-    <div>
+    <div className="cas-theme">
       <Breadcrumbs
         items={[
           { label: "Assessment", href: "/teacher/assessment" },
@@ -71,14 +72,20 @@ export default async function StudentAssessmentPage(
           { label: student.name },
         ]}
       />
-      {saved && <SavedBanner message="Assessment saved" />}
-
-      <h1 className="text-2xl font-semibold text-slate-900">
-        {student.name} <span className="text-slate-400 font-normal">Roll {student.rollNumber}</span>
-      </h1>
-      <p className="mt-1 text-base text-slate-700">
-        Result: {result.sum}/{result.totalPossible} · {result.percentage.toFixed(1)}% · GPA {result.gpa} · Grade {result.grade}
-      </p>
+      <CasMasthead
+        eyebrow="Continuous Assessment"
+        title={
+          <>
+            {student.name} <span className="font-normal text-[#C7CEF7]">Roll {student.rollNumber}</span>
+          </>
+        }
+        subtitle={`Result: ${result.sum}/${result.totalPossible} · ${result.percentage.toFixed(1)}% · GPA ${result.gpa} · Grade ${result.grade}`}
+      />
+      {saved && (
+        <div className="mt-6">
+          <SavedBanner message="Assessment saved" />
+        </div>
+      )}
 
       <form action={saveStudentAssessment} className="mt-6 space-y-6">
         <input type="hidden" name="assignmentId" value={assignmentId} />
@@ -92,18 +99,18 @@ export default async function StudentAssessmentPage(
           // their key changes. Keying on updatedAt forces a remount when the row changes.
           const versionKey = s ? s.updatedAt.getTime() : "new";
           return (
-            <div key={a.id} className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-              <p className="font-medium text-slate-900">{a.skillArea.name}</p>
-              <p className="text-base text-slate-500">{a.description}</p>
+            <div key={a.id} className="cas-card p-4">
+              <p className="font-medium text-[color:var(--cas-ink)]">{a.skillArea.name}</p>
+              <p className="text-base text-[color:var(--cas-ink-dim)]">{a.description}</p>
 
               <div className="mt-3">
-                <p className="text-sm font-medium text-slate-700">Regular score</p>
+                <p className="cas-label">Regular score</p>
                 <div className="mt-1" key={`regular-${a.id}-${versionKey}`}>
                   <ScoreButtons name={`regular_${a.id}`} defaultValue={s?.regularScore} size="full" />
                 </div>
               </div>
 
-              <label className="mt-3 block text-sm font-medium text-slate-700">
+              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
                 Regular date
                 <input
                   key={`regularDate-${a.id}-${versionKey}`}
@@ -115,13 +122,13 @@ export default async function StudentAssessmentPage(
               </label>
 
               <div className="mt-4">
-                <p className="text-sm font-medium text-slate-700">Remedial score</p>
+                <p className="cas-label">Remedial score</p>
                 <div className="mt-1" key={`remedial-${a.id}-${versionKey}`}>
                   <ScoreButtons name={`remedial_${a.id}`} defaultValue={s?.remedialScore} size="full" />
                 </div>
               </div>
 
-              <label className="mt-3 block text-sm font-medium text-slate-700">
+              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
                 Remedial date
                 <input
                   key={`remedialDate-${a.id}-${versionKey}`}
@@ -132,7 +139,7 @@ export default async function StudentAssessmentPage(
                 />
               </label>
 
-              <label className="mt-3 block text-sm font-medium text-slate-700">
+              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
                 Remark
                 <input
                   key={`remark-${a.id}-${versionKey}`}
@@ -149,12 +156,12 @@ export default async function StudentAssessmentPage(
         <PendingButton pendingLabel="Saving...">Save</PendingButton>
       </form>
 
-      <div className="mt-8 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h2 className="font-medium text-slate-900">Achievement scale</h2>
-        <ul className="mt-2 space-y-1 text-base text-slate-600">
+      <div className="cas-card mt-8 p-4">
+        <h2 className="font-medium text-[color:var(--cas-ink)]">Achievement scale</h2>
+        <ul className="mt-2 space-y-1 text-base text-[color:var(--cas-ink-dim)]">
           {ACHIEVEMENT_LEVELS.map((l) => (
             <li key={l.level}>
-              <span className="font-medium">{l.level} — {l.label}:</span> {l.description}
+              <span className="font-medium text-[color:var(--cas-ink)]">{l.level} — {l.label}:</span> {l.description}
             </li>
           ))}
         </ul>
