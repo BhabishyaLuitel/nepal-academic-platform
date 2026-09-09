@@ -6,6 +6,7 @@ import { SignOutButton } from "@/components/sign-out-button";
 const navItems = [
   { href: "/teacher", label: "My Classes" },
   { href: "/teacher/curriculum", label: "Curriculum" },
+  { href: "/teacher/assessment", label: "Assessment" },
 ];
 
 export default async function TeacherLayout({

@@ -100,6 +100,8 @@ model Student {
   school  School  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
+  assessmentScores AssessmentScore[]
+
   @@unique([sectionId, rollNumber])
   @@index([schoolId])
 }
@@ -139,6 +141,7 @@ model User {
   classTeacherOf     Section[]            @relation("ClassTeacher")
   teacherAssignments TeacherAssignment[]
   academicPlans      AcademicPlan[]
+  recordedAssessmentScores AssessmentScore[]
 
   @@index([schoolId])
 }
@@ -180,8 +183,21 @@ model CurriculumSubject {
 
   curriculumGrade CurriculumGrade @relation(fields: [curriculumGradeId], references: [id], onDelete: Cascade)
   units           CurriculumUnit[]
+  skillAreas      SkillArea[]
 
   @@unique([curriculumGradeId, name])
+}
+
+model SkillArea {
+  id                  String @id @default(cuid())
+  curriculumSubjectId String
+  name                String // e.g. "Understanding", "Practical Skill"
+  order               Int
+
+  curriculumSubject    CurriculumSubject     @relation(fields: [curriculumSubjectId], references: [id], onDelete: Cascade)
+  learningAchievements LearningAchievement[]
+
+  @@unique([curriculumSubjectId, order])
 }
 
 model CurriculumUnit {
@@ -195,8 +211,42 @@ model CurriculumUnit {
   learningOutcomes  LearningOutcome[]
   competencies      Competency[]
   academicPlans     AcademicPlan[]
+  learningAchievements LearningAchievement[]
 
   @@unique([curriculumSubjectId, order])
+}
+
+model LearningAchievement {
+  id               String @id @default(cuid())
+  curriculumUnitId String
+  skillAreaId      String
+  description      String
+
+  curriculumUnit CurriculumUnit    @relation(fields: [curriculumUnitId], references: [id], onDelete: Cascade)
+  skillArea      SkillArea         @relation(fields: [skillAreaId], references: [id], onDelete: Cascade)
+  scores         AssessmentScore[]
+
+  @@unique([curriculumUnitId, skillAreaId])
+}
+
+model AssessmentScore {
+  id                    String    @id @default(cuid())
+  studentId             String
+  learningAchievementId String
+  regularScore          Int?
+  regularDate           DateTime?
+  remedialScore         Int?
+  remedialDate          DateTime?
+  remark                String?
+  recordedByTeacherId   String
+  updatedAt             DateTime  @updatedAt
+
+  student             Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  learningAchievement LearningAchievement @relation(fields: [learningAchievementId], references: [id], onDelete: Cascade)
+  recordedBy          User                @relation(fields: [recordedByTeacherId], references: [id])
+
+  @@unique([studentId, learningAchievementId])
+  @@index([studentId])
 }
 
 model CurriculumTopic {

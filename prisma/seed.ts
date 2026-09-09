@@ -78,6 +78,254 @@ async function seedCurriculum() {
   return { grade5, mathematics, fractions };
 }
 
+const SKILL_AREAS = [
+  "Understanding",
+  "Listening & Following Instructions",
+  "Practical Skill",
+  "Vocabulary",
+  "Safety & Responsible Use",
+];
+
+const COMPUTER_UNITS: Record<number, { title: string; rows: string[][] }[]> = {
+  3: [
+    {
+      title: "Getting to Know the Computer",
+      rows: [
+        ["To identify what a computer is and its uses"],
+        ["To turn the computer on/off following the teacher's spoken instruction"],
+        ["To hold and use the mouse and keyboard normally"],
+        ["To recognize and use words like monitor, CPU, mouse, keyboard"],
+        ["To follow basic precautions while using the computer"],
+      ],
+    },
+    {
+      title: "Parts of the Computer",
+      rows: [
+        ["To identify the main parts of a computer and their functions"],
+        ["To point out the parts named by the teacher after listening"],
+        ["To touch and show the parts on a real computer"],
+        ["To use words like hardware, software, screen"],
+        ["To use the parts carefully without damaging them"],
+      ],
+    },
+    {
+      title: "Keyboard and Typing",
+      rows: [
+        ["To understand the layout of letters, numbers, and symbols on the keyboard"],
+        ["To type a word after listening to it being spoken"],
+        ["To type one's own name and simple words"],
+        ["To recognize words like spacebar, enter, shift, backspace"],
+        ["To use the keyboard gently with clean hands"],
+      ],
+    },
+    {
+      title: "Paint — Colours and Drawing",
+      rows: [
+        ["To open the Paint program and recognize its tools"],
+        ["To choose shapes and colours as instructed"],
+        ["To draw a simple picture and fill it with colour using the mouse"],
+        ["To use words like brush, eraser, fill, canvas"],
+        ["To safely save the picture one has made"],
+      ],
+    },
+    {
+      title: "Caring for the Computer",
+      rows: [
+        ["To understand why the computer needs to be cared for"],
+        ["To listen to and follow computer lab rules"],
+        ["To keep the computer and its surroundings clean"],
+        ["To use words like lab, rules, maintenance"],
+        ["To use the computer carefully, keeping water and food away"],
+      ],
+    },
+  ],
+  4: [
+    {
+      title: "Types of Computers",
+      rows: [
+        ["To identify types of computers such as desktop and laptop"],
+        ["To identify the correct type of computer after listening to a description"],
+        ["To sort different devices into groups"],
+        ["To use words like laptop, tablet, smartphone"],
+        ["To handle devices carefully, not as toys"],
+      ],
+    },
+    {
+      title: "Windows, Files & Folders",
+      rows: [
+        ["To understand the meaning of desktop, icon, file, and folder"],
+        ["To create a new folder as instructed"],
+        ["To open, close, and move a file from one place to another"],
+        ["To use words like folder, file, icon, desktop"],
+        ["To not delete others' files without permission"],
+      ],
+    },
+    {
+      title: "MS Paint Tools in Detail",
+      rows: [
+        ["To understand the use of various Paint tools"],
+        ["To add shapes, lines, and text as instructed"],
+        ["To create a creative picture using the tools appropriately"],
+        ["To use words like select, copy, paste, undo"],
+        ["To save the file with a proper name once work is complete"],
+      ],
+    },
+    {
+      title: "Introduction to MS Word",
+      rows: [
+        ["To understand what the Word program is used for"],
+        ["To type a sentence after listening to it"],
+        ["To format text by making it bigger, bold, or coloured"],
+        ["To use words like font, bold, italic"],
+        ["To develop the habit of saving typed work regularly"],
+      ],
+    },
+    {
+      title: "What is the Internet?",
+      rows: [
+        ["To understand what the Internet is and what it does"],
+        ["To open a specified website with the teacher's help"],
+        ["To open a browser and perform a simple search"],
+        ["To use words like website, browser, Internet"],
+        ["To use the Internet only in the presence of a teacher or guardian"],
+      ],
+    },
+  ],
+  5: [
+    {
+      title: "Computer & Internet in Daily Life",
+      rows: [
+        ["To identify where computers and the Internet are used in daily life"],
+        ["To distinguish correct/incorrect use after hearing examples"],
+        ["To connect learned tools and programs with everyday examples"],
+        ["To use words like online, offline, digital"],
+        ["To use the computer/Internet only within a set time schedule"],
+      ],
+    },
+    {
+      title: "Working in MS Word",
+      rows: [
+        ["To understand how to arrange paragraphs and pages"],
+        ["To add a title and subtitle as instructed"],
+        ["To type and format a short paragraph and save it"],
+        ["To use words like page setup, alignment, save as"],
+        ["To safely store one's work under a correct name and location"],
+      ],
+    },
+    {
+      title: "Introduction to MS PowerPoint",
+      rows: [
+        ["To understand what a presentation is"],
+        ["To add a new slide as instructed"],
+        ["To create a simple slide with text and a picture"],
+        ["To use words like slide, template, transition"],
+        ["To develop the habit of giving credit when using a classmate's work"],
+      ],
+    },
+    {
+      title: "Email and Communication",
+      rows: [
+        ["To understand what email is and why it is used"],
+        ["To read a sample email with the teacher's help"],
+        ["To practice writing a simple email with the teacher's help"],
+        ["To use words like inbox, send, attachment"],
+        ["To understand not to open emails from unknown addresses"],
+      ],
+    },
+    {
+      title: "Digital Safety & Ethics",
+      rows: [
+        ["To understand why personal information should be kept safe"],
+        ["To distinguish safe/unsafe behaviour after hearing examples"],
+        ["To immediately inform a teacher or guardian if a problem occurs"],
+        ["To use words like password, privacy, cyber"],
+        ["To become a responsible digital citizen by behaving well towards others"],
+      ],
+    },
+  ],
+};
+
+async function seedComputerCas(
+  schoolId: string,
+  academicYearId: string,
+  teacherId: string,
+  gradeByOrder: Record<number, { id: string; name: string }>,
+  sectionByGradeOrder: Record<number, string>,
+) {
+  const computerSchoolSubject = await prisma.subject.upsert({
+    where: { schoolId_name: { schoolId, name: "Computer" } },
+    update: {},
+    create: { schoolId, name: "Computer", code: "COMP" },
+  });
+
+  for (const gradeOrder of [3, 4, 5]) {
+    const curriculumGrade = await prisma.curriculumGrade.upsert({
+      where: { name: `Grade ${gradeOrder}` },
+      update: {},
+      create: { name: `Grade ${gradeOrder}` },
+    });
+
+    const curriculumSubject = await prisma.curriculumSubject.upsert({
+      where: { curriculumGradeId_name: { curriculumGradeId: curriculumGrade.id, name: "Computer" } },
+      update: {},
+      create: { curriculumGradeId: curriculumGrade.id, name: "Computer" },
+    });
+
+    const skillAreas = await Promise.all(
+      SKILL_AREAS.map((name, index) =>
+        prisma.skillArea.upsert({
+          where: { curriculumSubjectId_order: { curriculumSubjectId: curriculumSubject.id, order: index + 1 } },
+          update: { name },
+          create: { curriculumSubjectId: curriculumSubject.id, name, order: index + 1 },
+        }),
+      ),
+    );
+
+    const units = COMPUTER_UNITS[gradeOrder];
+    for (const [unitIndex, unit] of units.entries()) {
+      const curriculumUnit = await prisma.curriculumUnit.upsert({
+        where: { curriculumSubjectId_order: { curriculumSubjectId: curriculumSubject.id, order: unitIndex + 1 } },
+        update: { title: unit.title },
+        create: { curriculumSubjectId: curriculumSubject.id, title: unit.title, order: unitIndex + 1 },
+      });
+
+      for (const [skillIndex, skillArea] of skillAreas.entries()) {
+        await prisma.learningAchievement.upsert({
+          where: { curriculumUnitId_skillAreaId: { curriculumUnitId: curriculumUnit.id, skillAreaId: skillArea.id } },
+          update: { description: unit.rows[skillIndex][0] },
+          create: {
+            curriculumUnitId: curriculumUnit.id,
+            skillAreaId: skillArea.id,
+            description: unit.rows[skillIndex][0],
+          },
+        });
+      }
+    }
+
+    const grade = gradeByOrder[gradeOrder];
+    const sectionId = sectionByGradeOrder[gradeOrder];
+    await prisma.teacherAssignment.upsert({
+      where: {
+        teacherId_subjectId_gradeId_sectionId_academicYearId: {
+          teacherId,
+          subjectId: computerSchoolSubject.id,
+          gradeId: grade.id,
+          sectionId,
+          academicYearId,
+        },
+      },
+      update: {},
+      create: {
+        teacherId,
+        subjectId: computerSchoolSubject.id,
+        gradeId: grade.id,
+        sectionId,
+        academicYearId,
+      },
+    });
+  }
+}
+
 const ROSTERS: Record<number, string[]> = {
   1: [
     "Akash Tamang", "Alisha Lama", "Arik Khadka", "Arika Khadka", "Reman Kasichhwa",
@@ -179,8 +427,10 @@ async function seedSchool() {
     ),
   );
   const sectionByGradeOrder: Record<number, string> = { 5: sectionA.id };
+  const gradeByOrder: Record<number, { id: string; name: string }> = { 5: grade5School };
   otherGrades.forEach((grade, i) => {
     sectionByGradeOrder[grade.order] = otherSections[i].id;
+    gradeByOrder[grade.order] = grade;
   });
 
   await seedStudents(school.id, sectionByGradeOrder);
@@ -242,12 +492,23 @@ async function seedSchool() {
     },
   });
 
-  return { school, academicYear, grade5School, sectionA, mathematicsSchool, admin, teacher };
+  return {
+    school,
+    academicYear,
+    grade5School,
+    sectionA,
+    mathematicsSchool,
+    admin,
+    teacher,
+    gradeByOrder,
+    sectionByGradeOrder,
+  };
 }
 
 async function main() {
   await seedCurriculum();
-  await seedSchool();
+  const { school, academicYear, teacher, gradeByOrder, sectionByGradeOrder } = await seedSchool();
+  await seedComputerCas(school.id, academicYear.id, teacher.id, gradeByOrder, sectionByGradeOrder);
   console.log("Seed complete.");
   console.log("  Admin login:   admin@springdale.edu.np / Admin@123");
   console.log("  Teacher login: teacher@springdale.edu.np / Teacher@123");
