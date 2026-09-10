@@ -26,7 +26,7 @@ export default async function AssessmentHomePage() {
           <Link
             key={assignment.id}
             href={`/teacher/assessment/${assignment.id}`}
-            className="cas-card p-4 hover:border-brand-green"
+            className="cas-card p-4 hover:border-[color:var(--cas-accent)]"
           >
             <p className="font-medium text-[color:var(--cas-ink)]">
               {assignment.grade.name} - {assignment.section.name}

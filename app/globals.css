@@ -54,56 +54,52 @@ h3 {
 
 /* ==========================================================================
    CAS (assessment) visual theme — scoped to .cas-theme so it only affects
-   the teacher assessment pages. Matches the real school site's own design
-   system (springdale.edu.np): primary teal-green + gold accent, Playfair
-   Display headings, Inter body, rounded-2xl cards with soft tinted shadows,
-   gold pill badges for eyebrow labels.
-
-   Deliberately light-only: the rest of the app has no dark-mode styling at
-   all, so following the OS/browser color scheme here would make this one
-   section go dark while the surrounding nav chrome stayed light.
+   the teacher assessment pages. Matches the approved "Computer Skills
+   Ledger" reference exactly: dark surface, periwinkle masthead, mono
+   uppercase labels, green accent — not the light real-site palette used
+   elsewhere in the app.
    ========================================================================== */
 .cas-theme {
-  color-scheme: light;
-  --cas-surface: #ffffff;
-  --cas-surface-2: var(--color-cream);
-  --cas-surface-3: var(--color-cream-dark);
-  --cas-border: var(--color-cream-dark);
-  --cas-border-strong: #cbd5e1;
-  --cas-ink: var(--color-ink);
-  --cas-ink-dim: var(--color-ink-muted);
-  --cas-ink-faint: #94a3b8;
-  --cas-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-  --cas-shadow-hover: 0 28px 55px -22px rgba(0, 95, 72, 0.4);
+  color-scheme: dark;
+  background: var(--cas-bg);
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 8px;
+
+  --cas-bg: #12161a;
+  --cas-surface: #191f23;
+  --cas-surface-2: #1e2921;
+  --cas-surface-3: #24332a;
+  --cas-border: #2c3830;
+  --cas-border-strong: #3c4c40;
+  --cas-ink: #e9eee7;
+  --cas-ink-dim: #a2b0a0;
+  --cas-ink-faint: #728072;
+  --cas-accent: #55c179;
+  --cas-accent-ink: #08150c;
+  --cas-accent-wash: #1c2c21;
+  --cas-navy: #8a93f0;
+  --cas-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 28px -14px rgba(0, 0, 0, 0.55);
 }
 
 .cas-masthead {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-primary-dark)
-  );
-  color: #ecfdf5;
-  border-radius: 16px;
+  background: linear-gradient(160deg, var(--cas-navy), color-mix(in srgb, var(--cas-navy) 80%, #5b64c9));
+  color: #f3f5ff;
+  border-radius: 12px;
   padding: 26px 24px;
 }
 .cas-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
-  color: var(--color-gold-light);
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  margin: 0 0 12px;
+  color: #c7cef7;
+  margin: 0 0 8px;
 }
 .cas-title {
-  font-family: var(--font-playfair), Georgia, serif;
-  font-weight: 700;
+  font-family: var(--font-noto-serif), Georgia, serif;
+  font-weight: 600;
   font-size: clamp(22px, 3.4vw, 32px);
   line-height: 1.15;
   color: #fff;
@@ -111,38 +107,89 @@ h3 {
 }
 .cas-subtitle {
   font-size: 14px;
-  color: #d1fae5;
+  color: #c7cef7;
   margin-top: 6px;
   max-width: 62ch;
+}
+
+.cas-identity {
+  margin-top: 22px;
+  display: grid;
+  gap: 12px 22px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+.cas-identity-field label {
+  display: block;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #b9c1ee;
+}
+.cas-identity-field .value {
+  color: #fff;
+  font-size: 14.5px;
+  padding: 3px 0 5px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.cas-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--cas-border);
+  margin-top: 20px;
+}
+.cas-tab-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--cas-ink-dim);
+  padding: 12px 16px 10px;
+  border-bottom: 2.5px solid transparent;
+  white-space: nowrap;
+}
+.cas-tab-btn:hover {
+  color: var(--cas-ink);
+}
+.cas-tab-btn[aria-selected="true"] {
+  color: var(--cas-accent);
+  border-bottom-color: var(--cas-accent);
 }
 
 .cas-card {
   background: var(--cas-surface);
   border: 1px solid var(--cas-border);
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: var(--cas-shadow);
-  transition: box-shadow 0.2s ease;
-}
-a.cas-card:hover {
-  box-shadow: var(--cas-shadow-hover);
 }
 .cas-card-head {
   background: var(--cas-surface-2);
   border-bottom: 1px solid var(--cas-border);
 }
 .cas-label {
-  font-size: 11px;
-  font-weight: 700;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--cas-ink-faint);
 }
 
 table.cas-table thead th {
-  background: var(--cas-surface-2);
+  background: var(--cas-surface-3);
   color: var(--cas-ink-dim);
-  font-size: 11px;
-  font-weight: 700;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--cas-border);
@@ -167,21 +214,25 @@ table.cas-table tfoot td {
   width: 100%;
   min-width: 56px;
   border: 1px solid var(--cas-border-strong);
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 6px 8px;
-  font-size: 13px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 12.5px;
   background: var(--cas-surface);
   color: var(--cas-ink);
+  color-scheme: dark;
 }
 .cas-select:focus,
 .cas-date:focus,
 .cas-text:focus {
-  outline: 2px solid var(--color-primary-light);
+  outline: 2px solid var(--cas-accent);
   outline-offset: -1px;
-  border-color: var(--color-primary);
+  border-color: var(--cas-accent);
 }
 .cas-readout {
-  font-weight: 700;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 16px;
   color: var(--cas-ink);
   background: var(--cas-surface);
   border: 1px solid var(--cas-border);
@@ -190,7 +241,40 @@ table.cas-table tfoot td {
   display: inline-block;
 }
 .cas-readout.grade {
-  color: #fff;
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  color: var(--cas-accent-ink);
+  background: var(--cas-accent);
+  border-color: var(--cas-accent);
+}
+
+table.cas-plain {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cas-surface);
+  border: 1px solid var(--cas-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+table.cas-plain th,
+table.cas-plain td {
+  border-bottom: 1px solid var(--cas-border);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  text-align: left;
+  color: var(--cas-ink);
+}
+table.cas-plain thead th {
+  background: var(--cas-surface-3);
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cas-ink-dim);
+}
+table.cas-plain tbody tr:last-child td {
+  border-bottom: none;
+}
+td.cas-grade-letter {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 700;
+  color: var(--cas-accent);
 }

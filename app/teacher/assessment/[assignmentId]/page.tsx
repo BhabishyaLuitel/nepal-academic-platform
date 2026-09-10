@@ -68,7 +68,7 @@ export default async function AssignmentAssessmentPage(
             <Link
               key={unit.id}
               href={`/teacher/assessment/${assignment.id}/${unit.id}`}
-              className="cas-card p-4 hover:border-brand-green"
+              className="cas-card p-4 hover:border-[color:var(--cas-accent)]"
             >
               <p className="font-medium text-[color:var(--cas-ink)]">{unit.title}</p>
               <p className="cas-label mt-2">

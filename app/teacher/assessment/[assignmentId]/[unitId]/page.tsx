@@ -128,7 +128,7 @@ export default async function UnitAssessmentPage(
                     <td className="px-3 py-2 text-right">
                       <Link
                         href={`/teacher/assessment/${assignmentId}/${unitId}/${student.id}`}
-                        className="text-brand-green hover:underline"
+                        className="text-[color:var(--cas-accent)] hover:underline"
                       >
                         Details
                       </Link>
@@ -174,7 +174,7 @@ export default async function UnitAssessmentPage(
                   </p>
                   <Link
                     href={`/teacher/assessment/${assignmentId}/${unitId}/${student.id}`}
-                    className="text-sm text-brand-green hover:underline"
+                    className="text-sm text-[color:var(--cas-accent)] hover:underline"
                   >
                     Details
                   </Link>
