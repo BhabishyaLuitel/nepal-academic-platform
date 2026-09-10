@@ -3,14 +3,11 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { computeUnitResult, ACHIEVEMENT_LEVELS } from "@/lib/grading";
 import { PendingButton } from "@/components/ui/pending-button";
-import { ScoreButtons } from "@/components/ui/score-buttons";
+import { ScoreSelect } from "@/components/ui/score-select";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
 import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { saveStudentAssessment } from "../actions";
-
-const dateFieldClasses =
-  "mt-1 block min-h-11 w-full rounded-md border border-[color:var(--cas-border-strong)] px-3 py-2.5 text-base focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue";
 
 function toDateInputValue(date: Date | null): string {
   if (!date) return "";
@@ -87,73 +84,94 @@ export default async function StudentAssessmentPage(
         </div>
       )}
 
-      <form action={saveStudentAssessment} className="mt-6 space-y-6">
+      <form action={saveStudentAssessment} className="mt-6">
         <input type="hidden" name="assignmentId" value={assignmentId} />
         <input type="hidden" name="unitId" value={unitId} />
         <input type="hidden" name="studentId" value={studentId} />
 
-        {achievements.map((a) => {
-          const s = scoreByAchievement.get(a.id);
-          // Server Actions patch the page in place rather than remounting it, so
-          // uncontrolled fields (defaultValue) won't pick up a new saved value unless
-          // their key changes. Keying on updatedAt forces a remount when the row changes.
-          const versionKey = s ? s.updatedAt.getTime() : "new";
-          return (
-            <div key={a.id} className="cas-card p-4">
-              <p className="font-medium text-[color:var(--cas-ink)]">{a.skillArea.name}</p>
-              <p className="text-base text-[color:var(--cas-ink-dim)]">{a.description}</p>
+        <div className="cas-card overflow-x-auto">
+          <table className="cas-table w-full text-left text-sm" style={{ minWidth: 820 }}>
+            <thead>
+              <tr>
+                <th className="px-3 py-2">No.</th>
+                <th className="px-3 py-2">Content</th>
+                <th className="px-3 py-2">Learning outcome</th>
+                <th className="px-3 py-2">Regular evaluation</th>
+                <th className="px-3 py-2">Evaluation after support</th>
+                <th className="px-3 py-2">Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {achievements.map((a, i) => {
+                const s = scoreByAchievement.get(a.id);
+                // Server Actions patch the page in place rather than remounting it, so
+                // uncontrolled fields (defaultValue) won't pick up a new saved value
+                // unless their key changes. Keying on updatedAt forces a remount when
+                // the row changes.
+                const versionKey = s ? s.updatedAt.getTime() : "new";
+                return (
+                  <tr key={a.id}>
+                    <td className="px-3 py-2 text-center text-[color:var(--cas-ink-faint)]">{i + 1}</td>
+                    <td className="px-3 py-2 font-medium text-[color:var(--cas-ink)]">{a.skillArea.name}</td>
+                    <td className="px-3 py-2 text-[color:var(--cas-ink-dim)]">{a.description}</td>
+                    <td className="px-2 py-2" key={`regular-${a.id}-${versionKey}`}>
+                      <div className="flex flex-col gap-1">
+                        <input
+                          type="date"
+                          name={`regularDate_${a.id}`}
+                          defaultValue={toDateInputValue(s?.regularDate ?? null)}
+                          className="cas-date"
+                        />
+                        <ScoreSelect name={`regular_${a.id}`} defaultValue={s?.regularScore} />
+                      </div>
+                    </td>
+                    <td className="px-2 py-2" key={`remedial-${a.id}-${versionKey}`}>
+                      <div className="flex flex-col gap-1">
+                        <input
+                          type="date"
+                          name={`remedialDate_${a.id}`}
+                          defaultValue={toDateInputValue(s?.remedialDate ?? null)}
+                          className="cas-date"
+                        />
+                        <ScoreSelect name={`remedial_${a.id}`} defaultValue={s?.remedialScore} />
+                      </div>
+                    </td>
+                    <td className="px-2 py-2" key={`remark-${a.id}-${versionKey}`}>
+                      <input
+                        type="text"
+                        name={`remark_${a.id}`}
+                        defaultValue={s?.remark ?? ""}
+                        className="cas-text"
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={3} className="px-3 py-3 text-right text-[color:var(--cas-ink-dim)]">
+                  Sum of scores &middot; Achievement percentage &middot; Grade
+                </td>
+                <td colSpan={3} className="px-3 py-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="cas-readout">
+                      {result.sum} / {result.totalPossible}
+                    </span>
+                    <span className="cas-readout">{result.percentage.toFixed(1)}%</span>
+                    <span className="cas-readout grade">
+                      {result.grade} (GPA {result.gpa})
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-              <div className="mt-3">
-                <p className="cas-label">Regular score</p>
-                <div className="mt-1" key={`regular-${a.id}-${versionKey}`}>
-                  <ScoreButtons name={`regular_${a.id}`} defaultValue={s?.regularScore} size="full" />
-                </div>
-              </div>
-
-              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
-                Regular date
-                <input
-                  key={`regularDate-${a.id}-${versionKey}`}
-                  type="date"
-                  name={`regularDate_${a.id}`}
-                  defaultValue={toDateInputValue(s?.regularDate ?? null)}
-                  className={`${dateFieldClasses} max-w-xs`}
-                />
-              </label>
-
-              <div className="mt-4">
-                <p className="cas-label">Remedial score</p>
-                <div className="mt-1" key={`remedial-${a.id}-${versionKey}`}>
-                  <ScoreButtons name={`remedial_${a.id}`} defaultValue={s?.remedialScore} size="full" />
-                </div>
-              </div>
-
-              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
-                Remedial date
-                <input
-                  key={`remedialDate-${a.id}-${versionKey}`}
-                  type="date"
-                  name={`remedialDate_${a.id}`}
-                  defaultValue={toDateInputValue(s?.remedialDate ?? null)}
-                  className={`${dateFieldClasses} max-w-xs`}
-                />
-              </label>
-
-              <label className="mt-3 block text-sm font-medium text-[color:var(--cas-ink-dim)]">
-                Remark
-                <input
-                  key={`remark-${a.id}-${versionKey}`}
-                  type="text"
-                  name={`remark_${a.id}`}
-                  defaultValue={s?.remark ?? ""}
-                  className={dateFieldClasses}
-                />
-              </label>
-            </div>
-          );
-        })}
-
-        <PendingButton pendingLabel="Saving...">Save</PendingButton>
+        <div className="mt-4">
+          <PendingButton pendingLabel="Saving...">Save</PendingButton>
+        </div>
       </form>
 
       <div className="cas-card mt-8 p-4">

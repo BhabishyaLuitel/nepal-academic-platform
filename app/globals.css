@@ -154,3 +154,43 @@ table.cas-table td,
 table.cas-table th {
   border-bottom: 1px solid var(--cas-border);
 }
+table.cas-table tfoot td {
+  background: var(--cas-surface-2);
+  border-top: 2px solid var(--cas-border-strong);
+  border-bottom: none;
+  font-weight: 700;
+}
+
+.cas-select,
+.cas-date,
+.cas-text {
+  width: 100%;
+  min-width: 56px;
+  border: 1px solid var(--cas-border-strong);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  background: var(--cas-surface);
+  color: var(--cas-ink);
+}
+.cas-select:focus,
+.cas-date:focus,
+.cas-text:focus {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+.cas-readout {
+  font-weight: 700;
+  color: var(--cas-ink);
+  background: var(--cas-surface);
+  border: 1px solid var(--cas-border);
+  border-radius: 6px;
+  padding: 3px 10px;
+  display: inline-block;
+}
+.cas-readout.grade {
+  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}

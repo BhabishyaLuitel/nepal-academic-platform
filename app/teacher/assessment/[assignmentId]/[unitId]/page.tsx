@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { computeUnitResult } from "@/lib/grading";
 import { PendingButton } from "@/components/ui/pending-button";
-import { ScoreButtons } from "@/components/ui/score-buttons";
+import { ScoreSelect } from "@/components/ui/score-select";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
 import { CasMasthead } from "@/components/assessment/cas-masthead";
@@ -66,7 +66,7 @@ export default async function UnitAssessmentPage(
       <CasMasthead
         eyebrow="Continuous Assessment"
         title={unit.title}
-        subtitle={`${assignment.subject.name} — ${className}. Tap a number to score each student. Open a student for remedial scores and remarks.`}
+        subtitle={`${assignment.subject.name} — ${className}. Set a score for each student, then save. Open a student for remedial scores and remarks.`}
       />
       {saved && (
         <div className="mt-6">
@@ -114,11 +114,10 @@ export default async function UnitAssessmentPage(
                     {achievements.map((a, i) => {
                       const existing = studentScores[i];
                       return (
-                        <td key={a.id} className="px-3 py-2">
-                          <ScoreButtons
+                        <td key={a.id} className="px-2 py-2">
+                          <ScoreSelect
                             name={`score_${student.id}__${a.id}`}
                             defaultValue={existing?.regularScore}
-                            size="compact"
                           />
                         </td>
                       );
@@ -189,17 +188,16 @@ export default async function UnitAssessmentPage(
                     return (
                       <div key={a.id}>
                         <p className="cas-label">{a.skillArea.name}</p>
-                        <div className="mt-1">
+                        <div className="mt-1 max-w-[120px]">
                           {/* Distinct name from the desktop table's version of this same
                               cell below md: — both render in the DOM at once (CSS only
-                              toggles visibility), and browsers treat same-name radios as
-                              one group regardless of display, so sharing a name here would
-                              silently steal the "checked" state from whichever renders
-                              first. saveRegularScores() reconciles the two field names. */}
-                          <ScoreButtons
+                              toggles visibility), and duplicate-name form fields would let
+                              whichever one renders first in the DOM silently win over the
+                              one the user actually used. saveRegularScores() reconciles
+                              the two field names. */}
+                          <ScoreSelect
                             name={`score_${student.id}__${a.id}__m`}
                             defaultValue={existing?.regularScore}
-                            size="compact"
                           />
                         </div>
                       </div>
