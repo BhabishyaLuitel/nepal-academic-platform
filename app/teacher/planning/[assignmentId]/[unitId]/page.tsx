@@ -49,11 +49,11 @@ export default async function UnitPlanningPage(
           { label: unit.title },
         ]}
       />
-      <h1 className="text-2xl font-semibold text-slate-900">{unit.title}</h1>
+      <h1 className="text-2xl font-semibold text-[color:var(--cas-ink)]">{unit.title}</h1>
 
       {!plan ? (
-        <div className="mt-6 max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-600">
+        <div className="cas-card mt-6 max-w-md p-6">
+          <p className="text-sm text-[color:var(--cas-ink-dim)]">
             No period plan yet for this unit. Create one to get a default period-by-period
             breakdown you can adjust.
           </p>
@@ -64,26 +64,26 @@ export default async function UnitPlanningPage(
           </form>
         </div>
       ) : (
-        <div className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-500">
+        <div className="cas-card mt-6 overflow-hidden">
+          <table className="cas-table w-full text-left text-sm">
+            <thead>
               <tr>
-                <th className="px-4 py-2 font-medium">Period</th>
-                <th className="px-4 py-2 font-medium">Topic</th>
-                <th className="px-4 py-2 font-medium">Lesson plan</th>
+                <th className="px-4 py-2">Period</th>
+                <th className="px-4 py-2">Topic</th>
+                <th className="px-4 py-2">Lesson plan</th>
               </tr>
             </thead>
             <tbody>
               {plan.periods.map((period) => (
-                <tr key={period.id} className="border-t border-slate-100">
-                  <td className="px-4 py-2">{period.periodNumber}</td>
-                  <td className="px-4 py-2">
+                <tr key={period.id}>
+                  <td className="px-4 py-2 text-[color:var(--cas-ink)]">{period.periodNumber}</td>
+                  <td className="px-4 py-2 text-[color:var(--cas-ink)]">
                     {period.curriculumTopic?.title ?? period.customTopic ?? "—"}
                   </td>
                   <td className="px-4 py-2">
                     <Link
                       href={`/teacher/lesson-plans/${period.id}`}
-                      className="text-brand-green hover:underline"
+                      className="text-[color:var(--cas-accent)] hover:underline"
                     >
                       {period.lessonPlan ? "View plan" : "Generate plan"}
                     </Link>

@@ -20,25 +20,22 @@ export default async function GradesPage() {
 
       <div className="mt-6 space-y-4">
         {grades.map((grade) => (
-          <div
-            key={grade.id}
-            className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
-          >
+          <div key={grade.id} className="cas-card p-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-medium text-slate-900">{grade.name}</h2>
-              <span className="text-xs text-slate-400">order {grade.order}</span>
+              <h2 className="font-medium text-[color:var(--cas-ink)]">{grade.name}</h2>
+              <span className="cas-label">order {grade.order}</span>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
               {grade.sections.map((section) => (
                 <span
                   key={section.id}
-                  className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600"
+                  className="rounded-full bg-[color:var(--cas-surface-2)] px-3 py-1 text-xs text-[color:var(--cas-ink-dim)]"
                 >
                   Section {section.name}
                 </span>
               ))}
               {grade.sections.length === 0 && (
-                <span className="text-xs text-slate-400">No sections yet</span>
+                <span className="text-xs text-[color:var(--cas-ink-faint)]">No sections yet</span>
               )}
             </div>
             <form action={createSection} className="mt-3 flex items-end gap-2">
@@ -53,12 +50,12 @@ export default async function GradesPage() {
           </div>
         ))}
         {grades.length === 0 && (
-          <p className="text-sm text-slate-400">No grades yet.</p>
+          <p className="text-sm text-[color:var(--cas-ink-faint)]">No grades yet.</p>
         )}
       </div>
 
-      <div className="mt-8 max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="font-medium text-slate-900">Add grade</h2>
+      <div className="cas-card mt-8 max-w-md p-6">
+        <h2 className="font-medium text-[color:var(--cas-ink)]">Add grade</h2>
         <form action={createGrade} className="mt-4 space-y-4">
           <Field label="Name">
             <TextInput name="name" placeholder="Grade 6" required />

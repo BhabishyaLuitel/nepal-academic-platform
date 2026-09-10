@@ -14,27 +14,28 @@ export default async function TeacherHomePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900">My Classes</h1>
-      <p className="mt-1 text-sm text-slate-500">
-        Select a class to plan lessons for its curriculum units.
-      </p>
+      <div className="cas-masthead">
+        <p className="cas-eyebrow">Teacher Workspace</p>
+        <h1 className="cas-title">My Classes</h1>
+        <p className="cas-subtitle">Select a class to plan lessons for its curriculum units.</p>
+      </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {assignments.map((assignment) => (
           <Link
             key={assignment.id}
             href={`/teacher/planning/${assignment.id}`}
-            className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-green hover:shadow"
+            className="cas-card p-4"
           >
-            <p className="font-medium text-slate-900">
+            <p className="font-medium text-[color:var(--cas-ink)]">
               {assignment.grade.name} - {assignment.section.name}
             </p>
-            <p className="text-sm text-slate-500">{assignment.subject.name}</p>
-            <p className="mt-2 text-xs text-slate-400">{assignment.academicYear.name}</p>
+            <p className="text-sm text-[color:var(--cas-ink-dim)]">{assignment.subject.name}</p>
+            <p className="cas-label mt-2">{assignment.academicYear.name}</p>
           </Link>
         ))}
         {assignments.length === 0 && (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-[color:var(--cas-ink-faint)]">
             No classes assigned yet. Ask your school admin to assign you a subject and class.
           </p>
         )}

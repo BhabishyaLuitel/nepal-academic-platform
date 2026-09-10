@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
 import { saveLessonPlan } from "./actions";
 import { GenerateForm } from "./generate-form";
+import { CasMasthead } from "@/components/assessment/cas-masthead";
 import type { LessonPlanContent } from "@/lib/lesson-plan";
 
 function TextAreaField({
@@ -19,15 +20,15 @@ function TextAreaField({
   defaultValue: string[];
 }) {
   return (
-    <label className="block text-base font-medium text-slate-700">
+    <label className="block text-base font-medium text-[color:var(--cas-ink-dim)]">
       {label}
       <textarea
         name={name}
         defaultValue={defaultValue.join("\n")}
         rows={Math.min(8, Math.max(3, defaultValue.length))}
-        className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2.5 text-base shadow-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        className="cas-text mt-1 block"
       />
-      <span className="text-sm font-normal text-slate-400">One item per line.</span>
+      <span className="text-sm font-normal text-[color:var(--cas-ink-faint)]">One item per line.</span>
     </label>
   );
 }
@@ -81,16 +82,20 @@ export default async function LessonPlanPage(
           { label: `Period ${period.periodNumber}: ${topicTitle}` },
         ]}
       />
-      {saved && <SavedBanner message="Lesson plan saved" />}
-
-      <p className="text-base text-slate-500">
-        {className} · Period {period.periodNumber}
-      </p>
-      <h1 className="text-2xl font-semibold text-slate-900">{topicTitle}</h1>
+      <CasMasthead
+        eyebrow="Lesson Planning"
+        title={topicTitle}
+        subtitle={`${className} · Period ${period.periodNumber}`}
+      />
+      {saved && (
+        <div className="mt-6">
+          <SavedBanner message="Lesson plan saved" />
+        </div>
+      )}
 
       {!lessonPlan ? (
-        <div className="mt-6 max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-base text-slate-600">
+        <div className="cas-card mt-6 max-w-md p-6">
+          <p className="text-base text-[color:var(--cas-ink-dim)]">
             No lesson plan yet for this period. Generate one with AI, then edit it to fit your
             classroom.
           </p>
@@ -106,7 +111,7 @@ export default async function LessonPlanPage(
             </p>
           )}
 
-          <form action={saveLessonPlan} className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <form action={saveLessonPlan} className="cas-card space-y-4 p-6">
             <input type="hidden" name="periodId" value={periodId} />
             <TextAreaField
               label="Learning objectives"
@@ -138,13 +143,13 @@ export default async function LessonPlanPage(
               name="practiceActivities"
               defaultValue={lessonPlan.practiceActivities as string[]}
             />
-            <label className="block text-base font-medium text-slate-700">
+            <label className="block text-base font-medium text-[color:var(--cas-ink-dim)]">
               Homework
               <textarea
                 name="homework"
                 defaultValue={lessonPlan.homework ?? ""}
                 rows={2}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2.5 text-base shadow-sm focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                className="cas-text mt-1 block"
               />
             </label>
             <TextAreaField
@@ -168,16 +173,16 @@ export default async function LessonPlanPage(
             </div>
           </form>
 
-          <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-medium text-slate-900">Rubric</h2>
-            <p className="text-xs text-slate-400">
+          <div className="cas-card p-6">
+            <h2 className="font-medium text-[color:var(--cas-ink)]">Rubric</h2>
+            <p className="cas-label mt-1">
               Generated with the lesson plan. Regenerate with AI to change it.
             </p>
             <div className="mt-3 space-y-4">
               {rubric.map((row, index) => (
                 <div key={index}>
-                  <p className="text-sm font-medium text-slate-800">{row.criterion}</p>
-                  <ul className="mt-1 list-disc pl-5 text-sm text-slate-600">
+                  <p className="text-sm font-medium text-[color:var(--cas-ink)]">{row.criterion}</p>
+                  <ul className="mt-1 list-disc pl-5 text-sm text-[color:var(--cas-ink-dim)]">
                     {row.levels.map((level, levelIndex) => (
                       <li key={levelIndex}>
                         <span className="font-medium">{level.label}:</span> {level.description}

@@ -23,18 +23,18 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900">Overview</h1>
-      <p className="mt-1 text-sm text-slate-500">
-        Set up your school&apos;s academic structure before teachers can start planning lessons.
-      </p>
+      <div className="cas-masthead">
+        <p className="cas-eyebrow">School Administration</p>
+        <h1 className="cas-title">Overview</h1>
+        <p className="cas-subtitle">
+          Set up your school&apos;s academic structure before teachers can start planning lessons.
+        </p>
+      </div>
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
-          >
-            <p className="text-2xl font-semibold text-slate-900">{stat.value}</p>
-            <p className="text-sm text-slate-500">{stat.label}</p>
+          <div key={stat.label} className="cas-card p-4">
+            <p className="text-2xl font-semibold text-[color:var(--cas-ink)]">{stat.value}</p>
+            <p className="cas-label mt-1">{stat.label}</p>
           </div>
         ))}
       </div>

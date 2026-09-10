@@ -53,53 +53,58 @@ h3 {
 }
 
 /* ==========================================================================
-   CAS (assessment) visual theme — scoped to .cas-theme so it only affects
-   the teacher assessment pages. Matches the approved "Computer Skills
-   Ledger" reference exactly: dark surface, periwinkle masthead, mono
-   uppercase labels, green accent — not the light real-site palette used
-   elsewhere in the app.
+   App-wide premium design system — matches the real school site
+   (springdale.edu.np) exactly: teal-green primary + gold accent, cream
+   surfaces, Playfair Display headings, Inter body, rounded-2xl cards with
+   soft tinted shadows, gold pill badges. Originally scoped to the
+   assessment pages only; now the default look for the whole application
+   (admin, teacher, login), per explicit direction to unify everything
+   under the real site's design. Class names keep the "cas-" prefix for
+   historical reasons but are used app-wide now, not just on CAS pages.
    ========================================================================== */
-.cas-theme {
-  color-scheme: dark;
-  background: var(--cas-bg);
-  border-radius: 20px;
-  padding: 24px;
-  margin-top: 8px;
+:root {
+  --cas-surface: #ffffff;
+  --cas-surface-2: var(--color-cream);
+  --cas-surface-3: var(--color-cream-dark);
+  --cas-border: var(--color-cream-dark);
+  --cas-border-strong: #cbd5e1;
+  --cas-ink: var(--color-ink);
+  --cas-ink-dim: var(--color-ink-muted);
+  --cas-ink-faint: #94a3b8;
+  --cas-accent: var(--color-primary);
+  --cas-accent-ink: #ffffff;
+  --cas-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 30px rgba(15, 23, 42, 0.06);
+  --cas-shadow-hover: 0 28px 55px -22px rgba(0, 95, 72, 0.35);
+}
 
-  --cas-bg: #12161a;
-  --cas-surface: #191f23;
-  --cas-surface-2: #1e2921;
-  --cas-surface-3: #24332a;
-  --cas-border: #2c3830;
-  --cas-border-strong: #3c4c40;
-  --cas-ink: #e9eee7;
-  --cas-ink-dim: #a2b0a0;
-  --cas-ink-faint: #728072;
-  --cas-accent: #55c179;
-  --cas-accent-ink: #08150c;
-  --cas-accent-wash: #1c2c21;
-  --cas-navy: #8a93f0;
-  --cas-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 28px -14px rgba(0, 0, 0, 0.55);
+.cas-theme {
+  /* No longer a distinct scoped panel — tokens above apply everywhere.
+     Kept as a marker class so existing page wrappers don't need edits. */
 }
 
 .cas-masthead {
-  background: linear-gradient(160deg, var(--cas-navy), color-mix(in srgb, var(--cas-navy) 80%, #5b64c9));
-  color: #f3f5ff;
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #ecfdf5;
+  border-radius: 16px;
   padding: 26px 24px;
 }
 .cas-eyebrow {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
+  color: var(--color-gold-light);
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #c7cef7;
-  margin: 0 0 8px;
+  margin: 0 0 12px;
 }
 .cas-title {
-  font-family: var(--font-noto-serif), Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
   font-size: clamp(22px, 3.4vw, 32px);
   line-height: 1.15;
   color: #fff;
@@ -107,7 +112,7 @@ h3 {
 }
 .cas-subtitle {
   font-size: 14px;
-  color: #c7cef7;
+  color: #d1fae5;
   margin-top: 6px;
   max-width: 62ch;
 }
@@ -117,24 +122,23 @@ h3 {
   display: grid;
   gap: 12px 22px;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 14px 18px;
 }
 .cas-identity-field label {
   display: block;
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-size: 10px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #b9c1ee;
+  color: #d1fae5;
 }
 .cas-identity-field .value {
   color: #fff;
   font-size: 14.5px;
   padding: 3px 0 5px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
 }
 
 .cas-tabs {
@@ -168,28 +172,30 @@ h3 {
 .cas-card {
   background: var(--cas-surface);
   border: 1px solid var(--cas-border);
-  border-radius: 10px;
+  border-radius: 16px;
   box-shadow: var(--cas-shadow);
+  transition: box-shadow 0.2s ease;
+}
+a.cas-card:hover {
+  box-shadow: var(--cas-shadow-hover);
 }
 .cas-card-head {
   background: var(--cas-surface-2);
   border-bottom: 1px solid var(--cas-border);
 }
 .cas-label {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--cas-ink-faint);
 }
 
 table.cas-table thead th {
-  background: var(--cas-surface-3);
+  background: var(--cas-surface-2);
   color: var(--cas-ink-dim);
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--cas-border);
@@ -214,13 +220,11 @@ table.cas-table tfoot td {
   width: 100%;
   min-width: 56px;
   border: 1px solid var(--cas-border-strong);
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 6px 8px;
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 12.5px;
+  font-size: 13px;
   background: var(--cas-surface);
   color: var(--cas-ink);
-  color-scheme: dark;
 }
 .cas-select:focus,
 .cas-date:focus,
@@ -230,9 +234,8 @@ table.cas-table tfoot td {
   border-color: var(--cas-accent);
 }
 .cas-readout {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 15px;
   color: var(--cas-ink);
   background: var(--cas-surface);
   border: 1px solid var(--cas-border);
@@ -251,7 +254,7 @@ table.cas-plain {
   border-collapse: collapse;
   background: var(--cas-surface);
   border: 1px solid var(--cas-border);
-  border-radius: 10px;
+  border-radius: 16px;
   overflow: hidden;
 }
 table.cas-plain th,
@@ -263,8 +266,7 @@ table.cas-plain td {
   color: var(--cas-ink);
 }
 table.cas-plain thead th {
-  background: var(--cas-surface-3);
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  background: var(--cas-surface-2);
   font-size: 11px;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -274,7 +276,22 @@ table.cas-plain tbody tr:last-child td {
   border-bottom: none;
 }
 td.cas-grade-letter {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-weight: 700;
   color: var(--cas-accent);
+}
+
+/* Small gold pill badge, matching the real site's eyebrow/label pattern.
+   Usable anywhere (page headers, status indicators). */
+.cas-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  color: var(--color-gold-dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }

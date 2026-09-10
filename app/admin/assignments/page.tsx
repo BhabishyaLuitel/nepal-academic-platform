@@ -38,30 +38,30 @@ export default async function AssignmentsPage() {
     <div>
       <h1 className="text-2xl font-semibold text-slate-900">Teacher Assignments</h1>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 text-slate-500">
+      <div className="cas-card mt-6 overflow-hidden">
+        <table className="cas-table w-full text-left text-sm">
+          <thead>
             <tr>
-              <th className="px-4 py-2 font-medium">Teacher</th>
-              <th className="px-4 py-2 font-medium">Subject</th>
-              <th className="px-4 py-2 font-medium">Class</th>
-              <th className="px-4 py-2 font-medium">Academic Year</th>
+              <th className="px-4 py-2">Teacher</th>
+              <th className="px-4 py-2">Subject</th>
+              <th className="px-4 py-2">Class</th>
+              <th className="px-4 py-2">Academic Year</th>
             </tr>
           </thead>
           <tbody>
             {assignments.map((assignment) => (
-              <tr key={assignment.id} className="border-t border-slate-100">
-                <td className="px-4 py-2">{assignment.teacher.name}</td>
-                <td className="px-4 py-2">{assignment.subject.name}</td>
-                <td className="px-4 py-2">
+              <tr key={assignment.id}>
+                <td className="px-4 py-2 text-[color:var(--cas-ink)]">{assignment.teacher.name}</td>
+                <td className="px-4 py-2 text-[color:var(--cas-ink)]">{assignment.subject.name}</td>
+                <td className="px-4 py-2 text-[color:var(--cas-ink)]">
                   {assignment.grade.name} - {assignment.section.name}
                 </td>
-                <td className="px-4 py-2 text-slate-500">{assignment.academicYear.name}</td>
+                <td className="px-4 py-2 text-[color:var(--cas-ink-dim)]">{assignment.academicYear.name}</td>
               </tr>
             ))}
             {assignments.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-6 text-center text-slate-400">
+                <td colSpan={4} className="px-4 py-6 text-center text-[color:var(--cas-ink-faint)]">
                   No assignments yet.
                 </td>
               </tr>
@@ -70,8 +70,8 @@ export default async function AssignmentsPage() {
         </table>
       </div>
 
-      <div className="mt-8 max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="font-medium text-slate-900">Assign teacher</h2>
+      <div className="cas-card mt-8 max-w-md p-6">
+        <h2 className="font-medium text-[color:var(--cas-ink)]">Assign teacher</h2>
         {canCreate ? (
           <form action={createAssignment} className="mt-4 space-y-4">
             <Field label="Teacher">

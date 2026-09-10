@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { CasMasthead } from "@/components/assessment/cas-masthead";
 
 export default async function AssignmentPlanningPage(
   props: PageProps<"/teacher/planning/[assignmentId]">,
@@ -48,12 +49,11 @@ export default async function AssignmentPlanningPage(
           { label: `${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}` },
         ]}
       />
-      <h1 className="text-2xl font-semibold text-slate-900">
-        {assignment.subject.name} — {assignment.grade.name} {assignment.section.name}
-      </h1>
-      <p className="mt-1 text-base text-slate-500">
-        Pick a curriculum unit to plan lessons for.
-      </p>
+      <CasMasthead
+        eyebrow="Lesson Planning"
+        title={`${assignment.subject.name} — ${assignment.grade.name} ${assignment.section.name}`}
+        subtitle="Pick a curriculum unit to plan lessons for."
+      />
 
       {!curriculumSubject && (
         <p className="mt-6 text-sm text-amber-600">
@@ -66,14 +66,12 @@ export default async function AssignmentPlanningPage(
           <Link
             key={unit.id}
             href={`/teacher/planning/${assignment.id}/${unit.id}`}
-            className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-green hover:shadow"
+            className="cas-card p-4"
           >
-            <p className="font-medium text-slate-900">{unit.title}</p>
-            <p className="text-sm text-slate-500">{unit._count.topics} periods</p>
+            <p className="font-medium text-[color:var(--cas-ink)]">{unit.title}</p>
+            <p className="text-sm text-[color:var(--cas-ink-dim)]">{unit._count.topics} periods</p>
             {plannedUnitIds.has(unit.id) && (
-              <span className="mt-2 inline-block rounded-full bg-brand-lime/30 px-2 py-0.5 text-xs font-medium text-brand-green-dark">
-                Planned
-              </span>
+              <span className="cas-badge mt-2">Planned</span>
             )}
           </Link>
         ))}

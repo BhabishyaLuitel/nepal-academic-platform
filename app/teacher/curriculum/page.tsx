@@ -59,7 +59,7 @@ export default async function CurriculumBrowserPage({
             className={`rounded-full px-3 py-1 ${
               selectedGrade?.id === grade.id
                 ? "bg-brand-green text-white"
-                : "bg-white text-slate-600 border border-slate-200"
+                : "cas-card text-[color:var(--cas-ink-dim)]"
             }`}
           >
             {grade.name}
@@ -104,25 +104,25 @@ export default async function CurriculumBrowserPage({
       )}
 
       {unitDetail && (
-        <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">{unitDetail.title}</h2>
+        <div className="cas-card mt-6 p-6">
+          <h2 className="text-lg font-semibold text-[color:var(--cas-ink)]">{unitDetail.title}</h2>
 
-          <h3 className="mt-4 text-sm font-medium text-slate-700">Topics</h3>
-          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-slate-600">
+          <h3 className="cas-label mt-4">Topics</h3>
+          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-[color:var(--cas-ink-dim)]">
             {unitDetail.topics.map((topic) => (
               <li key={topic.id}>{topic.title}</li>
             ))}
           </ol>
 
-          <h3 className="mt-4 text-sm font-medium text-slate-700">Learning outcomes</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+          <h3 className="cas-label mt-4">Learning outcomes</h3>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[color:var(--cas-ink-dim)]">
             {unitDetail.learningOutcomes.map((outcome) => (
               <li key={outcome.id}>{outcome.description}</li>
             ))}
           </ul>
 
-          <h3 className="mt-4 text-sm font-medium text-slate-700">Competencies</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+          <h3 className="cas-label mt-4">Competencies</h3>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[color:var(--cas-ink-dim)]">
             {unitDetail.competencies.map((competency) => (
               <li key={competency.id}>{competency.description}</li>
             ))}
