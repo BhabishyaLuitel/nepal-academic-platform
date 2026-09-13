@@ -782,16 +782,25 @@ async function seedRubricsForSubject(
     });
 
     for (const [rubricIndex, rubricDef] of rubricDefs.entries()) {
-      const rubric = await prisma.rubric.upsert({
-        where: { curriculumSubjectId_order: { curriculumSubjectId: curriculumSubject.id, order: rubricIndex + 1 } },
-        update: { title: rubricDef.title, description: rubricDef.description },
-        create: {
-          curriculumSubjectId: curriculumSubject.id,
-          title: rubricDef.title,
-          description: rubricDef.description,
-          order: rubricIndex + 1,
-        },
+      // Prisma's compound-unique upsert `where` can't take `null` for the
+      // nullable curriculumUnitId component, so these generic (unit-less)
+      // rubrics are upserted by manual find-then-write instead.
+      const existingRubric = await prisma.rubric.findFirst({
+        where: { curriculumSubjectId: curriculumSubject.id, curriculumUnitId: null, order: rubricIndex + 1 },
       });
+      const rubric = existingRubric
+        ? await prisma.rubric.update({
+            where: { id: existingRubric.id },
+            data: { title: rubricDef.title, description: rubricDef.description },
+          })
+        : await prisma.rubric.create({
+            data: {
+              curriculumSubjectId: curriculumSubject.id,
+              title: rubricDef.title,
+              description: rubricDef.description,
+              order: rubricIndex + 1,
+            },
+          });
 
       for (const [criterionIndex, criterion] of rubricDef.criteria.entries()) {
         await prisma.rubricCriterion.upsert({

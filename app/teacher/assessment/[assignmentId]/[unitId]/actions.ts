@@ -199,3 +199,80 @@ export async function saveRubricScores(formData: FormData) {
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
   redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?saved=1`);
 }
+
+export async function createCustomRubric(formData: FormData) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "TEACHER") {
+    redirect("/login");
+  }
+  const teacherId = session.user.id;
+
+  const assignmentId = String(formData.get("assignmentId") ?? "");
+  const unitId = String(formData.get("unitId") ?? "");
+
+  const assignment = await requireOwnedAssignment(assignmentId, teacherId);
+  if (!assignment) return;
+
+  const unit = await prisma.curriculumUnit.findUnique({ where: { id: unitId } });
+  if (!unit) return;
+
+  const title = String(formData.get("title") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
+  if (!title || !description) return;
+
+  const names = formData.getAll("criterionName").map((v) => String(v).trim());
+  const level4s = formData.getAll("criterionLevel4").map((v) => String(v).trim());
+  const level3s = formData.getAll("criterionLevel3").map((v) => String(v).trim());
+  const level2s = formData.getAll("criterionLevel2").map((v) => String(v).trim());
+  const level1s = formData.getAll("criterionLevel1").map((v) => String(v).trim());
+
+  const criteria = names
+    .map((name, i) => ({
+      name,
+      level4: level4s[i] ?? "",
+      level3: level3s[i] ?? "",
+      level2: level2s[i] ?? "",
+      level1: level1s[i] ?? "",
+    }))
+    .filter((c) => c.name && c.level4 && c.level3 && c.level2 && c.level1);
+  if (criteria.length === 0) return;
+
+  const existingCount = await prisma.rubric.count({ where: { curriculumUnitId: unitId } });
+
+  const rubric = await prisma.rubric.create({
+    data: {
+      curriculumSubjectId: unit.curriculumSubjectId,
+      curriculumUnitId: unitId,
+      createdByTeacherId: teacherId,
+      title,
+      description,
+      order: existingCount + 1,
+      criteria: {
+        create: criteria.map((c, i) => ({ ...c, order: i + 1 })),
+      },
+    },
+  });
+
+  revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}/rubrics?created=${rubric.id}`);
+}
+
+export async function deleteCustomRubric(formData: FormData) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "TEACHER") {
+    redirect("/login");
+  }
+  const teacherId = session.user.id;
+
+  const assignmentId = String(formData.get("assignmentId") ?? "");
+  const unitId = String(formData.get("unitId") ?? "");
+  const rubricId = String(formData.get("rubricId") ?? "");
+
+  const assignment = await requireOwnedAssignment(assignmentId, teacherId);
+  if (!assignment) return;
+
+  await prisma.rubric.deleteMany({ where: { id: rubricId, curriculumUnitId: unitId } });
+
+  revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
+}

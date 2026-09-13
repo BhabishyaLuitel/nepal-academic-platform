@@ -60,9 +60,12 @@ export default async function StudentAssessmentPage(
   );
 
   const rubrics = await prisma.rubric.findMany({
-    where: { curriculumSubjectId: unit.curriculumSubjectId },
+    where: {
+      curriculumSubjectId: unit.curriculumSubjectId,
+      OR: [{ curriculumUnitId: null }, { curriculumUnitId: unitId }],
+    },
     include: { criteria: { orderBy: { order: "asc" } } },
-    orderBy: { order: "asc" },
+    orderBy: [{ curriculumUnitId: "asc" }, { order: "asc" }],
   });
   const rubricCriterionIds = rubrics.flatMap((r) => r.criteria.map((c) => c.id));
   const rubricScores = rubricCriterionIds.length

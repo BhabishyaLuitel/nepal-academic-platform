@@ -145,6 +145,7 @@ model User {
   academicPlans      AcademicPlan[]
   recordedAssessmentScores AssessmentScore[]
   recordedRubricScores     RubricScore[]
+  createdRubrics           Rubric[]
 
   @@index([schoolId])
 }
@@ -216,6 +217,7 @@ model CurriculumUnit {
   competencies      Competency[]
   academicPlans     AcademicPlan[]
   learningAchievements LearningAchievement[]
+  customRubrics     Rubric[]
 
   @@unique([curriculumSubjectId, order])
 }
@@ -364,15 +366,20 @@ model LessonPlan {
 model Rubric {
   id                  String   @id @default(cuid())
   curriculumSubjectId String
+  curriculumUnitId    String? // null = generic, shared across the whole subject (the 4 core rubrics). Set = a teacher-created rubric scoped to just this unit/assignment (e.g. a one-off project rubric).
+  createdByTeacherId  String? // null = seeded/official. Set = teacher-authored custom rubric.
   title               String // e.g. "Classroom & Lab Participation Rubric"
   description         String
   order               Int
   createdAt           DateTime @default(now())
 
   curriculumSubject CurriculumSubject @relation(fields: [curriculumSubjectId], references: [id], onDelete: Cascade)
+  curriculumUnit    CurriculumUnit?   @relation(fields: [curriculumUnitId], references: [id], onDelete: Cascade)
+  createdByTeacher  User?             @relation(fields: [createdByTeacherId], references: [id])
   criteria          RubricCriterion[]
 
-  @@unique([curriculumSubjectId, order])
+  @@unique([curriculumSubjectId, curriculumUnitId, order])
+  @@index([curriculumUnitId])
 }
 
 model RubricCriterion {

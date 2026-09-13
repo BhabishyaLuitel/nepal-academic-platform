@@ -68,6 +68,11 @@ export default async function UnitAssessmentPage(
         title={unit.title}
         subtitle={`${assignment.subject.name} — ${className}. Set a score for each student, then save. Open a student for remedial scores and remarks.`}
       />
+      <div className="mt-4">
+        <Link href={`/teacher/assessment/${assignmentId}/${unitId}/rubrics`} className="cas-card inline-block px-3 py-2 text-sm font-medium text-[color:var(--cas-accent)]">
+          Custom rubrics for this unit
+        </Link>
+      </div>
       {saved && (
         <div className="mt-6">
           <SavedBanner message="Scores saved" />
