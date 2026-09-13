@@ -9,6 +9,32 @@ import { scanLedgerPhoto } from "@/lib/ledger-scan";
 async function requireOwnedAssignment(assignmentId: string, teacherId: string) {
   return prisma.teacherAssignment.findFirst({
     where: { id: assignmentId, teacherId },
+    include: { grade: true, subject: true },
+  });
+}
+
+/**
+ * Confirms `unitId` is actually a curriculum unit for the subject the given
+ * assignment teaches (matched by grade/subject name, same as everywhere else
+ * a TeacherAssignment is connected to CurriculumSubject) — not just any unit
+ * id a form field happens to submit. Returns the unit row, or null.
+ */
+async function requireUnitForAssignment(
+  assignment: { grade: { name: string }; subject: { name: string } },
+  unitId: string,
+) {
+  const curriculumGrade = await prisma.curriculumGrade.findUnique({
+    where: { name: assignment.grade.name },
+  });
+  const curriculumSubject = curriculumGrade
+    ? await prisma.curriculumSubject.findFirst({
+        where: { curriculumGradeId: curriculumGrade.id, name: assignment.subject.name },
+      })
+    : null;
+  if (!curriculumSubject) return null;
+
+  return prisma.curriculumUnit.findFirst({
+    where: { id: unitId, curriculumSubjectId: curriculumSubject.id },
   });
 }
 
@@ -51,6 +77,9 @@ export async function saveRegularScores(formData: FormData) {
 
   const assignment = await requireOwnedAssignment(assignmentId, teacherId);
   if (!assignment) return;
+
+  const unit = await requireUnitForAssignment(assignment, unitId);
+  if (!unit) return;
 
   const [students, achievements] = await Promise.all([
     prisma.student.findMany({ where: { sectionId: assignment.sectionId } }),
@@ -120,6 +149,9 @@ export async function saveStudentAssessment(formData: FormData) {
   });
   if (!student) return;
 
+  const unit = await requireUnitForAssignment(assignment, unitId);
+  if (!unit) return;
+
   const achievements = await prisma.learningAchievement.findMany({
     where: { curriculumUnitId: unitId },
   });
@@ -182,9 +214,26 @@ export async function saveRubricScores(formData: FormData) {
   });
   if (!student) return;
 
+  const unit = await requireUnitForAssignment(assignment, unitId);
+  if (!unit) return;
+
+  // Only accept a level for a criterion that actually belongs to a rubric
+  // valid for this unit (generic subject-wide, or custom to this unit) -
+  // the same set the Rubrics tab itself renders - rather than trusting any
+  // rubricCriterionId a form field happens to submit.
+  const validRubrics = await prisma.rubric.findMany({
+    where: {
+      curriculumSubjectId: unit.curriculumSubjectId,
+      OR: [{ curriculumUnitId: null }, { curriculumUnitId: unitId }],
+    },
+    include: { criteria: { select: { id: true } } },
+  });
+  const validCriterionIds = new Set(validRubrics.flatMap((r) => r.criteria.map((c) => c.id)));
+
   for (const [key, value] of formData.entries()) {
     if (!key.startsWith("rubric_")) continue;
     const rubricCriterionId = key.slice("rubric_".length);
+    if (!validCriterionIds.has(rubricCriterionId)) continue;
     const text = String(value ?? "").trim();
     if (!text) continue;
     const level = Number(text);
@@ -214,7 +263,7 @@ export async function createCustomRubric(formData: FormData) {
   const assignment = await requireOwnedAssignment(assignmentId, teacherId);
   if (!assignment) return;
 
-  const unit = await prisma.curriculumUnit.findUnique({ where: { id: unitId } });
+  const unit = await requireUnitForAssignment(assignment, unitId);
   if (!unit) return;
 
   const title = String(formData.get("title") ?? "").trim();
@@ -272,6 +321,9 @@ export async function deleteCustomRubric(formData: FormData) {
   const assignment = await requireOwnedAssignment(assignmentId, teacherId);
   if (!assignment) return;
 
+  const unit = await requireUnitForAssignment(assignment, unitId);
+  if (!unit) return;
+
   await prisma.rubric.deleteMany({ where: { id: rubricId, curriculumUnitId: unitId } });
 
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
@@ -299,6 +351,9 @@ export async function uploadLedgerPhoto(
     where: { id: studentId, sectionId: assignment.sectionId },
   });
   if (!student) return "Student not found.";
+
+  const unit = await requireUnitForAssignment(assignment, unitId);
+  if (!unit) return "This unit could not be found for your assignment.";
 
   const file = formData.get("photo");
   if (!(file instanceof File) || file.size === 0) {

@@ -27,10 +27,13 @@ export async function createGrade(formData: FormData) {
 }
 
 export async function createSection(formData: FormData) {
-  await requireAdmin();
+  const user = await requireAdmin();
   const gradeId = String(formData.get("gradeId") ?? "");
   const name = String(formData.get("name") ?? "").trim();
   if (!gradeId || !name) return;
+
+  const grade = await prisma.grade.findFirst({ where: { id: gradeId, schoolId: user.schoolId } });
+  if (!grade) return;
 
   await prisma.section.create({ data: { gradeId, name } });
 

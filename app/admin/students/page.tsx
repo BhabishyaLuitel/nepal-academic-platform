@@ -29,7 +29,12 @@ export default async function StudentsPage({
     })),
   );
 
-  const selectedSection = sectionId ?? sections[0]?.id;
+  // Only trust sectionId from the query string if it's actually one of this
+  // admin's own school's sections — otherwise an admin could view another
+  // school's student roster (name, DOB, guardian contact) just by editing
+  // the URL.
+  const requestedSection = sectionId && sections.some((s) => s.id === sectionId) ? sectionId : undefined;
+  const selectedSection = requestedSection ?? sections[0]?.id;
 
   const students = selectedSection
     ? (
