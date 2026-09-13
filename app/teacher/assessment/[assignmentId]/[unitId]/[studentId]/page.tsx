@@ -10,6 +10,7 @@ import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { CasTabs } from "@/components/assessment/cas-tabs";
 import { RubricScorer } from "@/components/assessment/rubric-scorer";
 import { CasGuide } from "@/components/assessment/cas-guide";
+import { LedgerPhotoPanel } from "@/components/assessment/ledger-photo-panel";
 import { saveStudentAssessment, saveRubricScores } from "../actions";
 
 function toDateInputValue(date: Date | null): string {
@@ -19,11 +20,11 @@ function toDateInputValue(date: Date | null): string {
 
 export default async function StudentAssessmentPage(
   props: PageProps<"/teacher/assessment/[assignmentId]/[unitId]/[studentId]"> & {
-    searchParams: Promise<{ saved?: string }>;
+    searchParams: Promise<{ saved?: string; scanned?: string }>;
   },
 ) {
   const { assignmentId, unitId, studentId } = await props.params;
-  const { saved } = await props.searchParams;
+  const { saved, scanned } = await props.searchParams;
   const session = await auth();
   const teacherId = session!.user.id;
 
@@ -77,6 +78,13 @@ export default async function StudentAssessmentPage(
     rubricScores.map((s) => [s.rubricCriterionId, s.level]),
   );
 
+  const ledgerPhoto = await prisma.ledgerPhoto.findUnique({
+    where: { studentId_curriculumUnitId: { studentId, curriculumUnitId: unitId } },
+  });
+  const ledgerPhotoDataUrl = ledgerPhoto
+    ? `data:${ledgerPhoto.mimeType};base64,${Buffer.from(ledgerPhoto.imageData).toString("base64")}`
+    : null;
+
   const className = `${assignment.grade.name} ${assignment.section.name}`;
 
   return (
@@ -113,12 +121,28 @@ export default async function StudentAssessmentPage(
           <SavedBanner message="Assessment saved" />
         </div>
       )}
+      {scanned && (
+        <div className="mt-6">
+          <SavedBanner
+            message={
+              scanned === "photo-only"
+                ? "Photo saved. This unit has no learning achievements set up, so nothing could be auto-filled."
+                : scanned === "failed"
+                  ? "Photo saved, but automatic reading failed — please enter scores manually below."
+                  : scanned === "0"
+                    ? "Photo saved, but no scores could be confidently read — please enter them manually below."
+                    : `Photo saved and ${scanned} score${scanned === "1" ? "" : "s"} filled in below — please check against the photo before saving.`
+            }
+          />
+        </div>
+      )}
 
       <CasTabs
         tabs={[
           {
             label: "Assessment Record",
             content: (
+              <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
               <form action={saveStudentAssessment}>
                 <input type="hidden" name="assignmentId" value={assignmentId} />
                 <input type="hidden" name="unitId" value={unitId} />
@@ -208,6 +232,14 @@ export default async function StudentAssessmentPage(
                   <PendingButton pendingLabel="Saving...">Save</PendingButton>
                 </div>
               </form>
+
+              <LedgerPhotoPanel
+                assignmentId={assignmentId}
+                unitId={unitId}
+                studentId={studentId}
+                photoDataUrl={ledgerPhotoDataUrl}
+              />
+              </div>
             ),
           },
           {

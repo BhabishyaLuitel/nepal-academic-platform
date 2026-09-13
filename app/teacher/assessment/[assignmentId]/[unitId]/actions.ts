@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { scanLedgerPhoto } from "@/lib/ledger-scan";
 
 async function requireOwnedAssignment(assignmentId: string, teacherId: string) {
   return prisma.teacherAssignment.findFirst({
@@ -275,4 +276,113 @@ export async function deleteCustomRubric(formData: FormData) {
 
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
   redirect(`/teacher/assessment/${assignmentId}/${unitId}/rubrics`);
+}
+
+export async function uploadLedgerPhoto(
+  _prevState: string | undefined,
+  formData: FormData,
+): Promise<string | undefined> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "TEACHER") {
+    redirect("/login");
+  }
+  const teacherId = session.user.id;
+
+  const assignmentId = String(formData.get("assignmentId") ?? "");
+  const unitId = String(formData.get("unitId") ?? "");
+  const studentId = String(formData.get("studentId") ?? "");
+
+  const assignment = await requireOwnedAssignment(assignmentId, teacherId);
+  if (!assignment) return "Not authorized.";
+
+  const student = await prisma.student.findFirst({
+    where: { id: studentId, sectionId: assignment.sectionId },
+  });
+  if (!student) return "Student not found.";
+
+  const file = formData.get("photo");
+  if (!(file instanceof File) || file.size === 0) {
+    return "Please choose a photo to upload.";
+  }
+  if (!file.type.startsWith("image/")) {
+    return "Please upload an image file (JPEG, PNG, etc.).";
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    return "That photo is too large — please use one under 10MB.";
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  // Save the photo first, independent of whether the scan below succeeds —
+  // the photo itself (for side-by-side manual comparison) is the point even
+  // if automatic reading fails.
+  await prisma.ledgerPhoto.upsert({
+    where: { studentId_curriculumUnitId: { studentId, curriculumUnitId: unitId } },
+    update: { imageData: buffer, mimeType: file.type, uploadedByTeacherId: teacherId },
+    create: {
+      studentId,
+      curriculumUnitId: unitId,
+      imageData: buffer,
+      mimeType: file.type,
+      uploadedByTeacherId: teacherId,
+    },
+  });
+
+  const achievements = await prisma.learningAchievement.findMany({
+    where: { curriculumUnitId: unitId },
+    include: { skillArea: true },
+    orderBy: { skillArea: { order: "asc" } },
+  });
+  if (achievements.length === 0) {
+    revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
+    redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?scanned=photo-only`);
+  }
+
+  let result;
+  try {
+    result = await scanLedgerPhoto({
+      imageBase64: buffer.toString("base64"),
+      mimeType: file.type,
+      skillAreas: achievements.map((a) => a.skillArea.name),
+    });
+  } catch (error) {
+    console.error("Ledger scan failed", error);
+    revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
+    redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?scanned=failed`);
+  }
+
+  const byName = new Map(result.rows.map((r) => [r.skillArea, r]));
+  const today = new Date();
+  let readCount = 0;
+
+  for (const achievement of achievements) {
+    const row = byName.get(achievement.skillArea.name);
+    if (!row) continue;
+
+    const data: {
+      regularScore?: number;
+      regularDate?: Date;
+      remedialScore?: number;
+      remedialDate?: Date;
+    } = {};
+    if (row.regularScore) {
+      data.regularScore = row.regularScore;
+      data.regularDate = today;
+    }
+    if (row.afterSupportScore) {
+      data.remedialScore = row.afterSupportScore;
+      data.remedialDate = today;
+    }
+    if (Object.keys(data).length === 0) continue;
+    readCount += 1;
+
+    await prisma.assessmentScore.upsert({
+      where: { studentId_learningAchievementId: { studentId, learningAchievementId: achievement.id } },
+      update: data,
+      create: { studentId, learningAchievementId: achievement.id, recordedByTeacherId: teacherId, ...data },
+    });
+  }
+
+  revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?scanned=${readCount}`);
 }

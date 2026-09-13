@@ -102,6 +102,7 @@ model Student {
 
   assessmentScores AssessmentScore[]
   rubricScores     RubricScore[]
+  ledgerPhotos     LedgerPhoto[]
 
   @@unique([sectionId, rollNumber])
   @@index([schoolId])
@@ -146,6 +147,7 @@ model User {
   recordedAssessmentScores AssessmentScore[]
   recordedRubricScores     RubricScore[]
   createdRubrics           Rubric[]
+  uploadedLedgerPhotos     LedgerPhoto[]
 
   @@index([schoolId])
 }
@@ -218,6 +220,7 @@ model CurriculumUnit {
   academicPlans     AcademicPlan[]
   learningAchievements LearningAchievement[]
   customRubrics     Rubric[]
+  ledgerPhotos      LedgerPhoto[]
 
   @@unique([curriculumSubjectId, order])
 }
@@ -411,5 +414,32 @@ model RubricScore {
   recordedBy User            @relation(fields: [recordedByTeacherId], references: [id])
 
   @@unique([studentId, rubricCriterionId])
+  @@index([studentId])
+}
+
+// ---------------------------------------------------------------------------
+// Computer-vision ledger ingestion: a photo of the physical paper ledger page
+// for one student's unit, stored so it can be shown side-by-side with the
+// digital table for manual verification (handwriting OCR isn't perfect).
+// The photo itself is the source of truth; extracted scores are written into
+// AssessmentScore the same as a manual entry would be, so a teacher reviews
+// and corrects them through the exact same Assessment Record form/Save flow.
+// ---------------------------------------------------------------------------
+
+model LedgerPhoto {
+  id                  String   @id @default(cuid())
+  studentId           String
+  curriculumUnitId    String
+  imageData           Bytes
+  mimeType            String
+  uploadedByTeacherId String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  student            Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  curriculumUnit     CurriculumUnit @relation(fields: [curriculumUnitId], references: [id], onDelete: Cascade)
+  uploadedByTeacher  User           @relation(fields: [uploadedByTeacherId], references: [id])
+
+  @@unique([studentId, curriculumUnitId])
   @@index([studentId])
 }
