@@ -623,13 +623,6 @@ const SCIENCE_SKILLS = [
   "Scientific Vocabulary",
   "Application & Safety",
 ];
-const SOCIAL_SKILLS = [
-  "Understanding",
-  "Inquiry & Research",
-  "Social & Civic Skill",
-  "Vocabulary",
-  "Values & Responsible Citizenship",
-];
 const HPE_SKILLS = [
   "Understanding",
   "Physical & Motor Skill",
@@ -637,91 +630,105 @@ const HPE_SKILLS = [
   "Vocabulary",
   "Health & Safety Habits",
 ];
-const SEROFERO_SKILLS = [
-  "Understanding",
-  "Observation & Exploration",
-  "Practical & Creative Skill",
-  "Vocabulary",
-  "Values & Responsible Behaviour",
+
+// Nepali and Social Studies / Hamro Serofero are taught in Nepali medium, so
+// their skill-area names and CAS content are in Devanagari — every other
+// subject stays in English. Grade 5's Nepali "Poetry" unit below reproduces
+// the school's own photographed CAS register example verbatim; the rest is a
+// first draft in the same register, same as the English-language content.
+const NEPALI_LANGUAGE_SKILLS = ["सुनाइ", "बोलाइ", "पढाइ", "लेखाइ", "शब्दभण्डार", "भाषिक संरचना"];
+const SOCIAL_SKILLS_NP = [
+  "बुझाइ",
+  "खोज तथा अनुसन्धान",
+  "सामाजिक तथा नागरिक सिप",
+  "शब्दभण्डार",
+  "मूल्य र जिम्मेवार नागरिकता",
+];
+const SEROFERO_SKILLS_NP = [
+  "बुझाइ",
+  "अवलोकन तथा अन्वेषण",
+  "व्यावहारिक तथा सिर्जनात्मक सिप",
+  "शब्दभण्डार",
+  "मूल्य र जिम्मेवार व्यवहार",
 ];
 
 const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
   3: [
-    { title: "My Family and School", achievements: [
-      "To respond to questions after listening to a story about family and school",
-      "To describe one's family members and school in simple sentences",
-      "To read a short passage about family and school and understand its meaning",
-      "To write 3-4 sentences about one's own family",
-      "To recognize and use words related to family and school",
-      "To identify and use singular and plural nouns",
+    { title: "परिवार र विद्यालय", achievements: [
+      "परिवार र विद्यालयसम्बन्धी कथा सुनी प्रश्नको जवाफ दिन",
+      "आफ्नो परिवार र विद्यालयको बारेमा साधारण वाक्यमा वर्णन गर्न",
+      "परिवार र विद्यालयसम्बन्धी छोटो अनुच्छेद पढी बुझ्न",
+      "आफ्नो परिवारको बारेमा ३-४ वाक्य लेख्न",
+      "परिवार र विद्यालयसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "एकवचन र बहुवचन नामको पहिचान र प्रयोग गर्न",
     ]},
-    { title: "Our Festivals", achievements: [
-      "To listen to a description of a festival and answer questions",
-      "To talk about how one's family celebrates a festival",
-      "To read a short text about Dashain or Tihar and understand it",
-      "To write a few lines describing a favourite festival",
-      "To recognize and use festival-related words",
-      "To identify and use action words (verbs) in simple sentences",
+    { title: "हाम्रा चाडपर्वहरू", achievements: [
+      "कुनै चाडको वर्णन सुनी प्रश्नको जवाफ दिन",
+      "आफ्नो परिवारले चाड कसरी मनाउँछ भनी कुरा गर्न",
+      "दशैं वा तिहारसम्बन्धी छोटो पाठ पढी बुझ्न",
+      "मनपर्ने चाडको बारेमा केही हरफ लेख्न",
+      "चाडपर्वसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "साधारण वाक्यमा क्रियापद चिनी प्रयोग गर्न",
     ]},
-    { title: "Nature and Animals", achievements: [
-      "To listen to a description of an animal and identify it",
-      "To describe an animal's appearance and habits",
-      "To read a short passage about nature and animals and answer questions",
-      "To write simple sentences describing a favourite animal",
-      "To recognize and use words related to nature and animals",
-      "To identify and use adjectives describing size and colour",
+    { title: "प्रकृति र जनावरहरू", achievements: [
+      "कुनै जनावरको वर्णन सुनी त्यसलाई चिन्न",
+      "कुनै जनावरको रूप र बानीबेहोरा वर्णन गर्न",
+      "प्रकृति र जनावरसम्बन्धी छोटो अनुच्छेद पढी प्रश्नको जवाफ दिन",
+      "मनपर्ने जनावरको बारेमा साधारण वाक्य लेख्न",
+      "प्रकृति र जनावरसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "आकार र रङ जनाउने विशेषण चिनी प्रयोग गर्न",
     ]},
   ],
   4: [
-    { title: "My Community and Country", achievements: [
-      "To listen to a description of a community event and summarize it",
-      "To talk about one's neighbourhood and community",
-      "To read a passage about Nepal and answer comprehension questions",
-      "To write a short paragraph about one's community",
-      "To recognize and use words related to community and country",
-      "To identify and use pronouns correctly",
+    { title: "हाम्रो समुदाय र देश", achievements: [
+      "समुदायको कुनै घटनाको वर्णन सुनी सारांश दिन",
+      "आफ्नो छिमेक र समुदायको बारेमा कुरा गर्न",
+      "नेपालसम्बन्धी अनुच्छेद पढी प्रश्नको जवाफ दिन",
+      "आफ्नो समुदायको बारेमा छोटो अनुच्छेद लेख्न",
+      "समुदाय र देशसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "सर्वनामको सही प्रयोग गर्न",
     ]},
-    { title: "Festivals and Culture", achievements: [
-      "To listen to a story about a cultural tradition and retell its main idea",
-      "To describe a cultural tradition or custom",
-      "To read a passage about Nepali culture and identify key details",
-      "To write a short description of a cultural practice",
-      "To recognize and use words related to culture and tradition",
-      "To identify and use adjectives in descriptive sentences",
+    { title: "चाडपर्व र संस्कृति", achievements: [
+      "सांस्कृतिक परम्परासम्बन्धी कथा सुनी मुख्य भाव भन्न",
+      "कुनै सांस्कृतिक परम्परा वा चलन वर्णन गर्न",
+      "नेपाली संस्कृतिसम्बन्धी पाठ पढी मुख्य बुँदा पहिचान गर्न",
+      "कुनै सांस्कृतिक चलनको छोटो वर्णन लेख्न",
+      "संस्कृति र परम्परासँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "वर्णनात्मक वाक्यमा विशेषण चिनी प्रयोग गर्न",
     ]},
-    { title: "Health and Good Habits", achievements: [
-      "To listen to advice about healthy habits and list the main points",
-      "To explain a good health habit in one's own words",
-      "To read a passage about hygiene and answer questions",
-      "To write a short paragraph about a healthy daily routine",
-      "To recognize and use words related to health and hygiene",
-      "To identify and use simple present tense correctly",
+    { title: "स्वास्थ्य र असल बानी", achievements: [
+      "स्वस्थ बानीसम्बन्धी सल्लाह सुनी मुख्य बुँदा टिप्न",
+      "कुनै असल स्वास्थ्य बानी आफ्नै शब्दमा बताउन",
+      "सरसफाइसम्बन्धी पाठ पढी प्रश्नको जवाफ दिन",
+      "दैनिक स्वस्थ दिनचर्याको बारेमा छोटो अनुच्छेद लेख्न",
+      "स्वास्थ्य र सरसफाइसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "साधारण वर्तमान कालको सही प्रयोग गर्न",
     ]},
   ],
   5: [
-    { title: "Poetry (Lyric / Patriotism)", achievements: [
-      "To respond based on listening to the lesson",
-      "To give a short talk or presentation based on the lesson's content",
-      "To read the lesson and comprehend it",
-      "To do transcription (copy-writing) based on the lesson",
-      "To identify and use rhyming words",
-      "To identify and use nouns and pronouns",
+    { title: "कविता (गीति/देशप्रेम)", achievements: [
+      "सुनाइ पाठका आधारमा प्रतिक्रिया दिन",
+      "पाठको विषयवस्तुमा आधारित खोज तथा प्रस्तुति दिन",
+      "पाठ पढी बोध गर्न",
+      "पाठका आधारमा अनुलेखन गर्न",
+      "लय मिल्ने शब्द पहिचान र प्रयोग गर्न",
+      "नाम र सर्वनामको पहिचान र प्रयोग गर्न",
     ]},
-    { title: "Story (Social)", achievements: [
-      "To discuss based on listening to the lesson",
-      "To express views about punctuality based on the context",
-      "To read the lesson and identify its structure and topic",
-      "To write a parallel story based on the lesson",
-      "To identify and use onomatopoeic (sound-imitating) words",
-      "To identify and use adjective words",
+    { title: "कथा (सामाजिक)", achievements: [
+      "पाठ सुनेको आधारमा छलफल गर्न",
+      "प्रसङ्गअनुसार समयपालनासम्बन्धी विचार अभिव्यक्ति दिन",
+      "पाठ पढी त्यसको संरचना र विषयवस्तु पहिचान गर्न",
+      "पाठका आधारमा समानान्तर कथा लेख्न",
+      "अनुकरणात्मक (ध्वन्यात्मक) शब्द पहिचान र प्रयोग गर्न",
+      "विशेषण शब्दको पहिचान र प्रयोग गर्न",
     ]},
-    { title: "Essay and Letter Writing", achievements: [
-      "To listen to a model essay/letter and identify its structure",
-      "To speak about a chosen topic in a short structured talk",
-      "To read a sample essay or letter and understand its purpose",
-      "To write a short essay or a simple letter",
-      "To recognize and use words related to formal writing",
-      "To identify and use conjunctions to join sentences",
+    { title: "निबन्ध र पत्र लेखन", achievements: [
+      "नमुना निबन्ध वा पत्र सुनी त्यसको संरचना पहिचान गर्न",
+      "छनोट गरिएको विषयमा छोटो संरचित प्रस्तुति दिन",
+      "नमुना निबन्ध वा पत्र पढी उद्देश्य बुझ्न",
+      "छोटो निबन्ध वा साधारण पत्र लेख्न",
+      "औपचारिक लेखनसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "वाक्य जोड्ने संयोजक (conjunction) चिनी प्रयोग गर्न",
     ]},
   ],
 };
@@ -930,49 +937,49 @@ const SCIENCE_UNITS: Record<number, SubjectUnitDef[]> = {
 
 const SOCIAL_UNITS: Record<number, SubjectUnitDef[]> = {
   4: [
-    { title: "My Family and Neighbourhood", achievements: [
-      "To understand the roles of family members and neighbours",
-      "To gather simple information about one's neighbourhood",
-      "To interact respectfully with neighbours",
-      "To recognize and use words related to family and community",
-      "To show respect and cooperation towards neighbours",
+    { title: "मेरो परिवार र छिमेक", achievements: [
+      "परिवारका सदस्य र छिमेकीहरूको भूमिका बुझ्न",
+      "आफ्नो छिमेकको बारेमा साधारण जानकारी सङ्कलन गर्न",
+      "छिमेकीसँग सम्मानपूर्वक व्यवहार गर्न",
+      "परिवार र समुदायसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "छिमेकीप्रति सम्मान र सहकार्य देखाउन",
     ]},
-    { title: "Our Local Government", achievements: [
-      "To understand the basic role of the local government (ward/municipality)",
-      "To find simple information about local government services",
-      "To describe how to seek help from a local government office",
-      "To recognize and use words related to local government",
-      "To understand one's duties as a community member",
+    { title: "हाम्रो स्थानीय सरकार", achievements: [
+      "स्थानीय सरकार (वडा/नगरपालिका) को आधारभूत भूमिका बुझ्न",
+      "स्थानीय सरकारका सेवासम्बन्धी साधारण जानकारी पत्ता लगाउन",
+      "स्थानीय सरकारी कार्यालयबाट सहयोग लिने तरिका वर्णन गर्न",
+      "स्थानीय सरकारसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "समुदायको सदस्यको रूपमा आफ्नो कर्तव्य बुझ्न",
     ]},
-    { title: "Good Habits and Citizenship", achievements: [
-      "To understand what makes a good citizen",
-      "To identify examples of good citizenship in daily life",
-      "To practice good habits such as honesty and cooperation",
-      "To recognize and use words related to citizenship and values",
-      "To behave responsibly in school and community settings",
+    { title: "असल बानी र नागरिकता", achievements: [
+      "असल नागरिक भनेको के हो बुझ्न",
+      "दैनिक जीवनमा असल नागरिकताका उदाहरण पहिचान गर्न",
+      "इमानदारी र सहकार्यजस्ता असल बानी अभ्यास गर्न",
+      "नागरिकता र मूल्यसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "विद्यालय र समुदायमा जिम्मेवारीपूर्वक व्यवहार गर्न",
     ]},
   ],
   5: [
-    { title: "Me, My Family and Neighbours", achievements: [
-      "To understand the occupations and roles of neighbours",
-      "To find out about how one's family deals with neighbours",
-      "To help the community and treat others equally",
-      "To recognize and use words related to neighbours and community",
-      "To show understanding and respect towards others",
+    { title: "म, मेरो परिवार र छिमेकीहरू", achievements: [
+      "छिमेकीहरूको पेसा र भूमिका बुझ्न",
+      "आफ्नो परिवारले छिमेकीसँग कसरी व्यवहार गर्छ भनी पत्ता लगाउन",
+      "समुदायलाई सहयोग गर्न र सबैलाई समान व्यवहार गर्न",
+      "छिमेकी र समुदायसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "अरूप्रति बुझाइ र सम्मान देखाउन",
     ]},
-    { title: "Our Traditions, Social Norms and Values", achievements: [
-      "To understand local traditions, languages, and costumes",
-      "To find out about festivals and notable people of one's district",
-      "To describe one's traditions and customs to others",
-      "To recognize and use words related to tradition and culture",
-      "To take pride in one's country and traditions",
+    { title: "हाम्रा परम्परा, सामाजिक मूल्य र मान्यता", achievements: [
+      "स्थानीय परम्परा, भाषा र पोशाक बुझ्न",
+      "आफ्नो जिल्लाका चाडपर्व र प्रसिद्ध व्यक्तित्वको बारेमा पत्ता लगाउन",
+      "आफ्नो परम्परा र चलन अरूलाई वर्णन गर्न",
+      "परम्परा र संस्कृतिसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "आफ्नो देश र परम्पराप्रति गर्व गर्न",
     ]},
-    { title: "Social Problems and Their Solutions", achievements: [
-      "To understand common social problems such as theft and blind imitation",
-      "To identify local social organizations and their roles",
-      "To practice cooperation and protection within the community",
-      "To recognize and use words related to social problems and solutions",
-      "To avoid bad habits and support community solutions",
+    { title: "सामाजिक समस्या र समाधान", achievements: [
+      "चोरी र अन्धानुकरणजस्ता सामान्य सामाजिक समस्या बुझ्न",
+      "स्थानीय सामाजिक संस्था र तिनको भूमिका पहिचान गर्न",
+      "समुदायमा सहकार्य र सुरक्षा अभ्यास गर्न",
+      "सामाजिक समस्या र समाधानसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "खराब बानीबाट टाढा रही सामुदायिक समाधानलाई सहयोग गर्न",
     ]},
   ],
 };
@@ -1028,26 +1035,26 @@ const HPE_UNITS: Record<number, SubjectUnitDef[]> = {
 
 const SEROFERO_UNITS: Record<number, SubjectUnitDef[]> = {
   3: [
-    { title: "My Family and Community", achievements: [
-      "To understand the roles of family members and community helpers",
-      "To observe and describe daily life in one's community",
-      "To role-play or draw a scene from family/community life",
-      "To recognize and use words related to family and community",
-      "To show respect and cooperation towards family and community members",
+    { title: "मेरो परिवार र समुदाय", achievements: [
+      "परिवारका सदस्य र सामुदायिक सहयोगीहरूको भूमिका बुझ्न",
+      "आफ्नो समुदायको दैनिक जीवन अवलोकन गरी वर्णन गर्न",
+      "परिवार/समुदायको कुनै दृश्य नाटकीकरण वा चित्रण गर्न",
+      "परिवार र समुदायसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "परिवार र समुदायका सदस्यप्रति सम्मान र सहकार्य देखाउन",
     ]},
-    { title: "Our Environment and Nature", achievements: [
-      "To understand the basic features of the local environment",
-      "To observe plants, animals, and weather around the school",
-      "To draw or model something observed in nature",
-      "To recognize and use words related to environment and nature",
-      "To care for plants, animals, and the environment",
+    { title: "हाम्रो वातावरण र प्रकृति", achievements: [
+      "स्थानीय वातावरणका आधारभूत विशेषता बुझ्न",
+      "विद्यालय वरपरका बिरुवा, जनावर र मौसम अवलोकन गर्न",
+      "प्रकृतिमा अवलोकन गरेको कुनै वस्तु चित्रण वा नमूना बनाउन",
+      "वातावरण र प्रकृतिसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "बिरुवा, जनावर र वातावरणको हेरचाह गर्न",
     ]},
-    { title: "Health, Safety and Creativity", achievements: [
-      "To understand basic health and safety practices",
-      "To explore simple safe and unsafe situations at home and school",
-      "To create a simple piece of art or craft on a health/safety theme",
-      "To recognize and use words related to health and safety",
-      "To practice safe and healthy behaviour daily",
+    { title: "स्वास्थ्य, सुरक्षा र सिर्जनशीलता", achievements: [
+      "आधारभूत स्वास्थ्य र सुरक्षा अभ्यास बुझ्न",
+      "घर र विद्यालयमा हुने सुरक्षित/असुरक्षित परिस्थिति पहिचान गर्न",
+      "स्वास्थ्य/सुरक्षा विषयमा साधारण कला वा शिल्प सामग्री बनाउन",
+      "स्वास्थ्य र सुरक्षासँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "दैनिक रूपमा सुरक्षित र स्वस्थ व्यवहार अभ्यास गर्न",
     ]},
   ],
 };
@@ -1061,7 +1068,7 @@ async function seedAllSubjectsCas(
 ) {
   await seedSubjectCas(
     schoolId, academicYearId, teacherId,
-    "Nepali", "NEP", LANGUAGE_SKILLS, NEPALI_UNITS,
+    "Nepali", "NEP", NEPALI_LANGUAGE_SKILLS, NEPALI_UNITS,
     gradeByOrder, sectionByGradeOrder,
   );
   await seedSubjectCas(
@@ -1083,7 +1090,7 @@ async function seedAllSubjectsCas(
   );
   await seedSubjectCas(
     schoolId, academicYearId, teacherId,
-    "Social Studies", "SOC", SOCIAL_SKILLS, SOCIAL_UNITS,
+    "Social Studies", "SOC", SOCIAL_SKILLS_NP, SOCIAL_UNITS,
     gradeByOrder, sectionByGradeOrder,
   );
   await seedSubjectCas(
@@ -1093,7 +1100,7 @@ async function seedAllSubjectsCas(
   );
   await seedSubjectCas(
     schoolId, academicYearId, teacherId,
-    "Hamro Serofero", "SERO", SEROFERO_SKILLS, SEROFERO_UNITS,
+    "Hamro Serofero", "SERO", SEROFERO_SKILLS_NP, SEROFERO_UNITS,
     gradeByOrder, sectionByGradeOrder,
   );
 }
