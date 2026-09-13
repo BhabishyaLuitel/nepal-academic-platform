@@ -977,6 +977,14 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
       "विद्यालयसँग सम्बन्धित शब्द चिन्न",
       "\"छ/छैन\" जस्ता सरल वाक्य संरचना चिन्न",
     ]},
+    { title: "जनावर र चराचुरुङ्गी", achievements: [
+      "जनावर र चराको आवाजसम्बन्धी गीत सुनी चिन्न",
+      "मनपर्ने जनावर वा चराको नाम भन्न",
+      "जनावर र चराका सरल शब्द चिनी पढ्न",
+      "सिकेका शब्द नक्कल गरी लेख्न",
+      "जनावर र चराचुरुङ्गीसँग सम्बन्धित शब्द चिन्न",
+      "आवाज जनाउने सरल शब्द चिन्न",
+    ]},
   ],
   2: [
     { title: "हाम्रो घर र छिमेक", achievements: [
@@ -1002,6 +1010,14 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
       "आफ्नो दिनचर्याको बारेमा २-३ वाक्य लेख्न",
       "समय र दिनचर्यासँग सम्बन्धित शब्द चिन्न",
       "समय जनाउने शब्द (बिहान, दिउँसो, साँझ) चिन्न",
+    ]},
+    { title: "चाडपर्व र उत्सव", achievements: [
+      "चाडसम्बन्धी छोटो कथा सुनी मुख्य कुरा भन्न",
+      "आफ्नो परिवारले मनाउने चाडको बारेमा कुरा गर्न",
+      "चाडपर्वसम्बन्धी सरल अनुच्छेद पढ्न",
+      "मनपर्ने चाडको बारेमा ३-४ वाक्य लेख्न",
+      "चाडपर्वसँग सम्बन्धित शब्द चिन्न",
+      "विशेषण शब्दको सरल प्रयोग गर्न",
     ]},
   ],
   3: [
@@ -1029,6 +1045,14 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
       "प्रकृति र जनावरसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "आकार र रङ जनाउने विशेषण चिनी प्रयोग गर्न",
     ]},
+    { title: "स्वास्थ्य र सरसफाइ", achievements: [
+      "स्वास्थ्य र सरसफाइसम्बन्धी कथा सुनी प्रश्नको जवाफ दिन",
+      "दैनिक सरसफाइ बानीको बारेमा कुरा गर्न",
+      "सरसफाइसम्बन्धी छोटो अनुच्छेद पढी बुझ्न",
+      "आफ्नो सरसफाइ बानीको बारेमा ३-४ वाक्य लेख्न",
+      "स्वास्थ्य र सरसफाइसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "आज्ञार्थक वाक्य (गर्नुहोस्/नगर्नुहोस्) चिनी प्रयोग गर्न",
+    ]},
   ],
   4: [
     { title: "हाम्रो समुदाय र देश", achievements: [
@@ -1055,6 +1079,14 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
       "स्वास्थ्य र सरसफाइसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "साधारण वर्तमान कालको सही प्रयोग गर्न",
     ]},
+    { title: "यातायात र सञ्चार", achievements: [
+      "यातायात र सञ्चारसम्बन्धी वर्णन सुनी मुख्य बुँदा टिप्न",
+      "प्रयोग गरेको यातायातको साधनको बारेमा कुरा गर्न",
+      "यातायातसम्बन्धी अनुच्छेद पढी प्रश्नको जवाफ दिन",
+      "यातायात वा सञ्चारको साधनको बारेमा छोटो अनुच्छेद लेख्न",
+      "यातायात र सञ्चारसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "तुलनात्मक विशेषण (ठूलो/सानो, छिटो/ढिलो) चिनी प्रयोग गर्न",
+    ]},
   ],
   5: [
     { title: "कविता (गीति/देशप्रेम)", achievements: [
@@ -1080,6 +1112,14 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
       "छोटो निबन्ध वा साधारण पत्र लेख्न",
       "औपचारिक लेखनसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "वाक्य जोड्ने संयोजक (conjunction) चिनी प्रयोग गर्न",
+    ]},
+    { title: "वातावरण संरक्षण", achievements: [
+      "वातावरण संरक्षणसम्बन्धी वार्ता सुनी मुख्य कुरा टिप्न",
+      "वातावरण जोगाउने उपायबारे विचार व्यक्त गर्न",
+      "वातावरणसम्बन्धी लेख पढी मुख्य भाव बुझ्न",
+      "वातावरण संरक्षणका उपायबारे अनुच्छेद लेख्न",
+      "वातावरण र संरक्षणसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "कारण जनाउने वाक्य संरचना (किनभने) चिनी प्रयोग गर्न",
     ]},
   ],
 };
@@ -1110,6 +1150,14 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To recognize words related to school",
       "To recognize simple \"This is a ___\" sentences",
     ]},
+    { title: "Animals and Birds", achievements: [
+      "To listen to animal/bird sounds and match them to pictures",
+      "To name a favourite animal or bird",
+      "To recognize simple animal and bird words",
+      "To trace and copy animal and bird words",
+      "To recognize words for common animals and birds",
+      "To recognize simple sound words (moo, tweet)",
+    ]},
   ],
   2: [
     { title: "My Home and Neighbourhood", achievements: [
@@ -1135,6 +1183,14 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To write 2-3 sentences about one's own daily routine",
       "To recognize words related to time and daily routine",
       "To recognize time words (morning, afternoon, evening)",
+    ]},
+    { title: "Festivals and Celebrations", achievements: [
+      "To listen to a short story about a festival and answer simple questions",
+      "To talk about how one's family celebrates a festival",
+      "To read short sentences about a festival",
+      "To write 2-3 sentences about a favourite festival",
+      "To recognize and use festival-related words",
+      "To recognize simple describing words (happy, colourful)",
     ]},
   ],
   3: [
@@ -1162,6 +1218,14 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To recognize and use story-related words",
       "To use simple present tense verbs correctly",
     ]},
+    { title: "Health and Hygiene", achievements: [
+      "To listen to advice about hygiene and list the main points",
+      "To talk about a healthy daily habit",
+      "To read a short passage about hygiene and answer questions",
+      "To write 3-4 sentences about staying healthy",
+      "To recognize and use health- and hygiene-related words",
+      "To use simple imperative sentences (Wash your hands.) correctly",
+    ]},
   ],
   4: [
     { title: "My School and Community", achievements: [
@@ -1187,6 +1251,14 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To write a short paragraph continuing a story",
       "To recognize and use adventure-related words",
       "To use conjunctions (and, but, because) correctly",
+    ]},
+    { title: "Transport and Communication", achievements: [
+      "To listen to a talk about ways of travelling and list them",
+      "To talk about how one travels to school",
+      "To read a passage about transport or communication and answer questions",
+      "To write a short paragraph comparing two means of transport",
+      "To recognize and use transport- and communication-related words",
+      "To use comparative adjectives (faster, slower) correctly",
     ]},
   ],
   5: [
@@ -1214,6 +1286,14 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To recognize and use words related to daily life and feelings",
       "To use past tense verbs correctly in a diary entry",
     ]},
+    { title: "Environment and Conservation", achievements: [
+      "To listen to a talk about protecting the environment and list the main points",
+      "To discuss simple ways to protect the environment",
+      "To read a passage about the environment and answer questions",
+      "To write a short paragraph on conserving the environment",
+      "To recognize and use environment-related words",
+      "To use \"because\" to give reasons in sentences",
+    ]},
   ],
 };
 
@@ -1240,6 +1320,13 @@ const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To use comparison words correctly (bigger, smaller, longer, shorter)",
       "To tell whether it is day or night from a picture",
     ]},
+    { title: "Simple Addition and Subtraction Stories", achievements: [
+      "To understand addition and subtraction as combining and taking away",
+      "To add and subtract single-digit numbers fluently",
+      "To solve a simple word problem told as a short story",
+      "To explain in words how a problem was solved",
+      "To use addition and subtraction in everyday classroom situations",
+    ]},
   ],
   2: [
     { title: "Numbers up to 100", achievements: [
@@ -1262,6 +1349,13 @@ const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To solve simple problems involving time (before/after)",
       "To express time and dates correctly",
       "To use a calendar to find a given date",
+    ]},
+    { title: "Introduction to Multiplication", achievements: [
+      "To understand multiplication as repeated addition",
+      "To recall multiplication facts for 2, 5, and 10",
+      "To solve simple word problems using multiplication",
+      "To write a multiplication fact as a repeated addition sentence",
+      "To use multiplication to count groups of everyday objects",
     ]},
   ],
   3: [
@@ -1286,6 +1380,13 @@ const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To describe a shape using its properties",
       "To use measurement skills in everyday situations",
     ]},
+    { title: "Fractions — Basic Ideas", achievements: [
+      "To understand a fraction as a part of a whole",
+      "To identify and write simple fractions (halves, thirds, quarters)",
+      "To solve simple problems comparing two fractions",
+      "To represent a fraction using a picture or diagram",
+      "To identify fractions in everyday situations (half a roti, quarter of an hour)",
+    ]},
   ],
   4: [
     { title: "Multiplication and Division", achievements: [
@@ -1309,6 +1410,13 @@ const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To explain how perimeter is calculated",
       "To apply measurement skills to real objects and spaces",
     ]},
+    { title: "Area of Simple Shapes", achievements: [
+      "To understand area as the space covered by a shape",
+      "To calculate the area of squares and rectangles",
+      "To solve simple problems involving area",
+      "To explain the difference between perimeter and area",
+      "To estimate the area of a real surface (a room, a field)",
+    ]},
   ],
   5: [
     { title: "Decimals", achievements: [
@@ -1331,6 +1439,13 @@ const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
       "To solve problems using data from a graph or table",
       "To explain what a graph shows",
       "To collect and represent simple real-life data",
+    ]},
+    { title: "Percentage — Basic Ideas", achievements: [
+      "To understand percentage as a fraction out of 100",
+      "To convert simple fractions and decimals to percentages",
+      "To solve simple problems involving percentage",
+      "To explain what a given percentage represents",
+      "To recognize percentages used in everyday life (discounts, marks)",
     ]},
   ],
 };
@@ -1358,6 +1473,13 @@ const SCIENCE_UNITS: Record<number, SubjectUnitDef[]> = {
       "To recognize and use words like solid, liquid, gas, material",
       "To handle materials safely during simple activities",
     ]},
+    { title: "Forces and Simple Machines", achievements: [
+      "To understand push and pull as forces that move objects",
+      "To observe how simple machines (lever, wheel, pulley) make work easier",
+      "To test how a simple machine changes the effort needed to move an object",
+      "To recognize and use words like force, push, pull, machine",
+      "To use simple machines and tools safely",
+    ]},
   ],
   5: [
     { title: "Scientific Learning and Information Technology", achievements: [
@@ -1380,6 +1502,13 @@ const SCIENCE_UNITS: Record<number, SubjectUnitDef[]> = {
       "To conduct a simple safe experiment involving light, sound, or electricity",
       "To recognize and use words like energy, electricity, mixture",
       "To follow safety precautions when working with heat or electricity",
+    ]},
+    { title: "Our Environment and Natural Resources", achievements: [
+      "To understand what natural resources are and why they matter",
+      "To observe local examples of air, water, soil, and forest resources",
+      "To carry out a simple activity to test water or soil quality",
+      "To recognize and use words like resource, pollution, conservation",
+      "To practise responsible use and conservation of resources",
     ]},
   ],
 };
@@ -1407,6 +1536,13 @@ const SOCIAL_UNITS: Record<number, SubjectUnitDef[]> = {
       "नागरिकता र मूल्यसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "विद्यालय र समुदायमा जिम्मेवारीपूर्वक व्यवहार गर्न",
     ]},
+    { title: "हाम्रो सांस्कृतिक सम्पदा", achievements: [
+      "आफ्नो क्षेत्रको सांस्कृतिक सम्पदा भनेको के हो बुझ्न",
+      "नजिकैको ऐतिहासिक वा सांस्कृतिक स्थलको बारेमा जानकारी खोज्न",
+      "आफ्नो क्षेत्रको सम्पदाको बारेमा अरूलाई वर्णन गर्न",
+      "सांस्कृतिक सम्पदासँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "सांस्कृतिक सम्पदा संरक्षणमा जिम्मेवारी देखाउन",
+    ]},
   ],
   5: [
     { title: "म, मेरो परिवार र छिमेकीहरू", achievements: [
@@ -1429,6 +1565,13 @@ const SOCIAL_UNITS: Record<number, SubjectUnitDef[]> = {
       "समुदायमा सहकार्य र सुरक्षा अभ्यास गर्न",
       "सामाजिक समस्या र समाधानसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "खराब बानीबाट टाढा रही सामुदायिक समाधानलाई सहयोग गर्न",
+    ]},
+    { title: "प्राकृतिक स्रोत र संरक्षण", achievements: [
+      "आफ्नो क्षेत्रका प्राकृतिक स्रोतहरू (वन, पानी, माटो) बुझ्न",
+      "स्थानीय प्राकृतिक स्रोतको प्रयोगबारे जानकारी सङ्कलन गर्न",
+      "प्राकृतिक स्रोत संरक्षणका उपाय अरूलाई वर्णन गर्न",
+      "प्राकृतिक स्रोत र संरक्षणसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "प्राकृतिक स्रोतको जिम्मेवारीपूर्ण प्रयोग अभ्यास गर्न",
     ]},
   ],
 };
@@ -1456,6 +1599,13 @@ const HPE_UNITS: Record<number, SubjectUnitDef[]> = {
       "To recognize and use words related to art and craft",
       "To use art and craft tools safely",
     ]},
+    { title: "Nutrition and Balanced Diet", achievements: [
+      "To understand what makes a balanced diet",
+      "To sort common foods into food groups",
+      "To plan a simple balanced meal for a day",
+      "To recognize and use words related to nutrition and food groups",
+      "To practice healthy eating habits",
+    ]},
   ],
   5: [
     { title: "Health and Safety", achievements: [
@@ -1478,6 +1628,13 @@ const HPE_UNITS: Record<number, SubjectUnitDef[]> = {
       "To create an original piece of art, music, or craft",
       "To recognize and use words related to music and art",
       "To use art and music tools/instruments responsibly",
+    ]},
+    { title: "Community Health and Sanitation", achievements: [
+      "To understand the link between sanitation and community health",
+      "To observe and describe sanitation practices at school",
+      "To demonstrate proper handwashing and toilet-use practices",
+      "To recognize and use words related to sanitation and hygiene",
+      "To promote good sanitation habits among peers",
     ]},
   ],
 };
@@ -1505,6 +1662,13 @@ const SEROFERO_UNITS: Record<number, SubjectUnitDef[]> = {
       "मौसमसँग सम्बन्धित शब्द चिन्न",
       "मौसमअनुसार उपयुक्त पोशाक लगाउने बानी अभ्यास गर्न",
     ]},
+    { title: "जनावर र चराचुरुङ्गी", achievements: [
+      "आसपासका सामान्य जनावर र चराहरू चिन्न",
+      "जनावर र चराहरूको आवाज तथा बानीबेहोरा अवलोकन गर्न",
+      "मनपर्ने जनावर वा चराको चित्र बनाउन",
+      "जनावर र चराचुरुङ्गीसँग सम्बन्धित शब्द चिन्न",
+      "जनावर र चराचुरुङ्गीप्रति दया र हेरचाह देखाउन",
+    ]},
   ],
   2: [
     { title: "स्वास्थ्य र सरसफाइ", achievements: [
@@ -1528,6 +1692,13 @@ const SEROFERO_UNITS: Record<number, SubjectUnitDef[]> = {
       "सुरक्षासँग सम्बन्धित शब्द चिन्न",
       "सुरक्षा नियम पालना गर्ने बानी देखाउन",
     ]},
+    { title: "यातायातका साधन", achievements: [
+      "सामान्य यातायातका साधनहरू चिन्न",
+      "आफूले प्रयोग गरेको यातायातको साधन अवलोकन गरी वर्णन गर्न",
+      "मनपर्ने यातायातको साधनको चित्र बनाउन",
+      "यातायातसँग सम्बन्धित शब्द चिन्न",
+      "यातायात प्रयोग गर्दा अपनाउनुपर्ने सुरक्षा बानी देखाउन",
+    ]},
   ],
   3: [
     { title: "मेरो परिवार र समुदाय", achievements: [
@@ -1550,6 +1721,13 @@ const SEROFERO_UNITS: Record<number, SubjectUnitDef[]> = {
       "स्वास्थ्य/सुरक्षा विषयमा साधारण कला वा शिल्प सामग्री बनाउन",
       "स्वास्थ्य र सुरक्षासँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
       "दैनिक रूपमा सुरक्षित र स्वस्थ व्यवहार अभ्यास गर्न",
+    ]},
+    { title: "चाडपर्व र संस्कृति", achievements: [
+      "आफ्नो समुदायका मुख्य चाडपर्वहरू चिन्न",
+      "कुनै चाडमा गरिने चलन अवलोकन गरी वर्णन गर्न",
+      "चाडसँग सम्बन्धित चित्र वा शिल्प सामग्री बनाउन",
+      "चाडपर्व र संस्कृतिसँग सम्बन्धित शब्दहरू चिनी प्रयोग गर्न",
+      "आफ्नो संस्कृतिप्रति सम्मान देखाउन",
     ]},
   ],
 };
