@@ -122,15 +122,17 @@ Done since:
   opens a slide-over explaining the 1-4 scale, the percentage/grade formula, and how
   to use the click-to-select rubrics — right on the pages where the work happens, not
   a separate help page.
+- **Curriculum browser page redesigned.** It used to always show empty Topics/Learning
+  Outcomes/Competencies sections for CAS-only units (that content lives in a different
+  part of the schema). Now: card grids instead of pill rows, unit cards show a real
+  content count, the CAS skill-areas table renders when present, empty sections are
+  hidden instead of shown blank, and a subject-level rubrics preview was added.
 
 Still open (roughly in the order discussed, not yet started):
 - **CDC-calibrated content for the remaining subjects/grades** not yet revisited since
   the photos arrived (English, Math, Science, HPE, Computer content predates this
   round — it's in the right language already, just not yet re-checked against the
   register's actual difficulty level/style).
-- **Curriculum browser page UI redesign** — currently confusing (shows empty
-  Topics/Learning Outcomes/Competencies sections for CAS-only units, since that data
-  lives in a different part of the schema than the CAS learning achievements).
 - **Custom, per-topic rubrics** — teacher-created rubrics for a specific assignment
   (like the photographed "Local Heritage" example), distinct from the 4 fixed generic
   ones. Data model already supports the shape; no UI yet.
