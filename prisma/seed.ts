@@ -478,7 +478,297 @@ const COMPUTER_RUBRICS: RubricDef[] = [
   },
 ];
 
-async function seedComputerRubrics(gradeOrders: number[]) {
+// The 4 core rubrics as they actually appear in the school's rubrics booklet
+// (not customized to any one subject) - "Possible Methods and Tools for
+// Student Assessment". Transcribed directly from the photographed pages, then
+// translated: English for every subject except Nepali/Social Studies/Hamro
+// Serofero, which get the Devanagari original verbatim. Computer keeps its
+// own already-tailored (computer-lab-context) rubrics from COMPUTER_RUBRICS
+// above rather than these generic ones - that was a specific earlier
+// direction, not something to overwrite.
+const GENERIC_RUBRICS_EN: RubricDef[] = [
+  {
+    title: "Classroom Participation Rubric",
+    description: "How the student takes part in lessons.",
+    criteria: [
+      {
+        name: "Discussion & Q&A",
+        level4: "Always raises hand, asks meaningful questions, and adds new ideas to discussions.",
+        level3: "Participates in discussion most of the time and answers questions correctly.",
+        level2: "Speaks only when called on or asked; not self-motivated to participate.",
+        level1: "Shows no interest in discussion and stays silent even when asked.",
+      },
+      {
+        name: "Listening & Respect",
+        level4: "Listens attentively to peers and the teacher and respects everyone's views.",
+        level3: "Stays quiet while others speak and speaks only during their own turn.",
+        level2: "Sometimes interrupts others or loses attention while others are speaking.",
+        level1: "Does not listen to others at all and disrupts the class with noise.",
+      },
+      {
+        name: "Preparedness & Materials",
+        level4: "Always comes prepared with the required textbook, copy, and pen, and completes prior work.",
+        level3: "Usually comes prepared with the required materials.",
+        level2: "Sometimes forgets learning materials or comes to class unprepared.",
+        level1: "Comes to class without materials and shows no interest in learning tasks.",
+      },
+      {
+        name: "Group Work & Cooperation",
+        level4: "Takes leadership in the group, helps peers, and works hard toward the group's shared goal.",
+        level3: "Completes their own group responsibility honestly and is cooperative.",
+        level2: "Stays in the group but passes their responsibility to others or remains passive.",
+        level1: "Refuses to work in the group, is uncooperative, or disrupts the group's environment.",
+      },
+    ],
+  },
+  {
+    title: "Oral Task Rubric",
+    description: "How the student explains and discusses the subject aloud.",
+    criteria: [
+      {
+        name: "Subject Knowledge",
+        level4: "Shows deep understanding of the question asked and gives an accurate, complete answer.",
+        level3: "Understands the main points of the topic and gives mostly correct answers.",
+        level2: "Has only general knowledge of the topic and needs a lot of prompting for answers.",
+        level1: "Does not understand the topic or gives incorrect answers to the questions asked.",
+      },
+      {
+        name: "Fluency & Clarity",
+        level4: "Speaks clearly without hesitation and expresses ideas fluently.",
+        level3: "Speaks with a clear voice and successfully conveys ideas.",
+        level2: "Hesitates while speaking, pauses often, and voice is somewhat unclear.",
+        level1: "Unable to express ideas, or speaks in a very unclear and low voice.",
+      },
+      {
+        name: "Confidence & Body Language",
+        level4: "Speaks with strong eye contact, high confidence, and appropriate body language.",
+        level3: "Speaks with confidence and appears comfortable in class.",
+        level2: "Shows a lack of confidence and seems nervous while speaking.",
+        level1: "Very nervous, sits with head down, and hesitates to respond.",
+      },
+      {
+        name: "Listening & Responding",
+        level4: "Listens attentively to questions and gives a logical, relevant answer immediately.",
+        level3: "Understands the question, gives correct answers, and stays actively engaged.",
+        level2: "Searches for an answer without understanding the question, or needs the question repeated.",
+        level1: "Pays no attention to the question or shows no interest in answering.",
+      },
+    ],
+  },
+  {
+    title: "Written Task Rubric",
+    description: "How the student completes written work.",
+    criteria: [
+      {
+        name: "Content",
+        level4: "Fully understands the intent of the question; writes an original, detailed answer.",
+        level3: "Covers the main points and writes a relevant answer.",
+        level2: "Answers are shallow or short, and some important information is missing.",
+        level1: "Answer does not match the topic or is extremely unclear.",
+      },
+      {
+        name: "Language, Grammar & Spelling",
+        level4: "Grammar and spelling are completely correct; sentence construction is excellent.",
+        level3: "Most words are correctly spelled, with only minor errors.",
+        level2: "Many grammar and spelling errors that make the writing hard to understand.",
+        level1: "Writing is very messy and lacks any organized format.",
+      },
+      {
+        name: "Presentation & Cleanliness",
+        level4: "Handwriting is neat and legible; headings and points are well organized.",
+        level3: "Handwriting is legible with few corrections/overwrites.",
+        level2: "Handwriting is unclear or has many corrections/overwrites.",
+        level1: "Writing is very messy and lacks any organized format.",
+      },
+      {
+        name: "Timeliness",
+        level4: "Submits within, or before, the given time.",
+        level3: "Submits work right on time.",
+        level2: "Submits work somewhat late, or only after repeated reminders.",
+        level1: "Leaves work incomplete or submits it very late.",
+      },
+    ],
+  },
+  {
+    title: "Project & Practical Work Rubric",
+    description: "How the student plans and carries out a project or practical task.",
+    criteria: [
+      {
+        name: "Planning",
+        level4: "Task objective is clear, needed materials are gathered, and work proceeds in a planned way.",
+        level3: "Gathers most materials and understands the task's objective.",
+        level2: "Gathers materials only with the teacher's help; planning appears confused.",
+        level1: "Does no preparation and the task's objective is not even clear.",
+      },
+      {
+        name: "Execution",
+        level4: "Follows the practical method completely; work shows correct skill and originality.",
+        level3: "Works following the method, and answers oral questions about it correctly.",
+        level2: "Carries out the task but with many errors in method, needing help.",
+        level1: "Starts the task but doesn't follow the method and gets lost midway.",
+      },
+      {
+        name: "Data Collection & Recording",
+        level4: "Records observations with complete accuracy, clarity, and supporting tables/diagrams.",
+        level3: "Notes the main observations and prepares an understandable report.",
+        level2: "Misses many things while recording, or has many corrections.",
+        level1: "Keeps no record, or the data is incorrect.",
+      },
+      {
+        name: "Conclusion & Presentation",
+        level4: "Correctly analyzes the results obtained from the task and presents them confidently.",
+        level3: "Gives a general explanation of the results and answers questions asked.",
+        level2: "Finds it difficult to draw a conclusion; presentation is unclear.",
+        level1: "Unable to draw any conclusion and gives no response.",
+      },
+    ],
+  },
+];
+
+const GENERIC_RUBRICS_NP: RubricDef[] = [
+  {
+    title: "कक्षाकोठा सहभागिता मूल्याङ्कन रुब्रिक्स",
+    description: "विद्यार्थीले पाठमा कसरी सहभागिता जनाउँछ।",
+    criteria: [
+      {
+        name: "छलफलमा सक्रियता",
+        level4: "सधैं हात उठाउने, अर्थपूर्ण प्रश्न सोध्ने र छलफलमा नयाँ विचारहरू थप्ने ।",
+        level3: "धेरैजसो समय छलफलमा भाग लिने र सोधिएका प्रश्नको सही उत्तर दिने ।",
+        level2: "शिक्षकले बोलाउँदा वा सोध्दा मात्र बोल्ने, आफैं सक्रिय नहुने ।",
+        level1: "छलफलमा कुनै चासो नदिने र प्रश्न सोध्दा पनि चुप बस्ने ।",
+      },
+      {
+        name: "सुन्ने र आदर गर्ने शैली",
+        level4: "अरू साथीहरू र शिक्षकको कुरा ध्यान दिएर सुन्ने र सबैको विचारको सम्मान गर्ने ।",
+        level3: "अरूले बोलेको बेला शान्त रहने र आफ्नो पालो मात्र बोल्ने ।",
+        level2: "कहिलेकाहीं अरूको कुरा काट्ने वा अरू बोलिरहँदा ध्यान नदिने ।",
+        level1: "अरूको कुरा पटक्कै नसुन्ने र कक्षामा हल्ला गरेर बाधा पुर्‍याउने ।",
+      },
+      {
+        name: "तयारी र सामग्री व्यवस्थापन",
+        level4: "सधैं आवश्यक पाठ्यपुस्तक, कापी र कलमका साथ तयार रहने र पूर्व-कार्य पूरा गर्ने ।",
+        level3: "धेरैजसो समय आवश्यक सामग्रीका साथ तयार रहने ।",
+        level2: "कहिलेकाहीं शैक्षिक सामग्रीहरू बिर्सने वा तयारी बिना कक्षामा आउने ।",
+        level1: "सामग्री बिना कक्षामा आउने र सिकाइ कार्यमा रुचि नदेखाउने ।",
+      },
+      {
+        name: "समूह कार्य र सहयोग",
+        level4: "समूहमा नेतृत्व लिने, साथीहरूलाई मद्दत गर्ने र सामूहिक लक्ष्य प्राप्त गर्न खट्ने ।",
+        level3: "आफ्नो समूहको जिम्मेवारी इमानदारीका साथ पूरा गर्ने र सहयोगी बन्ने ।",
+        level2: "समूहमा बस्ने तर आफ्नो जिम्मेवारी अरूलाई सुम्पिने वा निष्क्रिय रहने ।",
+        level1: "समूहमा काम गर्न अस्वीकार गर्ने वा साथीहरूसँग असहयोग वा समूहको वातावरण बिगार्ने ।",
+      },
+    ],
+  },
+  {
+    title: "मौखिक कार्य मूल्याङ्कन रुब्रिक्स",
+    description: "विद्यार्थीले विषयवस्तु कसरी मौखिक रूपमा व्यक्त गर्छ।",
+    criteria: [
+      {
+        name: "विषयवस्तुको ज्ञान",
+        level4: "सोधिएको प्रश्नको गहिरो बुझाइ भएको र सटीक तथा पूर्ण उत्तर दिएको ।",
+        level3: "विषयवस्तुको मुख्य कुरा बुझेको र धेरैजसो सही उत्तर दिएको ।",
+        level2: "विषयवस्तुको सामान्य ज्ञान मात्र भएको र उत्तरका लागि धेरै सङ्केत चाहिने ।",
+        level1: "विषयवस्तु नबुझेको वा सोधिएको प्रश्नको गलत उत्तर दिएको ।",
+      },
+      {
+        name: "प्रवाह र स्पष्टता",
+        level4: "बिना कुनै हिच्किचाहट स्पष्ट आवाजमा बोलेको र प्रवाहपूर्ण रूपमा आफ्ना विचारहरू व्यक्त गरेको ।",
+        level3: "स्पष्ट आवाजमा बोलेको र विचारहरू बुझाउन सफल भएको ।",
+        level2: "बोल्दा अकमकिने, धेरैपटक रोकिने र आवाज अलि अस्पष्ट भएको ।",
+        level1: "विचार व्यक्त गर्न नसक्ने वा अति नै अस्पष्ट र सानो स्वरमा बोल्ने ।",
+      },
+      {
+        name: "आत्मविश्वास र हाउभाउ",
+        level4: "आँखामा आँखा जुधाएर उच्च आत्मविश्वास र उचित हाउभाउका साथ बोलेको ।",
+        level3: "आत्मविश्वासका साथ बोलेको र कक्षामा सहज देखिएको ।",
+        level2: "आत्मविश्वासको कमी देखिने र बोल्दा डराएको जस्तो महसुस हुने ।",
+        level1: "निकै डराउने, टाउको निहुराएर बस्ने र प्रतिक्रिया दिन हिच्किचाउने ।",
+      },
+      {
+        name: "सुन्ने र जवाफ दिने",
+        level4: "प्रश्नलाई ध्यान दिएर सुन्ने र तर्कपूर्ण तथा सान्दर्भिक जवाफ तुरुन्तै दिने ।",
+        level3: "प्रश्न बुझेर सही जवाफ दिने र सहभागितामा सक्रिय रहने ।",
+        level2: "प्रश्न नबुझी उत्तर खोज्ने वा उत्तर दोहोर्‍याइराख्नु पर्ने ।",
+        level1: "प्रश्नमा ध्यान नदिने वा उत्तर दिन कुनै रुचि नदेखाउने ।",
+      },
+    ],
+  },
+  {
+    title: "लिखित कार्य मूल्याङ्कन रुब्रिक्स",
+    description: "विद्यार्थीले लिखित कार्य कसरी सम्पन्न गर्छ।",
+    criteria: [
+      {
+        name: "विषयवस्तुको सान्दर्भिकता",
+        level4: "प्रश्नको आशय पूर्ण रूपमा बुझेको, मौलिक र विस्तृत उत्तर लेखिएको ।",
+        level3: "मुख्य बुँदाहरू समेटिएको र सान्दर्भिक उत्तर लेखिएको ।",
+        level2: "उत्तरहरू सतही वा छोटो भएको र केही महत्त्वपूर्ण जानकारी छुटेको ।",
+        level1: "विषयवस्तुसँग मेल नखाने वा अति नै अस्पष्ट उत्तर लेखिएको ।",
+      },
+      {
+        name: "भाषा, व्याकरण र हिज्जे",
+        level4: "व्याकरण र हिज्जे पूर्ण रूपमा शुद्ध भएको, वाक्य गठन उत्कृष्ट रहेको ।",
+        level3: "धेरैजसो शब्दहरू शुद्ध भएको र सामान्य साना त्रुटि मात्र रहेको ।",
+        level2: "व्याकरण र हिज्जेमा धेरै गल्तीहरू भएको, जसले गर्दा बुझ्न गाह्रो हुने ।",
+        level1: "लेखाइ निकै फोहोर भएको र प्रस्तुतीकरणको ढाँचा नमिलेको ।",
+      },
+      {
+        name: "प्रस्तुतीकरण र सफाइ",
+        level4: "अक्षर सफा र बुझिने भएको, शीर्षक र बुँदाहरू मिलाएर लेखिएको ।",
+        level3: "अक्षर बुझिने भएको र धेरै केरमेट नभएको ।",
+        level2: "अक्षरहरू अस्पष्ट वा धेरै केरमेट भएको ।",
+        level1: "लेखाइ निकै फोहोर भएको र प्रस्तुतीकरणको ढाँचा नमिलेको ।",
+      },
+      {
+        name: "समय पालना",
+        level4: "तोकिएको समयभित्र वा अगाडि नै सम्पन्न गरी बुझाएको ।",
+        level3: "ठिक समयमा कार्य सम्पन्न गरी बुझाएको ।",
+        level2: "केही समय ढिलो गरी वा धेरै पटकको ताकेता पछि सम्पन्न गरी बुझाएको ।",
+        level1: "कार्य अधुरो छोडेको वा निकै ढिलो गरी बुझाएको ।",
+      },
+    ],
+  },
+  {
+    title: "परियोजना तथा प्रयोगात्मक कार्य मूल्याङ्कन रुब्रिक्स",
+    description: "विद्यार्थीले परियोजना वा प्रयोगात्मक कार्य कसरी योजना र सम्पादन गर्छ।",
+    criteria: [
+      {
+        name: "योजना र पूर्वतयारी",
+        level4: "कार्यको उद्देश्य स्पष्ट भएको, आवश्यक सामग्री सङ्कलन गरेको र योजनाबद्ध रूपमा अघि बढेको ।",
+        level3: "धेरैजसो सामग्री सङ्कलन गरेको र कार्यको उद्देश्य बुझेको ।",
+        level2: "शिक्षकको सहयोगमा मात्र सामग्री जुटाएको र योजनामा अन्योल देखिएको ।",
+        level1: "कुनै पूर्वतयारी नगरेको र कार्यको उद्देश्य नै स्पष्ट नभएको ।",
+      },
+      {
+        name: "कार्यसम्पादन",
+        level4: "प्रयोगात्मक विधि पूर्ण पालना गरेको, सिपको सही र नवीनता देखाएको काम गरेको ।",
+        level3: "विधिअनुसार कार्य गरेको र सोधिएको मौखिक प्रश्नको सही उत्तर दिएको ।",
+        level2: "कार्य त गरेको तर विधिमा धेरै गल्तीहरू भएको र मद्दत चाहिने ।",
+        level1: "कार्य सुरु गरे पनि विधि नमिलेको र बिचैमा अलमलिएको ।",
+      },
+      {
+        name: "तथ्य सङ्कलन र अभिलेख",
+        level4: "अवलोकन गरिएका कुराहरू एकदमै शुद्ध, स्पष्ट र तालिका/चित्रसहित अभिलेख राखेको ।",
+        level3: "अवलोकनका मुख्य कुराहरू टिपेको र बुझिने गरी प्रतिवेदन तयार पारेको ।",
+        level2: "अभिलेख राख्दा धेरै कुराहरू छुटाएको वा केरमेट धेरै भएको ।",
+        level1: "कुनै अभिलेख नराखेको वा तथ्याङ्कहरू गलत भएको ।",
+      },
+      {
+        name: "निष्कर्ष र प्रस्तुतीकरण",
+        level4: "कार्यबाट प्राप्त नतिजाको सही विश्लेषण गरेको र आत्मविश्वासका साथ प्रस्तुत गरेको ।",
+        level3: "नतिजाको सामान्य व्याख्या गरेको र सोधिएको कुरालाई जवाफ दिएको ।",
+        level2: "निष्कर्ष निकाल्न गाह्रो मानेको र प्रस्तुतीकरण अस्पष्ट रहेको ।",
+        level1: "कुनै निष्कर्ष निकाल्न नसकेको र कुनै प्रतिक्रिया नदिएको ।",
+      },
+    ],
+  },
+];
+
+async function seedRubricsForSubject(
+  subjectName: string,
+  gradeOrders: number[],
+  rubricDefs: RubricDef[],
+) {
   for (const gradeOrder of gradeOrders) {
     const curriculumGrade = await prisma.curriculumGrade.upsert({
       where: { name: `Grade ${gradeOrder}` },
@@ -486,12 +776,12 @@ async function seedComputerRubrics(gradeOrders: number[]) {
       create: { name: `Grade ${gradeOrder}` },
     });
     const curriculumSubject = await prisma.curriculumSubject.upsert({
-      where: { curriculumGradeId_name: { curriculumGradeId: curriculumGrade.id, name: "Computer" } },
+      where: { curriculumGradeId_name: { curriculumGradeId: curriculumGrade.id, name: subjectName } },
       update: {},
-      create: { curriculumGradeId: curriculumGrade.id, name: "Computer" },
+      create: { curriculumGradeId: curriculumGrade.id, name: subjectName },
     });
 
-    for (const [rubricIndex, rubricDef] of COMPUTER_RUBRICS.entries()) {
+    for (const [rubricIndex, rubricDef] of rubricDefs.entries()) {
       const rubric = await prisma.rubric.upsert({
         where: { curriculumSubjectId_order: { curriculumSubjectId: curriculumSubject.id, order: rubricIndex + 1 } },
         update: { title: rubricDef.title, description: rubricDef.description },
@@ -1484,7 +1774,14 @@ async function main() {
   await seedCurriculum();
   const { school, academicYear, teacher, gradeByOrder, sectionByGradeOrder } = await seedSchool();
   await seedComputerCas(school.id, academicYear.id, teacher.id, gradeByOrder, sectionByGradeOrder);
-  await seedComputerRubrics([3, 4, 5]);
+  await seedRubricsForSubject("Computer", [3, 4, 5], COMPUTER_RUBRICS);
+  await seedRubricsForSubject("Nepali", [1, 2, 3, 4, 5], GENERIC_RUBRICS_NP);
+  await seedRubricsForSubject("English", [1, 2, 3, 4, 5], GENERIC_RUBRICS_EN);
+  await seedRubricsForSubject("Mathematics", [1, 2, 3, 4, 5], GENERIC_RUBRICS_EN);
+  await seedRubricsForSubject("Science and Technology", [4, 5], GENERIC_RUBRICS_EN);
+  await seedRubricsForSubject("Social Studies", [4, 5], GENERIC_RUBRICS_NP);
+  await seedRubricsForSubject("Health, Physical and Creative Arts", [4, 5], GENERIC_RUBRICS_EN);
+  await seedRubricsForSubject("Hamro Serofero", [1, 2, 3], GENERIC_RUBRICS_NP);
   await seedAllSubjectsCas(school.id, academicYear.id, teacher.id, gradeByOrder, sectionByGradeOrder);
   console.log("Seed complete.");
   console.log("  Admin login:   admin@springdale.edu.np / Admin@123");
