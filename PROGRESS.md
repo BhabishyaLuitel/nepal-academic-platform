@@ -79,9 +79,11 @@ covering what Science/Social/HPE do at higher grades). All first-draft content,
 pending the school's review; see Phase 4 above for the Devanagari fix and the
 Grade 1–2 extension.
 
-4 rubrics × 4 criteria seeded today for the **Computer** subject (Grades 3–5) —
-descriptions are a first draft adapted to a computer-lab context; not yet checked
-against the real rubrics-booklet photos.
+4 rubrics × 4 criteria seeded for every subject at whatever grades its CAS content
+covers — Computer keeps its own computer-lab-tailored version (an earlier, deliberate
+customization); every other subject uses the generic 4 rubrics transcribed verbatim
+from the photographed rubrics booklet (Devanagari for Nepali/Social Studies/Hamro
+Serofero, English elsewhere).
 
 ## Phase 4 — in progress
 
@@ -112,15 +114,20 @@ Done since:
   subject/skill-area shape) as the calibration reference, writing first-draft content
   to match — this was explicitly approved by the user rather than blocking on
   further gov.np access attempts.
+- **Rubrics extended to every subject.** The 4 core rubrics turned out to be
+  subject-agnostic in the actual booklet (not Computer-specific as first assumed) —
+  transcribed verbatim from the photos and seeded for every subject at its existing
+  grade range. Verified live against the photos (exact match).
+- **Side-panel usage guide added**, teacher and admin dashboards. A "Guide" button
+  opens a slide-over explaining the 1-4 scale, the percentage/grade formula, and how
+  to use the click-to-select rubrics — right on the pages where the work happens, not
+  a separate help page.
 
 Still open (roughly in the order discussed, not yet started):
 - **CDC-calibrated content for the remaining subjects/grades** not yet revisited since
   the photos arrived (English, Math, Science, HPE, Computer content predates this
   round — it's in the right language already, just not yet re-checked against the
   register's actual difficulty level/style).
-- **Side-panel guidance UI** on teacher/admin dashboards — how-to instructions plus
-  example rubrics per subject, so non-technical teachers have an in-app reference
-  instead of needing the physical booklet.
 - **Curriculum browser page UI redesign** — currently confusing (shows empty
   Topics/Learning Outcomes/Competencies sections for CAS-only units, since that data
   lives in a different part of the schema than the CAS learning achievements).
@@ -142,7 +149,6 @@ Still open (roughly in the order discussed, not yet started):
   the physical page.
 - **No "Term" concept** — report card aggregates the whole active academic year, not a
   specific term/quarter. Unconfirmed whether the real register has terms.
-- **Rubrics exist only for Computer.**
 - **WGPA == GPA today** — every subject's `creditWeight` defaults to `1`, no admin UI
   to set real per-subject weights yet.
 - **Student intake / health-tracking pages** — real rosters with full family/contact
