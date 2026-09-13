@@ -136,18 +136,29 @@ Done since:
   Migrated by hand-writing the SQL and applying via `migrate deploy`, since both
   `migrate dev` and `db push` need either interactive confirmation or Prisma's
   AI-agent dangerous-action override, neither available/appropriate here.
+- **Computer-vision ledger ingestion.** Teachers keep filling the physical paper
+  ledger exactly as before; a photo of the filled page uploads via a new panel next
+  to the Assessment Record table, Gemini vision reads the handwritten 1-4 scores per
+  skill area (`lib/ledger-scan.ts` — same `generateContent`/`responseSchema` pattern
+  as lesson-plan generation, plus an image part; told explicitly to return null on
+  anything unclear rather than guess), and the values are written the same way a
+  manual entry would be. The teacher reviews them against the photo — shown
+  side-by-side — through the exact same Save flow already used for manual entry, no
+  new review UI needed. New `LedgerPhoto` model (one photo per student × unit,
+  stored as bytes; same hand-written-migration approach as the rubrics one above).
+  Verified: the extraction pipeline read all 8 values back with 100% accuracy
+  against a generated test table (a real handwritten page could only come from the
+  school); the upload/storage/display path was verified by inserting a test photo
+  directly, since browser automation can't drive native file-picker dialogs.
 
-Still open (roughly in the order discussed, not yet started):
+This closes out the original five-item queue (CDC content → rubrics for every
+subject → guide panels → curriculum page redesign → custom rubrics → CV ingestion).
+
+Still open:
 - **CDC-calibrated content for the remaining subjects/grades** not yet revisited since
   the photos arrived (English, Math, Science, HPE, Computer content predates this
   round — it's in the right language already, just not yet re-checked against the
   register's actual difficulty level/style).
-- **Computer-vision ledger ingestion.** Confirmed workflow: teacher fills the paper
-  ledger as before; a photo of the filled page gets uploaded; the app extracts the
-  handwritten marks and auto-fills the digital table; the original photo displays
-  side-by-side for manual verification/correction, since OCR on handwriting won't
-  always be right. Not started — likely uses Gemini's vision capability, since a
-  Gemini API key is already wired up for lesson plans.
 - Other assessment tool types from the rubrics booklet, beyond rubrics: Checklist,
   Rating Scale, Anecdotal Record, Peer/Self/Parent-feedback rubrics (see HANDBOOK §3.3).
 - **Pixel-exact hardcopy visual match** for the ledger itself (current UI is the app's

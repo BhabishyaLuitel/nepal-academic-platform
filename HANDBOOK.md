@@ -134,7 +134,20 @@ Everything is scoped to a `School`. Key model groups (`prisma/schema.prisma`):
   `remedialScore`/`remedialDate` + `remark`) — this *is* the marks-entry system; see
   §3.2's formula for how it's aggregated.
 - **Rubrics**: `Rubric` → `RubricCriterion` → `RubricScore` (one row per student ×
-  criterion).
+  criterion). `Rubric.curriculumUnitId` is nullable: null = generic, shared across
+  the whole subject (the 4 core rubrics, seeded); set = a teacher-created custom
+  rubric scoped to just that unit (`createdByTeacherId` set too). A student's
+  Rubrics tab queries both (`OR: [{curriculumUnitId: null}, {curriculumUnitId: unit.id}]`)
+  so a custom rubric just shows up alongside the generic ones automatically.
+- **Ledger photo ingestion**: `LedgerPhoto` (one row per student × `CurriculumUnit`,
+  `imageData Bytes`) stores a photo of the physical paper ledger page. Uploading one
+  (`uploadLedgerPhoto` in the unit's `actions.ts`) calls `lib/ledger-scan.ts`
+  (Gemini vision) to read the handwritten 1-4 scores and writes them into
+  `AssessmentScore` the same way a manual entry would — the photo displays
+  side-by-side so the teacher reviews/corrects through the ordinary Save flow, no
+  separate review UI. Reading `Bytes` back out needs `Buffer.from(x)` — Prisma's
+  generated type is `Uint8Array`, whose `toString()` doesn't take an encoding arg
+  the way Node's `Buffer.toString("base64")` does.
 
 **Report card rollup** (`lib/grading.ts`, used by `app/teacher/report-card/`):
 `computeSubjectResult` aggregates every `LearningAchievement` across every
@@ -187,6 +200,19 @@ comment at the top of that CSS section for the history).
   such, written to demonstrate the *shape* of the data (units, skill areas, learning
   achievements) — not sourced from Nepal's official CDC curriculum. Replacing it with
   the real CDC content is in progress (see PROGRESS.md).
+- **Schema migrations in this dev environment go through `migrate deploy`, not
+  `migrate dev` or `db push`.** Both of the latter need either an interactive
+  confirmation prompt (`migrate dev`) or Prisma's AI-agent dangerous-action override
+  (`db push --accept-data-loss`), and this project's workflow doesn't grant either.
+  The pattern that works: write the schema change, hand-write the matching
+  `migration.sql` (a sibling migration's file is the best template for exact
+  naming/constraint syntax), put it in a new `prisma/migrations/<timestamp>_<name>/`
+  folder, then run `npx prisma migrate deploy` followed by `npx prisma generate`.
+  **Also restart `next dev` afterward** — Turbopack's persistent dev cache can keep
+  serving the pre-migration Prisma client/route manifest even after `generate`
+  reruns, which shows up as either a stale "unknown argument" Prisma error or an
+  unrelated-looking 404 on a page that demonstrably exists; clearing `.next/` and
+  restarting the dev server resolves it.
 
 ## 7. Known gaps (see PROGRESS.md for current status)
 
