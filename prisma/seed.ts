@@ -327,6 +327,194 @@ async function seedComputerCas(
 }
 
 // ---------------------------------------------------------------------------
+// Computer-subject rubrics (Classroom & Lab Participation, Oral Task, Written
+// Task, Project & Practical Work) — adapted from the school's physical
+// rubrics booklet to a computer-lab context. First draft for the school to
+// review, same as the CAS unit content above.
+// ---------------------------------------------------------------------------
+
+type RubricDef = {
+  title: string;
+  description: string;
+  criteria: { name: string; level4: string; level3: string; level2: string; level1: string }[];
+};
+
+const COMPUTER_RUBRICS: RubricDef[] = [
+  {
+    title: "Classroom & Lab Participation Rubric",
+    description: "How the student takes part in computer lessons and lab sessions.",
+    criteria: [
+      {
+        name: "Discussion & Q&A",
+        level4: "Actively joins discussions and asks thoughtful questions every lesson.",
+        level3: "Joins discussions and asks questions most lessons.",
+        level2: "Joins discussions only when prompted by the teacher.",
+        level1: "Rarely joins discussions or asks questions.",
+      },
+      {
+        name: "Lab readiness",
+        level4: "Always arrives with materials ready and starts tasks promptly.",
+        level3: "Usually arrives ready and starts with little delay.",
+        level2: "Needs reminders to get ready for lab work.",
+        level1: "Frequently unprepared for lab sessions.",
+      },
+      {
+        name: "Listening & turn-taking",
+        level4: "Listens attentively and always waits for their turn to speak.",
+        level3: "Listens well and mostly waits for their turn.",
+        level2: "Sometimes interrupts or loses focus.",
+        level1: "Rarely listens or waits for their turn.",
+      },
+      {
+        name: "Pair & group work",
+        level4: "Works cooperatively and helps peers complete tasks.",
+        level3: "Works cooperatively with peers most of the time.",
+        level2: "Works with peers only with teacher support.",
+        level1: "Struggles to work cooperatively with peers.",
+      },
+    ],
+  },
+  {
+    title: "Oral Task Rubric",
+    description: "How the student explains computer concepts and tasks aloud.",
+    criteria: [
+      {
+        name: "Subject knowledge",
+        level4: "Explains concepts accurately and in detail.",
+        level3: "Explains concepts accurately with minor gaps.",
+        level2: "Shows partial understanding of concepts.",
+        level1: "Shows little understanding of concepts.",
+      },
+      {
+        name: "Explaining steps",
+        level4: "Describes steps clearly and in the correct order.",
+        level3: "Describes steps clearly with minor ordering errors.",
+        level2: "Describes steps with some confusion.",
+        level1: "Cannot describe the steps involved.",
+      },
+      {
+        name: "Confidence & body language",
+        level4: "Speaks confidently with clear voice and posture.",
+        level3: "Speaks fairly confidently most of the time.",
+        level2: "Speaks hesitantly, needs encouragement.",
+        level1: "Very hesitant or unwilling to speak.",
+      },
+      {
+        name: "Listening & responding",
+        level4: "Responds accurately to questions asked.",
+        level3: "Responds appropriately to most questions.",
+        level2: "Responds with some prompting.",
+        level1: "Struggles to respond to questions.",
+      },
+    ],
+  },
+  {
+    title: "Written Task Rubric",
+    description: "How the student completes written computer-subject work.",
+    criteria: [
+      {
+        name: "Content accuracy",
+        level4: "All information given is accurate and complete.",
+        level3: "Most information given is accurate.",
+        level2: "Some information given is accurate.",
+        level1: "Little of the information given is accurate.",
+      },
+      {
+        name: "Terminology use",
+        level4: "Uses correct computer terms consistently.",
+        level3: "Uses correct computer terms most of the time.",
+        level2: "Uses some correct computer terms.",
+        level1: "Rarely uses correct computer terms.",
+      },
+      {
+        name: "Presentation",
+        level4: "Work is neat, organized, and easy to follow.",
+        level3: "Work is mostly neat and organized.",
+        level2: "Work is somewhat neat and organized.",
+        level1: "Work is untidy and hard to follow.",
+      },
+      {
+        name: "Timeliness",
+        level4: "Always completes and submits work on time.",
+        level3: "Usually completes and submits work on time.",
+        level2: "Sometimes submits work late.",
+        level1: "Rarely submits work on time.",
+      },
+    ],
+  },
+  {
+    title: "Project & Practical Work Rubric",
+    description: "How the student plans and carries out hands-on computer projects.",
+    criteria: [
+      {
+        name: "Planning",
+        level4: "Plans the project clearly before starting work.",
+        level3: "Plans the project with minor gaps.",
+        level2: "Starts with only a basic plan.",
+        level1: "Starts without any clear plan.",
+      },
+      {
+        name: "Execution on computer",
+        level4: "Operates the computer accurately and independently.",
+        level3: "Operates the computer accurately with occasional help.",
+        level2: "Operates the computer with regular help.",
+        level1: "Needs constant help to operate the computer.",
+      },
+      {
+        name: "Output quality",
+        level4: "Finished output meets all task requirements.",
+        level3: "Finished output meets most task requirements.",
+        level2: "Finished output meets some task requirements.",
+        level1: "Finished output meets few task requirements.",
+      },
+      {
+        name: "Timeliness",
+        level4: "Completes the project within the given time.",
+        level3: "Completes the project with a small extension.",
+        level2: "Completes the project with a large extension.",
+        level1: "Does not complete the project.",
+      },
+    ],
+  },
+];
+
+async function seedComputerRubrics(gradeOrders: number[]) {
+  for (const gradeOrder of gradeOrders) {
+    const curriculumGrade = await prisma.curriculumGrade.upsert({
+      where: { name: `Grade ${gradeOrder}` },
+      update: {},
+      create: { name: `Grade ${gradeOrder}` },
+    });
+    const curriculumSubject = await prisma.curriculumSubject.upsert({
+      where: { curriculumGradeId_name: { curriculumGradeId: curriculumGrade.id, name: "Computer" } },
+      update: {},
+      create: { curriculumGradeId: curriculumGrade.id, name: "Computer" },
+    });
+
+    for (const [rubricIndex, rubricDef] of COMPUTER_RUBRICS.entries()) {
+      const rubric = await prisma.rubric.upsert({
+        where: { curriculumSubjectId_order: { curriculumSubjectId: curriculumSubject.id, order: rubricIndex + 1 } },
+        update: { title: rubricDef.title, description: rubricDef.description },
+        create: {
+          curriculumSubjectId: curriculumSubject.id,
+          title: rubricDef.title,
+          description: rubricDef.description,
+          order: rubricIndex + 1,
+        },
+      });
+
+      for (const [criterionIndex, criterion] of rubricDef.criteria.entries()) {
+        await prisma.rubricCriterion.upsert({
+          where: { rubricId_order: { rubricId: rubric.id, order: criterionIndex + 1 } },
+          update: criterion,
+          create: { rubricId: rubric.id, order: criterionIndex + 1, ...criterion },
+        });
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Generic CAS seeding for every other subject. Grade 3 in Nepal's current
 // curriculum uses one integrated subject (Hamro Serofero) instead of separate
 // Science/Social Studies/Health subjects, so each subject below only lists
@@ -1093,6 +1281,7 @@ async function main() {
   await seedCurriculum();
   const { school, academicYear, teacher, gradeByOrder, sectionByGradeOrder } = await seedSchool();
   await seedComputerCas(school.id, academicYear.id, teacher.id, gradeByOrder, sectionByGradeOrder);
+  await seedComputerRubrics([3, 4, 5]);
   await seedAllSubjectsCas(school.id, academicYear.id, teacher.id, gradeByOrder, sectionByGradeOrder);
   console.log("Seed complete.");
   console.log("  Admin login:   admin@springdale.edu.np / Admin@123");

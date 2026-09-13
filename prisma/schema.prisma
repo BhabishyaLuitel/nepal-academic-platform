@@ -101,16 +101,18 @@ model Student {
   section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   assessmentScores AssessmentScore[]
+  rubricScores     RubricScore[]
 
   @@unique([sectionId, rollNumber])
   @@index([schoolId])
 }
 
 model Subject {
-  id       String  @id @default(cuid())
-  schoolId String
-  name     String // e.g. "Mathematics"
-  code     String?
+  id           String  @id @default(cuid())
+  schoolId     String
+  name         String // e.g. "Mathematics"
+  code         String?
+  creditWeight Float   @default(1) // used for Weighted GPA (WGPA) across subjects
 
   school School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 
@@ -142,6 +144,7 @@ model User {
   teacherAssignments TeacherAssignment[]
   academicPlans      AcademicPlan[]
   recordedAssessmentScores AssessmentScore[]
+  recordedRubricScores     RubricScore[]
 
   @@index([schoolId])
 }
@@ -184,6 +187,7 @@ model CurriculumSubject {
   curriculumGrade CurriculumGrade @relation(fields: [curriculumGradeId], references: [id], onDelete: Cascade)
   units           CurriculumUnit[]
   skillAreas      SkillArea[]
+  rubrics         Rubric[]
 
   @@unique([curriculumGradeId, name])
 }
@@ -351,4 +355,54 @@ model LessonPlan {
   updatedAt             DateTime @updatedAt
 
   planPeriod PlanPeriod @relation(fields: [planPeriodId], references: [id], onDelete: Cascade)
+}
+
+// ---------------------------------------------------------------------------
+// Rubric-based grading (AI-generated per subject, click-to-grade by criterion)
+// ---------------------------------------------------------------------------
+
+model Rubric {
+  id                  String   @id @default(cuid())
+  curriculumSubjectId String
+  title               String // e.g. "Classroom & Lab Participation Rubric"
+  description         String
+  order               Int
+  createdAt           DateTime @default(now())
+
+  curriculumSubject CurriculumSubject @relation(fields: [curriculumSubjectId], references: [id], onDelete: Cascade)
+  criteria          RubricCriterion[]
+
+  @@unique([curriculumSubjectId, order])
+}
+
+model RubricCriterion {
+  id       String @id @default(cuid())
+  rubricId String
+  name     String
+  level4   String // Excellent
+  level3   String // Good
+  level2   String // Basic
+  level1   String // Needs work
+  order    Int
+
+  rubric Rubric        @relation(fields: [rubricId], references: [id], onDelete: Cascade)
+  scores RubricScore[]
+
+  @@unique([rubricId, order])
+}
+
+model RubricScore {
+  id                  String   @id @default(cuid())
+  studentId           String
+  rubricCriterionId   String
+  level               Int
+  recordedByTeacherId String
+  updatedAt           DateTime @updatedAt
+
+  student    Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  criterion  RubricCriterion @relation(fields: [rubricCriterionId], references: [id], onDelete: Cascade)
+  recordedBy User            @relation(fields: [recordedByTeacherId], references: [id])
+
+  @@unique([studentId, rubricCriterionId])
+  @@index([studentId])
 }

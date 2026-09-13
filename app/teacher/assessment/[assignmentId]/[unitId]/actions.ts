@@ -161,3 +161,41 @@ export async function saveStudentAssessment(formData: FormData) {
   revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}`);
   redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?saved=1`);
 }
+
+export async function saveRubricScores(formData: FormData) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "TEACHER") {
+    redirect("/login");
+  }
+  const teacherId = session.user.id;
+
+  const assignmentId = String(formData.get("assignmentId") ?? "");
+  const unitId = String(formData.get("unitId") ?? "");
+  const studentId = String(formData.get("studentId") ?? "");
+
+  const assignment = await requireOwnedAssignment(assignmentId, teacherId);
+  if (!assignment) return;
+
+  const student = await prisma.student.findFirst({
+    where: { id: studentId, sectionId: assignment.sectionId },
+  });
+  if (!student) return;
+
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith("rubric_")) continue;
+    const rubricCriterionId = key.slice("rubric_".length);
+    const text = String(value ?? "").trim();
+    if (!text) continue;
+    const level = Number(text);
+    if (!Number.isInteger(level) || level < 1 || level > 4) continue;
+
+    await prisma.rubricScore.upsert({
+      where: { studentId_rubricCriterionId: { studentId, rubricCriterionId } },
+      update: { level },
+      create: { studentId, rubricCriterionId, level, recordedByTeacherId: teacherId },
+    });
+  }
+
+  revalidatePath(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}`);
+  redirect(`/teacher/assessment/${assignmentId}/${unitId}/${studentId}?saved=1`);
+}

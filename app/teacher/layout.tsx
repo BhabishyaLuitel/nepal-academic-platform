@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LayoutGrid, BookOpen, ClipboardCheck } from "lucide-react";
+import { LayoutGrid, BookOpen, ClipboardCheck, FileText } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/components/sign-out-button";
 
@@ -8,6 +8,7 @@ const navItems = [
   { href: "/teacher", label: "My Classes", icon: LayoutGrid },
   { href: "/teacher/curriculum", label: "Curriculum", icon: BookOpen },
   { href: "/teacher/assessment", label: "Assessment", icon: ClipboardCheck },
+  { href: "/teacher/report-card", label: "Report Card", icon: FileText },
 ];
 
 export default async function TeacherLayout({

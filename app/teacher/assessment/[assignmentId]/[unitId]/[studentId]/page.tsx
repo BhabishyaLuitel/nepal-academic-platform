@@ -8,7 +8,8 @@ import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { SavedBanner } from "@/components/ui/saved-banner";
 import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { CasTabs } from "@/components/assessment/cas-tabs";
-import { saveStudentAssessment } from "../actions";
+import { RubricScorer } from "@/components/assessment/rubric-scorer";
+import { saveStudentAssessment, saveRubricScores } from "../actions";
 
 function toDateInputValue(date: Date | null): string {
   if (!date) return "";
@@ -55,6 +56,21 @@ export default async function StudentAssessmentPage(
       const s = scoreByAchievement.get(a.id);
       return { regularScore: s?.regularScore ?? null, remedialScore: s?.remedialScore ?? null };
     }),
+  );
+
+  const rubrics = await prisma.rubric.findMany({
+    where: { curriculumSubjectId: unit.curriculumSubjectId },
+    include: { criteria: { orderBy: { order: "asc" } } },
+    orderBy: { order: "asc" },
+  });
+  const rubricCriterionIds = rubrics.flatMap((r) => r.criteria.map((c) => c.id));
+  const rubricScores = rubricCriterionIds.length
+    ? await prisma.rubricScore.findMany({
+        where: { studentId, rubricCriterionId: { in: rubricCriterionIds } },
+      })
+    : [];
+  const rubricScoreByCriterion = Object.fromEntries(
+    rubricScores.map((s) => [s.rubricCriterionId, s.level]),
   );
 
   const className = `${assignment.grade.name} ${assignment.section.name}`;
@@ -189,13 +205,24 @@ export default async function StudentAssessmentPage(
           },
           {
             label: "Rubrics",
-            content: (
-              <div className="cas-card p-6 text-center text-[color:var(--cas-ink-dim)]">
-                Rubric-based grading isn&apos;t set up for {assignment.subject.name} yet — this
-                subject only has the achievement scale (1–4) shown in the Assessment Record and
-                Grading Scale tabs so far.
-              </div>
-            ),
+            content:
+              rubrics.length === 0 ? (
+                <div className="cas-card p-6 text-center text-[color:var(--cas-ink-dim)]">
+                  Rubric-based grading isn&apos;t set up for {assignment.subject.name} yet — this
+                  subject only has the achievement scale (1–4) shown in the Assessment Record and
+                  Grading Scale tabs so far.
+                </div>
+              ) : (
+                <form action={saveRubricScores}>
+                  <input type="hidden" name="assignmentId" value={assignmentId} />
+                  <input type="hidden" name="unitId" value={unitId} />
+                  <input type="hidden" name="studentId" value={studentId} />
+                  <RubricScorer rubrics={rubrics} initialScores={rubricScoreByCriterion} />
+                  <div className="mt-4">
+                    <PendingButton pendingLabel="Saving...">Save rubric scores</PendingButton>
+                  </div>
+                </form>
+              ),
           },
           {
             label: "Grading Scale",
