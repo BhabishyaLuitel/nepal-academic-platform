@@ -653,6 +653,58 @@ const SEROFERO_SKILLS_NP = [
 ];
 
 const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
+  1: [
+    { title: "म र मेरो परिवार", achievements: [
+      "छोटो कथा वा गीत सुनी सरल प्रश्नको जवाफ दिन",
+      "आफ्नो नाम र परिवारका सदस्यको नाम भन्न",
+      "चित्रसहितको सरल शब्द चिनी पढ्न",
+      "आफ्नो नाम र सरल वर्ण लेख्न",
+      "परिवारका सदस्यसँग सम्बन्धित शब्द चिन्न",
+      "सरल स्वर र व्यञ्जन वर्ण चिन्न",
+    ]},
+    { title: "रङ र आकार", achievements: [
+      "रङ र आकारसम्बन्धी गीत सुनी दोहोर्याउन",
+      "वरपरका वस्तुको रङ र आकार भन्न",
+      "रङ र आकार जनाउने शब्द चिनी पढ्न",
+      "सिकेका सरल शब्द नक्कल गरी लेख्न",
+      "रङ र आकारसँग सम्बन्धित शब्द चिन्न",
+      "एकवचन नाम शब्द चिन्न",
+    ]},
+    { title: "हाम्रो विद्यालय", achievements: [
+      "विद्यालयसम्बन्धी छोटो कथा सुनी चित्र देखाउन",
+      "कक्षाकोठा र विद्यालयका वस्तु भन्न",
+      "विद्यालयसँग सम्बन्धित सरल शब्द चिनी पढ्न",
+      "मार्गदर्शनमा सरल वाक्य नक्कल गरी लेख्न",
+      "विद्यालयसँग सम्बन्धित शब्द चिन्न",
+      "\"छ/छैन\" जस्ता सरल वाक्य संरचना चिन्न",
+    ]},
+  ],
+  2: [
+    { title: "हाम्रो घर र छिमेक", achievements: [
+      "घर वा छिमेकसम्बन्धी छोटो कथा सुनी प्रश्नको जवाफ दिन",
+      "आफ्नो घरको बारेमा २-३ वाक्यमा कुरा गर्न",
+      "छोटो र सरल वाक्य पढी बुझ्न",
+      "निर्देशित रूपमा सरल वाक्य लेख्न",
+      "घर र छिमेकसँग सम्बन्धित शब्द चिनी प्रयोग गर्न",
+      "नाम शब्दको बहुवचन चिन्न",
+    ]},
+    { title: "जीवजन्तु र बिरुवा", achievements: [
+      "जनावर वा बिरुवासम्बन्धी छोटो वर्णन सुनी चिन्न",
+      "मनपर्ने जनावर वा बिरुवाको बारेमा कुरा गर्न",
+      "जनावर र बिरुवासम्बन्धी सरल अनुच्छेद पढ्न",
+      "सिकेका शब्द प्रयोग गरी सरल वाक्य लेख्न",
+      "जनावर र बिरुवासँग सम्बन्धित शब्द चिन्न",
+      "क्रियापदको सरल प्रयोग गर्न",
+    ]},
+    { title: "मेरो दिनचर्या", achievements: [
+      "दिनचर्यासम्बन्धी कथा सुनी क्रम मिलाउन",
+      "आफ्नो दैनिक दिनचर्या क्रमैसँग भन्न",
+      "दिनचर्यासम्बन्धी सरल वाक्य पढ्न",
+      "आफ्नो दिनचर्याको बारेमा २-३ वाक्य लेख्न",
+      "समय र दिनचर्यासँग सम्बन्धित शब्द चिन्न",
+      "समय जनाउने शब्द (बिहान, दिउँसो, साँझ) चिन्न",
+    ]},
+  ],
   3: [
     { title: "परिवार र विद्यालय", achievements: [
       "परिवार र विद्यालयसम्बन्धी कथा सुनी प्रश्नको जवाफ दिन",
@@ -734,6 +786,58 @@ const NEPALI_UNITS: Record<number, SubjectUnitDef[]> = {
 };
 
 const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
+  1: [
+    { title: "Myself and My Family", achievements: [
+      "To listen to simple words/rhymes and point to the correct picture",
+      "To say one's own name and the names of family members",
+      "To recognize and read simple picture words",
+      "To trace and copy one's own name and simple letters",
+      "To recognize words related to family members",
+      "To recognize simple greeting words (hello, bye)",
+    ]},
+    { title: "Colours and Numbers", achievements: [
+      "To listen to a colour/number rhyme and respond by pointing",
+      "To name colours and count objects up to 10",
+      "To recognize colour and number words",
+      "To trace and copy colour and number words",
+      "To recognize words for common colours and numbers",
+      "To recognize simple singular naming words",
+    ]},
+    { title: "My School", achievements: [
+      "To listen to a short story about school and point to pictures",
+      "To name classroom objects and school areas",
+      "To recognize simple school-related words",
+      "To trace and copy simple school-related words",
+      "To recognize words related to school",
+      "To recognize simple \"This is a ___\" sentences",
+    ]},
+  ],
+  2: [
+    { title: "My Home and Neighbourhood", achievements: [
+      "To listen to a short story about home and answer simple questions",
+      "To talk about one's home in 2-3 simple sentences",
+      "To read short, simple sentences and understand them",
+      "To write simple sentences with guidance",
+      "To recognize and use words related to home and neighbourhood",
+      "To recognize and use plural naming words",
+    ]},
+    { title: "Animals and Plants", achievements: [
+      "To listen to a short description of an animal or plant and identify it",
+      "To talk about a favourite animal or plant",
+      "To read a simple paragraph about animals and plants",
+      "To write simple sentences using learnt words",
+      "To recognize and use words related to animals and plants",
+      "To use simple action words (verbs) correctly",
+    ]},
+    { title: "My Daily Routine", achievements: [
+      "To listen to a story about a daily routine and sequence it",
+      "To describe one's own daily routine in order",
+      "To read simple sentences about a daily routine",
+      "To write 2-3 sentences about one's own daily routine",
+      "To recognize words related to time and daily routine",
+      "To recognize time words (morning, afternoon, evening)",
+    ]},
+  ],
   3: [
     { title: "All About Me and My Family", achievements: [
       "To listen to a short talk about family and answer simple questions",
@@ -815,6 +919,52 @@ const ENGLISH_UNITS: Record<number, SubjectUnitDef[]> = {
 };
 
 const MATH_UNITS: Record<number, SubjectUnitDef[]> = {
+  1: [
+    { title: "Numbers up to 20", achievements: [
+      "To understand counting and number order up to 20",
+      "To add and subtract numbers up to 10",
+      "To solve simple picture-based addition/subtraction problems",
+      "To read and write numbers up to 20",
+      "To count everyday objects up to 20",
+    ]},
+    { title: "Shapes and Patterns", achievements: [
+      "To recognize basic shapes (circle, square, triangle, rectangle)",
+      "To sort objects by shape and size",
+      "To continue a simple repeating pattern",
+      "To name basic shapes correctly",
+      "To identify shapes in everyday objects",
+    ]},
+    { title: "Measurement and Time", achievements: [
+      "To compare objects by length, weight, and size (bigger/smaller, longer/shorter)",
+      "To order 3-4 objects by size",
+      "To solve simple comparison problems using pictures",
+      "To use comparison words correctly (bigger, smaller, longer, shorter)",
+      "To tell whether it is day or night from a picture",
+    ]},
+  ],
+  2: [
+    { title: "Numbers up to 100", achievements: [
+      "To understand place value (tens and ones) up to 100",
+      "To add and subtract two-digit numbers without carrying",
+      "To solve simple word problems involving addition and subtraction",
+      "To read and write numbers up to 100",
+      "To use numbers up to 100 in everyday counting situations",
+    ]},
+    { title: "Money and Measurement", achievements: [
+      "To recognize Nepali currency notes and coins",
+      "To add small amounts of money together",
+      "To solve simple problems involving buying and giving change",
+      "To express amounts of money correctly",
+      "To use money concepts in simple shopping situations",
+    ]},
+    { title: "Time and Calendar", achievements: [
+      "To read time to the hour on a clock",
+      "To identify days of the week and months of the year in order",
+      "To solve simple problems involving time (before/after)",
+      "To express time and dates correctly",
+      "To use a calendar to find a given date",
+    ]},
+  ],
   3: [
     { title: "Whole Numbers", achievements: [
       "To understand place value of numbers up to 4 digits",
@@ -1034,6 +1184,52 @@ const HPE_UNITS: Record<number, SubjectUnitDef[]> = {
 };
 
 const SEROFERO_UNITS: Record<number, SubjectUnitDef[]> = {
+  1: [
+    { title: "म र मेरो शरीर", achievements: [
+      "शरीरका मुख्य अङ्गहरू चिन्न",
+      "आफ्नो शरीरका अङ्ग छोई देखाउन",
+      "आफ्नो शरीरको चित्र बनाउन",
+      "शरीरका अङ्गसँग सम्बन्धित शब्द चिन्न",
+      "शरीरको सरसफाइ राख्ने बानी अभ्यास गर्न",
+    ]},
+    { title: "हाम्रो वरपरको वातावरण", achievements: [
+      "घर र विद्यालय वरपरका वस्तु चिन्न",
+      "वरपरका बिरुवा र जनावर अवलोकन गर्न",
+      "अवलोकन गरेको वस्तुको चित्र बनाउन",
+      "वरपरको वातावरणसँग सम्बन्धित शब्द चिन्न",
+      "वरपरको सरसफाइ राख्ने बानी देखाउन",
+    ]},
+    { title: "मौसम र ऋतु", achievements: [
+      "मौसमका सरल परिवर्तन (घाम, वर्षा, जाडो) चिन्न",
+      "दैनिक मौसम अवलोकन गरी भन्न",
+      "मनपर्ने मौसमको चित्र बनाउन",
+      "मौसमसँग सम्बन्धित शब्द चिन्न",
+      "मौसमअनुसार उपयुक्त पोशाक लगाउने बानी अभ्यास गर्न",
+    ]},
+  ],
+  2: [
+    { title: "स्वास्थ्य र सरसफाइ", achievements: [
+      "व्यक्तिगत सरसफाइको महत्त्व बुझ्न",
+      "दैनिक सरसफाइ अभ्यास अवलोकन गरी वर्णन गर्न",
+      "सरसफाइसम्बन्धी सरल पोस्टर वा चित्र बनाउन",
+      "स्वास्थ्य र सरसफाइसँग सम्बन्धित शब्द चिन्न",
+      "दैनिक रूपमा सरसफाइ अभ्यास गर्न",
+    ]},
+    { title: "हाम्रो खाना", achievements: [
+      "पोषिलो खानाका प्रकार चिन्न",
+      "दैनिक खाइने खानेकुरा अवलोकन गरी सूचीकरण गर्न",
+      "सन्तुलित खानाको चित्र बनाउन",
+      "खानासँग सम्बन्धित शब्द चिन्न",
+      "खाना खानुअघि हात धुने बानी अभ्यास गर्न",
+    ]},
+    { title: "हाम्रो सुरक्षा", achievements: [
+      "घर र विद्यालयमा हुने सुरक्षित/असुरक्षित परिस्थिति बुझ्न",
+      "वरपरका सुरक्षा चिन्ह वा नियम अवलोकन गर्न",
+      "सुरक्षा नियमसम्बन्धी सरल चित्र बनाउन",
+      "सुरक्षासँग सम्बन्धित शब्द चिन्न",
+      "सुरक्षा नियम पालना गर्ने बानी देखाउन",
+    ]},
+  ],
   3: [
     { title: "मेरो परिवार र समुदाय", achievements: [
       "परिवारका सदस्य र सामुदायिक सहयोगीहरूको भूमिका बुझ्न",
