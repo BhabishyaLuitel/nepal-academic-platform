@@ -2,6 +2,9 @@
 
 _Last updated: 2026-09-13_
 
+See also [HANDBOOK.md](HANDBOOK.md) for the fuller domain-knowledge/architecture write-up
+this file's details feed into.
+
 ## Goal
 
 This app is one feature of the school's own website (springdale.edu.np) — not the whole
@@ -26,7 +29,7 @@ pending — the user is providing photos of the actual register separately.
 | 1 | ✅ Done | School setup, curriculum database, AI-generated lesson plans |
 | 2 | ✅ Done (today) | Marks-entry + GPA/WGPA/Percentage calculation engine |
 | 3 | ✅ Done (today) | Full pipeline end-to-end — marks entry → GPA/WGPA/Percentage → report card. Generic UI approved for this phase; pixel-exact hardcopy match deferred |
-| 4 | ⏳ Not started | Hardcopy-exact visual redesign once photos arrive; printable/PDF report card; term-scoped report cards; per-subject rubrics beyond Computer; admin UI for subject credit-weights |
+| 4 | 🔶 In progress | See §"Phase 4 — in progress" below |
 
 ## What's built
 
@@ -67,34 +70,85 @@ springdale.edu.np site, applied app-wide.
   `computeReportCard` (cross-subject GPA/WGPA/Percentage rollup), `gpaToNumber`.
 
 ### Content seeded
-CAS content (curriculum units + learning achievements, 1–4 scale) already existed,
-seeded across Grades 1–5 as applicable, for: **Computer** (Grades 3–5), **Nepali**,
-**English**, **Mathematics**, **Science and Technology**, **Social Studies**,
-**Health/Physical/Creative Arts**, **Hamro Serofero**. All first-draft content, pending
-the school's review.
+CAS content (curriculum units + learning achievements, 1–4 scale) seeded for:
+**Computer** (Grades 3–5), **Nepali** (Grades 1–5, Devanagari), **English**
+(Grades 1–5), **Mathematics** (Grades 1–5), **Science and Technology** (Grades 4–5),
+**Social Studies** (Grades 4–5, Devanagari), **Health/Physical/Creative Arts**
+(Grades 4–5), **Hamro Serofero** (Grades 1–3, Devanagari — the integrated subject
+covering what Science/Social/HPE do at higher grades). All first-draft content,
+pending the school's review; see Phase 4 above for the Devanagari fix and the
+Grade 1–2 extension.
 
 4 rubrics × 4 criteria seeded today for the **Computer** subject (Grades 3–5) —
 descriptions are a first draft adapted to a computer-lab context; not yet checked
 against the real rubrics-booklet photos.
 
-## What's NOT done yet (known gaps)
+## Phase 4 — in progress
 
-- **Pixel-exact hardcopy match.** Current UI is the app's general premium design
-  (teal/gold, matching the real school website), not a literal replica of the physical
-  register. Waiting on photos of the actual marks-entry page, GPA/WGPA page, and report
-  card template before this can be built.
-- **No printable/PDF report card** — the report card is a live-computed web page only;
-  no print stylesheet, signature lines, or export.
-- **No "Term" concept.** The report card currently aggregates every score ever entered
-  for the active academic year, not a specific term/quarter. The real register likely
-  has terms — needs the photos to confirm the structure.
-- **Rubrics exist only for Computer.** Other subjects still use only the 1–4
-  achievement scale (no rubric tab content for them).
-- **WGPA == GPA today** since every subject's `creditWeight` defaults to `1` — no admin
-  screen yet to set real per-subject weights.
-- Full official curriculum content is a first draft; loading the complete official
-  curriculum per subject/grade is a separate, larger data-entry effort.
-- No offline support (server-rendered, small client bundles, but not offline-capable).
+The user provided real photos of the physical CAS register (student intake pages,
+health tracking, the usage-instructions page, the rubrics booklet, and filled/blank
+Nepali ledger pages). This **confirmed** several things already built were correct
+(the formula, the achievement scale, the ledger column layout) and **fixed** one real
+bug (B = 2.5, not 2.8 — was wrong in an earlier unreviewed draft). See
+[HANDBOOK.md §3](HANDBOOK.md#3-domain-knowledge-the-physical-cas-register) for the
+full domain write-up from those photos.
+
+Done since:
+- **Nepali / Social Studies / Hamro Serofero content rewritten in Devanagari.** These
+  three subjects are Nepali-medium; their skill-area names and learning achievements
+  were in English by mistake. Grade 5 Nepali's "Poetry" unit now reproduces the
+  school's own photographed example verbatim (verified live, exact match). Every other
+  subject stays English, per direction.
+- **Grades 1–2 curriculum content added.** Every subject previously started at Grade 3
+  minimum — Grades 1 and 2 had zero CAS content despite having enrolled students.
+  Extended Nepali, English, Mathematics, and Hamro Serofero down to Grades 1–2.
+  Science, Social Studies, HPE, and Computer intentionally still start later (4, 4, 4,
+  3) — that's an existing design choice (matches Nepal's integrated 1–3 curriculum
+  shape), not an oversight.
+- Attempted to source curriculum content directly from Nepal's CDC government site;
+  access proved unreliable (repeated 404s/timeouts across 6+ attempts on
+  moecdc.gov.np, its e-library, and mirror hosts). Proceeding instead with
+  officially-verified structure (the grading formula/scale, the register's own
+  subject/skill-area shape) as the calibration reference, writing first-draft content
+  to match — this was explicitly approved by the user rather than blocking on
+  further gov.np access attempts.
+
+Still open (roughly in the order discussed, not yet started):
+- **CDC-calibrated content for the remaining subjects/grades** not yet revisited since
+  the photos arrived (English, Math, Science, HPE, Computer content predates this
+  round — it's in the right language already, just not yet re-checked against the
+  register's actual difficulty level/style).
+- **Side-panel guidance UI** on teacher/admin dashboards — how-to instructions plus
+  example rubrics per subject, so non-technical teachers have an in-app reference
+  instead of needing the physical booklet.
+- **Curriculum browser page UI redesign** — currently confusing (shows empty
+  Topics/Learning Outcomes/Competencies sections for CAS-only units, since that data
+  lives in a different part of the schema than the CAS learning achievements).
+- **Custom, per-topic rubrics** — teacher-created rubrics for a specific assignment
+  (like the photographed "Local Heritage" example), distinct from the 4 fixed generic
+  ones. Data model already supports the shape; no UI yet.
+- **Computer-vision ledger ingestion.** Confirmed workflow: teacher fills the paper
+  ledger as before; a photo of the filled page gets uploaded; the app extracts the
+  handwritten marks and auto-fills the digital table; the original photo displays
+  side-by-side for manual verification/correction, since OCR on handwriting won't
+  always be right. Not started — likely uses Gemini's vision capability, since a
+  Gemini API key is already wired up for lesson plans.
+- Other assessment tool types from the rubrics booklet, beyond rubrics: Checklist,
+  Rating Scale, Anecdotal Record, Peer/Self/Parent-feedback rubrics (see HANDBOOK §3.3).
+- **Pixel-exact hardcopy visual match** for the ledger itself (current UI is the app's
+  general premium design, not a literal register replica).
+- **No printable/PDF report card** — web page only, no print stylesheet or export.
+  Per direction, the digital ledger does *not* need signature lines — those stay on
+  the physical page.
+- **No "Term" concept** — report card aggregates the whole active academic year, not a
+  specific term/quarter. Unconfirmed whether the real register has terms.
+- **Rubrics exist only for Computer.**
+- **WGPA == GPA today** — every subject's `creditWeight` defaults to `1`, no admin UI
+  to set real per-subject weights yet.
+- **Student intake / health-tracking pages** — real rosters with full family/contact
+  detail were provided for Grades 1–2 (Grades 3–5 rosters already match what's
+  seeded); deliberately deferred, not yet acted on.
+- No offline support.
 
 ## What the final product must look like
 
