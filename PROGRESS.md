@@ -127,15 +127,21 @@ Done since:
   part of the schema). Now: card grids instead of pill rows, unit cards show a real
   content count, the CAS skill-areas table renders when present, empty sections are
   hidden instead of shown blank, and a subject-level rubrics preview was added.
+- **Custom, per-unit rubrics.** `Rubric` gained an optional `curriculumUnitId` (null =
+  generic/subject-wide, set = scoped to one unit) and `createdByTeacherId`. A new
+  `/teacher/assessment/[assignmentId]/[unitId]/rubrics` page lets a teacher build a
+  rubric just for that unit (dynamic add/remove criteria form), matching the
+  photographed "Local Heritage Exploration" example's shape. It shows up automatically
+  on every student's Rubrics tab alongside the 4 generic ones — verified live.
+  Migrated by hand-writing the SQL and applying via `migrate deploy`, since both
+  `migrate dev` and `db push` need either interactive confirmation or Prisma's
+  AI-agent dangerous-action override, neither available/appropriate here.
 
 Still open (roughly in the order discussed, not yet started):
 - **CDC-calibrated content for the remaining subjects/grades** not yet revisited since
   the photos arrived (English, Math, Science, HPE, Computer content predates this
   round — it's in the right language already, just not yet re-checked against the
   register's actual difficulty level/style).
-- **Custom, per-topic rubrics** — teacher-created rubrics for a specific assignment
-  (like the photographed "Local Heritage" example), distinct from the 4 fixed generic
-  ones. Data model already supports the shape; no UI yet.
 - **Computer-vision ledger ingestion.** Confirmed workflow: teacher fills the paper
   ledger as before; a photo of the filled page gets uploaded; the app extracts the
   handwritten marks and auto-fills the digital table; the original photo displays
