@@ -9,6 +9,7 @@ import { SavedBanner } from "@/components/ui/saved-banner";
 import { CasMasthead } from "@/components/assessment/cas-masthead";
 import { CasTabs } from "@/components/assessment/cas-tabs";
 import { RubricScorer } from "@/components/assessment/rubric-scorer";
+import { CasGuide } from "@/components/assessment/cas-guide";
 import { saveStudentAssessment, saveRubricScores } from "../actions";
 
 function toDateInputValue(date: Date | null): string {
@@ -101,6 +102,9 @@ export default async function StudentAssessmentPage(
           { label: "Roll No.", value: student.rollNumber },
         ]}
       />
+      <div className="mt-4">
+        <CasGuide />
+      </div>
       {saved && (
         <div className="mt-6">
           <SavedBanner message="Assessment saved" />

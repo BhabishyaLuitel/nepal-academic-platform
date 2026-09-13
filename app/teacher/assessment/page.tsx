@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CasMasthead } from "@/components/assessment/cas-masthead";
+import { CasGuide } from "@/components/assessment/cas-guide";
 
 export default async function AssessmentHomePage() {
   const session = await auth();
@@ -20,6 +21,9 @@ export default async function AssessmentHomePage() {
         title="Assessment"
         subtitle="Select a class to record continuous assessment scores by unit."
       />
+      <div className="mt-4">
+        <CasGuide />
+      </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {assignments.map((assignment) => (

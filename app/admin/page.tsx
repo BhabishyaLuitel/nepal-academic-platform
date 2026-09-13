@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { AdminCasGuide } from "@/components/admin/admin-cas-guide";
 
 export default async function AdminOverviewPage() {
   const session = await auth();
@@ -29,6 +30,9 @@ export default async function AdminOverviewPage() {
         <p className="cas-subtitle">
           Set up your school&apos;s academic structure before teachers can start planning lessons.
         </p>
+      </div>
+      <div className="mt-4">
+        <AdminCasGuide />
       </div>
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat) => (
