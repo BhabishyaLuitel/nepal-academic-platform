@@ -16,6 +16,7 @@ can use it as a map of the "how."
 ## Table of contents
 
 - [The problem this solves](#the-problem-this-solves)
+- [The bigger picture](#the-bigger-picture)
 - [What the app does](#what-the-app-does)
   - [As a school admin](#as-a-school-admin)
   - [As a teacher](#as-a-teacher)
@@ -43,6 +44,26 @@ it's easy to get wrong, and the only copy of a term's marks is that one physical
 
 This app digitizes exactly that process — same scale, same formula, same grading table —
 so the arithmetic happens automatically and a full report card is always one click away.
+
+## The bigger picture
+
+Faster grading isn't the end goal — it's what makes the actual end goal possible. The
+reason curriculum, lesson planning, assessment, and the report card all live in one system,
+instead of being separate tools, is so that **school administration can see how every
+class is actually doing, at any point in the term — not just on result day.**
+
+Concretely: a curriculum unit gets broken into a planned sequence of class periods (see
+[Planning + AI Lesson Plans](#as-a-teacher)), and a teacher's assessment scores accumulate
+against that same curriculum as the term goes on. Put those two things side by side and an
+administrator can see, per class, *is this class on pace with its lesson plan?* and *are
+these students actually scoring well against it?* — early enough to step in (extra support
+for a struggling class, a conversation with a teacher who's fallen behind, a schedule
+adjustment) while there's still time to change the outcome, instead of finding out only
+when report cards are already due and it's too late to do anything but hand them out.
+
+That admin-facing "progress and risk, across every class" view is the intended payoff of
+everything else in this document — and it's the one major piece not built yet. See
+[What's not built yet](#whats-not-built-yet).
 
 ## What the app does
 
@@ -317,6 +338,12 @@ report card) genuinely works end-to-end. Before it replaces the paper process fo
 students, the following are still open — tracked in detail in
 [READINESS_REPORT.md](READINESS_REPORT.md):
 
+- **No admin progress/oversight dashboard** — the actual point of the whole pipeline (see
+  [The bigger picture](#the-bigger-picture)): a per-class view for administrators showing
+  lesson-plan pace against the curriculum and assessment scores as the term progresses, so
+  an at-risk class or subject is visible well before result day. Admin currently only sees
+  school *setup* counts (grades, teachers, assignments) — not teaching or assessment
+  progress. This is the single highest-priority item on this list.
 - **No hosting** — the app has only run locally via `npm run dev` against a local Docker
   database; it isn't deployed anywhere yet.
 - **No printable/PDF report card** — the report card is a web page today, not an export.
